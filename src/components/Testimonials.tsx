@@ -1,5 +1,6 @@
-import { Star } from "lucide-react";
-import { motion } from "framer-motion";
+import { useState, useEffect, useCallback } from "react";
+import { Star, ChevronLeft, ChevronRight, Quote } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 const testimonials = [
   {
@@ -24,9 +25,31 @@ const testimonials = [
   },
 ];
 
+const variants = {
+  enter: (dir: number) => ({ x: dir > 0 ? 300 : -300, opacity: 0, scale: 0.95 }),
+  center: { x: 0, opacity: 1, scale: 1 },
+  exit: (dir: number) => ({ x: dir > 0 ? -300 : 300, opacity: 0, scale: 0.95 }),
+};
+
 const Testimonials = () => {
+  const [[current, direction], setCurrent] = useState([0, 0]);
+
+  const paginate = useCallback((newDir: number) => {
+    setCurrent(([prev]) => {
+      const next = (prev + newDir + testimonials.length) % testimonials.length;
+      return [next, newDir];
+    });
+  }, []);
+
+  useEffect(() => {
+    const timer = setInterval(() => paginate(1), 5000);
+    return () => clearInterval(timer);
+  }, [paginate]);
+
+  const t = testimonials[current];
+
   return (
-    <section id="depoimentos" className="bg-cream py-20 md:py-28">
+    <section id="depoimentos" className="bg-cream py-20 md:py-28 overflow-hidden">
       <div className="container">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -38,49 +61,70 @@ const Testimonials = () => {
           <h2 className="mt-3 font-display text-3xl font-bold text-foreground md:text-4xl">
             O que nossos pacientes dizem
           </h2>
+          <p className="mx-auto mt-3 max-w-md font-sans text-sm text-muted-foreground">
+            Mais de 270 avaliações com nota 4.9 no Google
+          </p>
         </motion.div>
 
-        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {testimonials.slice(0, 3).map((t, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.15 }}
-              className="rounded-xl border border-border bg-card p-6 shadow-sm"
-            >
-              <div className="flex gap-1">
-                {[...Array(5)].map((_, j) => (
-                  <Star key={j} className="h-4 w-4 fill-gold text-gold" />
-                ))}
-              </div>
-              <p className="mt-4 font-sans text-sm leading-relaxed text-muted-foreground">"{t.text}"</p>
-              <p className="mt-4 font-sans text-sm font-semibold text-foreground">{t.name}</p>
-            </motion.div>
-          ))}
-        </div>
+        {/* Carousel */}
+        <div className="relative mx-auto mt-14 max-w-2xl">
+          <div className="min-h-[280px] md:min-h-[240px] flex items-center justify-center">
+            <AnimatePresence mode="wait" custom={direction}>
+              <motion.div
+                key={current}
+                custom={direction}
+                variants={variants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                transition={{ duration: 0.45, ease: "easeInOut" }}
+                className="absolute inset-0 flex flex-col items-center justify-center rounded-2xl border border-border bg-card p-8 shadow-lg md:p-12"
+              >
+                <Quote className="h-8 w-8 text-gold/30 mb-4" />
+                <div className="flex gap-1 mb-5">
+                  {[...Array(5)].map((_, j) => (
+                    <Star key={j} className="h-5 w-5 fill-gold text-gold" />
+                  ))}
+                </div>
+                <p className="font-sans text-base leading-relaxed text-foreground/80 text-center md:text-lg">
+                  "{t.text}"
+                </p>
+                <p className="mt-6 font-sans text-sm font-bold text-foreground tracking-wide uppercase">{t.name}</p>
+              </motion.div>
+            </AnimatePresence>
+          </div>
 
-        {/* Additional reviews below */}
-        <div className="mt-6 grid gap-6 sm:grid-cols-2">
-          {testimonials.slice(3).map((t, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.15 }}
-              className="rounded-xl border border-border bg-card p-6 shadow-sm"
+          {/* Navigation */}
+          <div className="mt-8 flex items-center justify-center gap-4">
+            <button
+              onClick={() => paginate(-1)}
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-card text-foreground/60 shadow-sm transition-all hover:bg-primary hover:text-primary-foreground hover:border-primary"
+              aria-label="Anterior"
             >
-              <div className="flex gap-1">
-                {[...Array(5)].map((_, j) => (
-                  <Star key={j} className="h-4 w-4 fill-gold text-gold" />
-                ))}
-              </div>
-              <p className="mt-4 font-sans text-sm leading-relaxed text-muted-foreground">"{t.text}"</p>
-              <p className="mt-4 font-sans text-sm font-semibold text-foreground">{t.name}</p>
-            </motion.div>
-          ))}
+              <ChevronLeft className="h-5 w-5" />
+            </button>
+            
+            <div className="flex gap-2">
+              {testimonials.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setCurrent([i, i > current ? 1 : -1])}
+                  className={`h-2.5 rounded-full transition-all duration-300 ${
+                    i === current ? "w-8 bg-primary" : "w-2.5 bg-border hover:bg-muted-foreground/30"
+                  }`}
+                  aria-label={`Depoimento ${i + 1}`}
+                />
+              ))}
+            </div>
+
+            <button
+              onClick={() => paginate(1)}
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-card text-foreground/60 shadow-sm transition-all hover:bg-primary hover:text-primary-foreground hover:border-primary"
+              aria-label="Próximo"
+            >
+              <ChevronRight className="h-5 w-5" />
+            </button>
+          </div>
         </div>
       </div>
     </section>

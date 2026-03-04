@@ -1,9 +1,19 @@
 import { motion } from "framer-motion";
+import { Shield, Heart, Sparkles } from "lucide-react";
+
+const pillars = [
+  { icon: Heart, label: "Cuidado com pacientes" },
+  { icon: Shield, label: "Ambiente seguro e moderno" },
+  { icon: Sparkles, label: "Atendimento de qualidade" },
+];
 
 const About = () => {
   return (
-    <section id="sobre" className="py-20 md:py-28">
-      <div className="container">
+    <section id="sobre" className="py-20 md:py-28 relative overflow-hidden">
+      {/* Decorative bg */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/3 rounded-full blur-3xl" />
+
+      <div className="container relative z-10">
         <div className="mx-auto max-w-3xl text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -19,9 +29,23 @@ const About = () => {
             <p className="mt-4 font-sans text-base leading-relaxed text-muted-foreground">
               Nossa equipe é formada por profissionais dedicadas e constantemente atualizadas, prontas para oferecer tratamentos seguros, eficientes e com o máximo de conforto. Nosso ambiente é moderno, organizado e pensado para que cada paciente se sinta em casa.
             </p>
-            <p className="mt-4 font-sans text-base leading-relaxed text-muted-foreground">
-              Do diagnóstico ao resultado final, trabalhamos com transparência e comprometimento para que você tenha o melhor resultado e a melhor experiência possível.
-            </p>
+
+            {/* Pillar badges */}
+            <div className="mt-10 flex flex-wrap justify-center gap-4">
+              {pillars.map((p, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1 }}
+                  className="flex items-center gap-2 rounded-full border border-border bg-card px-5 py-3 shadow-sm"
+                >
+                  <p.icon className="h-4 w-4 text-primary" />
+                  <span className="font-sans text-sm font-medium text-foreground">{p.label}</span>
+                </motion.div>
+              ))}
+            </div>
           </motion.div>
         </div>
       </div>

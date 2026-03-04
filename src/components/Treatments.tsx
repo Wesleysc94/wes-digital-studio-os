@@ -1,4 +1,4 @@
-import { Stethoscope, SmilePlus, Crown, Sparkles, Syringe, HeartPulse, MessageCircle } from "lucide-react";
+import { Stethoscope, SmilePlus, Crown, Sparkles, Syringe, HeartPulse, MessageCircle, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { WHATSAPP_URL } from "./FloatingWhatsApp";
 
@@ -28,36 +28,47 @@ const Treatments = () => {
           </p>
         </motion.div>
 
-        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {treatments.map((t, i) => (
-            <motion.div
+            <motion.a
               key={i}
+              href={WHATSAPP_URL}
+              target="_blank"
+              rel="noopener noreferrer"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-              className="group rounded-xl border border-border bg-card p-6 shadow-sm transition-all hover:border-gold/40 hover:shadow-md"
+              transition={{ delay: i * 0.08 }}
+              className="group relative rounded-2xl border border-border bg-card p-7 shadow-sm transition-all duration-300 hover:border-gold/40 hover:shadow-xl hover:-translate-y-1"
             >
-              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
-                <t.icon className="h-6 w-6" />
+              <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-primary/10 text-primary transition-all duration-300 group-hover:bg-primary group-hover:text-primary-foreground group-hover:shadow-lg">
+                <t.icon className="h-7 w-7" />
               </div>
-              <h3 className="mt-4 font-display text-lg font-semibold text-foreground">{t.title}</h3>
+              <h3 className="mt-5 font-display text-lg font-semibold text-foreground">{t.title}</h3>
               <p className="mt-2 font-sans text-sm leading-relaxed text-muted-foreground">{t.desc}</p>
-            </motion.div>
+              <div className="mt-4 inline-flex items-center gap-1 font-sans text-xs font-semibold text-primary opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                Saiba mais <ArrowRight className="h-3 w-3" />
+              </div>
+            </motion.a>
           ))}
         </div>
 
-        <div className="mt-12 text-center">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mt-14 text-center"
+        >
           <a
             href={WHATSAPP_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-lg bg-primary px-8 py-4 font-sans font-semibold text-primary-foreground shadow-lg transition-transform hover:scale-105"
+            className="inline-flex items-center gap-2 rounded-full bg-primary px-10 py-4 font-sans text-base font-bold text-primary-foreground shadow-lg transition-transform hover:scale-105"
           >
             <MessageCircle className="h-5 w-5" />
             Falar com a clínica no WhatsApp
           </a>
-        </div>
+        </motion.div>
       </div>
     </section>
   );
