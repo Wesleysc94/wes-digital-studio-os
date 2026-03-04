@@ -13,7 +13,7 @@ const treatments = [
 
 const Treatments = () => {
   return (
-    <section id="tratamentos" className="py-20 md:py-28">
+    <section id="tratamentos" className="py-24 md:py-32">
       <div className="container">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -22,13 +22,13 @@ const Treatments = () => {
           className="text-center"
         >
           <span className="font-sans text-sm font-semibold uppercase tracking-widest text-gold">Nossos Serviços</span>
-          <h2 className="mt-3 font-display text-3xl font-bold text-foreground md:text-4xl">Tratamentos</h2>
-          <p className="mx-auto mt-4 max-w-xl font-sans text-muted-foreground">
+          <h2 className="mt-3 font-display text-3xl font-bold text-foreground md:text-4xl lg:text-5xl">Tratamentos</h2>
+          <p className="mx-auto mt-4 max-w-xl font-sans text-muted-foreground md:text-lg">
             Oferecemos tratamentos completos para cuidar da sua saúde bucal e transformar o seu sorriso.
           </p>
         </motion.div>
 
-        <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {treatments.map((t, i) => (
             <motion.a
               key={i}
@@ -39,7 +39,7 @@ const Treatments = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.08 }}
-              className="group relative rounded-2xl border border-border bg-card p-7 shadow-sm transition-all duration-300 hover:border-gold/40 hover:shadow-xl hover:-translate-y-1"
+              className="group relative rounded-2xl border border-border bg-card p-8 shadow-sm transition-all duration-300 hover:border-gold/40 hover:shadow-xl hover:-translate-y-1"
             >
               <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-primary/10 text-primary transition-all duration-300 group-hover:bg-primary group-hover:text-primary-foreground group-hover:shadow-lg">
                 <t.icon className="h-7 w-7" />
@@ -53,22 +53,36 @@ const Treatments = () => {
           ))}
         </div>
 
+        {/* CTA after treatments */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="mt-14 text-center"
+          className="mt-16 rounded-3xl bg-primary/5 border border-primary/10 p-10 md:p-14 text-center"
         >
-          <a
+          <h3 className="font-display text-2xl font-bold text-foreground md:text-3xl">
+            Agende sua avaliação agora pelo WhatsApp
+          </h3>
+          <p className="mx-auto mt-3 max-w-md font-sans text-muted-foreground">
+            Atendimento rápido e sem burocracia. Tire suas dúvidas e agende sua consulta em poucos segundos.
+          </p>
+          <motion.a
             href={WHATSAPP_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-full bg-primary px-10 py-4 font-sans text-base font-bold text-primary-foreground shadow-lg transition-transform hover:scale-105"
+            className="mt-8 inline-flex items-center gap-3 rounded-full bg-[#25D366] px-10 py-5 font-sans text-base font-bold text-primary-foreground shadow-[0_4px_24px_rgba(37,211,102,0.4)] md:text-lg"
+            whileHover={{ scale: 1.05, boxShadow: "0 4px 36px rgba(37,211,102,0.6)" }}
+            whileTap={{ scale: 0.98 }}
           >
-            <MessageCircle className="h-5 w-5" />
+            <MessageCircle className="h-6 w-6" />
             Falar com a clínica no WhatsApp
-          </a>
+          </motion.a>
         </motion.div>
+
+        {/* SEO text */}
+        <p className="mt-12 mx-auto max-w-2xl text-center font-sans text-sm text-muted-foreground/70">
+          Clínica odontológica em Guaianases especializada em implantes, ortodontia e estética dental.
+        </p>
       </div>
     </section>
   );

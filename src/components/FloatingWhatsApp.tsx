@@ -10,13 +10,14 @@ const FloatingWhatsApp = () => {
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Agendar no WhatsApp"
-      className="fixed bottom-6 right-6 z-50 flex h-16 w-16 items-center justify-center rounded-full bg-[#25D366] shadow-[0_4px_20px_rgba(37,211,102,0.4)] md:h-[72px] md:w-[72px]"
-      whileHover={{ scale: 1.12 }}
+      className="fixed bottom-6 right-6 z-50 flex items-center gap-3 rounded-full bg-[#25D366] px-5 py-4 shadow-[0_4px_24px_rgba(37,211,102,0.4)] md:px-6 md:py-4"
+      whileHover={{ scale: 1.08 }}
       whileTap={{ scale: 0.95 }}
       animate={{ boxShadow: ["0 4px 20px rgba(37,211,102,0.3)", "0 4px 30px rgba(37,211,102,0.6)", "0 4px 20px rgba(37,211,102,0.3)"] }}
       transition={{ duration: 2, repeat: Infinity }}
     >
-      <MessageCircle className="h-8 w-8 fill-current text-primary-foreground md:h-9 md:w-9" />
+      <MessageCircle className="h-7 w-7 fill-current text-primary-foreground md:h-8 md:w-8" />
+      <span className="hidden font-sans text-sm font-bold text-primary-foreground sm:inline">Agendar</span>
     </motion.a>
   );
 };

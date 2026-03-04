@@ -4,8 +4,7 @@ import { WHATSAPP_URL } from "./FloatingWhatsApp";
 
 const FinalCTA = () => {
   return (
-    <section className="relative bg-primary py-24 md:py-32 overflow-hidden">
-      {/* Decorative elements */}
+    <section className="relative bg-primary py-28 md:py-36 overflow-hidden">
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gold/5 rounded-full blur-3xl" />
       <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-primary-foreground/5 rounded-full blur-3xl" />
 
@@ -29,12 +28,12 @@ const FinalCTA = () => {
             href={WHATSAPP_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-10 inline-flex items-center gap-3 rounded-full bg-[#25D366] px-10 py-5 font-sans text-lg font-bold text-primary-foreground shadow-[0_4px_30px_rgba(37,211,102,0.4)]"
+            className="mt-10 inline-flex items-center gap-3 rounded-full bg-[#25D366] px-12 py-6 font-sans text-lg font-bold text-primary-foreground shadow-[0_4px_30px_rgba(37,211,102,0.4)] md:text-xl"
             whileHover={{ scale: 1.05, boxShadow: "0 4px 40px rgba(37,211,102,0.6)" }}
             whileTap={{ scale: 0.98 }}
           >
             Agendar no WhatsApp
-            <ArrowRight className="h-5 w-5" />
+            <ArrowRight className="h-6 w-6" />
           </motion.a>
         </motion.div>
       </div>

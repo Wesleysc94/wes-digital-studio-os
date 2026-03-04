@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 
 const Location = () => {
   return (
-    <section id="localizacao" className="bg-cream py-20 md:py-28">
+    <section id="localizacao" className="bg-cream py-24 md:py-32">
       <div className="container">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -12,19 +12,19 @@ const Location = () => {
           className="text-center"
         >
           <span className="font-sans text-sm font-semibold uppercase tracking-widest text-gold">Localização</span>
-          <h2 className="mt-3 font-display text-3xl font-bold text-foreground md:text-4xl">Venha nos visitar</h2>
+          <h2 className="mt-3 font-display text-3xl font-bold text-foreground md:text-4xl lg:text-5xl">Venha nos visitar</h2>
         </motion.div>
 
-        <div className="mt-12 grid gap-8 lg:grid-cols-2">
+        <div className="mt-14 grid gap-8 lg:grid-cols-2">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             className="flex flex-col gap-6"
           >
-            <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
+            <div className="rounded-2xl border border-border bg-card p-7 shadow-sm">
               <div className="flex items-start gap-4">
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/10">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/10">
                   <MapPin className="h-5 w-5 text-primary" />
                 </div>
                 <div>
@@ -44,9 +44,9 @@ const Location = () => {
               </div>
             </div>
 
-            <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
+            <div className="rounded-2xl border border-border bg-card p-7 shadow-sm">
               <div className="flex items-start gap-4">
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/10">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/10">
                   <Phone className="h-5 w-5 text-primary" />
                 </div>
                 <div>
@@ -58,9 +58,9 @@ const Location = () => {
               </div>
             </div>
 
-            <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
+            <div className="rounded-2xl border border-border bg-card p-7 shadow-sm">
               <div className="flex items-start gap-4">
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/10">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/10">
                   <Clock className="h-5 w-5 text-primary" />
                 </div>
                 <div>
