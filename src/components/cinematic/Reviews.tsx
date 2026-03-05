@@ -116,13 +116,13 @@ export const Reviews = () => {
                     </div>
 
                     {/* Single Active Review Card Slider - Right Side */}
-                    <div className="lg:w-2/3 relative min-h-[300px] flex items-center overflow-hidden">
+                    <div className="lg:w-2/3 grid relative overflow-hidden items-center">
                         {REVIEWS.map((review, index) => {
                             const isActive = index === activeIndex;
                             return (
                                 <div
                                     key={index}
-                                    className={`absolute inset-0 w-full max-w-2xl mx-auto bg-gradient-to-br from-cream/[0.05] to-transparent border border-cream/[0.08] backdrop-blur-xl rounded-[2.5rem] p-8 md:p-12 flex flex-col shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] transition-all duration-1000 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] ${isActive ? 'opacity-100 scale-100 z-10 pointer-events-auto blur-0' : 'opacity-0 scale-95 z-0 pointer-events-none blur-sm'}`}
+                                    className={`[grid-area:1/1] w-full max-w-2xl mx-auto bg-gradient-to-br from-cream/[0.05] to-transparent border border-cream/[0.08] backdrop-blur-xl rounded-[2.5rem] p-8 md:p-12 flex flex-col shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] transition-all duration-1000 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] ${isActive ? 'opacity-100 scale-100 z-10 pointer-events-auto blur-0' : 'opacity-0 scale-95 z-0 pointer-events-none blur-sm'}`}
                                 >
                                     <div className="flex justify-between items-start mb-2">
                                         <div className="flex gap-1.5 text-accent">
@@ -133,12 +133,12 @@ export const Reviews = () => {
                                         <span className="font-serif-drama text-accent/20 text-6xl leading-none h-8 -mt-2 hidden sm:block">"</span>
                                     </div>
 
-                                    <p className="font-serif-drama text-3xl md:text-[2rem] text-cream/95 italic leading-snug min-h-[160px] md:min-h-[140px] flex items-center relative z-10 font-medium tracking-wide drop-shadow-sm">
+                                    <p className="font-serif-drama text-[1.65rem] md:text-[2rem] text-cream/95 italic leading-snug flex flex-col justify-center relative z-10 font-medium tracking-wide drop-shadow-sm min-h-[160px]">
                                         "{review.text}"
                                     </p>
 
-                                    <div className="mt-auto pt-8 flex items-center gap-5">
-                                        <div className="w-14 h-14 rounded-full bg-gradient-to-br from-accent to-accent/50 p-[2px] shadow-lg shadow-accent/20">
+                                    <div className="pt-6 mt-4 flex items-center gap-5 border-t border-accent/10">
+                                        <div className="w-14 h-14 rounded-full bg-gradient-to-br from-accent to-accent/50 p-[2px] shadow-lg shadow-accent/20 shrink-0">
                                             <div className="w-full h-full rounded-full bg-dark/90 flex items-center justify-center font-sans-bold text-cream text-2xl">
                                                 {review.name.charAt(0)}
                                             </div>
