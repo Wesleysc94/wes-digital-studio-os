@@ -126,8 +126,8 @@ const TreatmentDetails = () => {
             </section>
 
             {/* Detalhes Clínicos */}
-            <section className="py-16 px-8 md:px-16 w-full max-w-5xl mx-auto">
-                <div className="mb-12 anim-up flex w-full">
+            <section className="py-12 md:py-16 px-6 md:px-16 w-full max-w-5xl mx-auto">
+                <div className="mb-10 md:mb-12 anim-up flex w-full">
                     <button
                         onClick={() => navigate('/#tratamentos')}
                         className="flex items-center gap-2 text-cream/50 hover:text-accent font-sans-bold text-sm uppercase tracking-widest transition-colors group"
@@ -136,7 +136,7 @@ const TreatmentDetails = () => {
                     </button>
                 </div>
 
-                <div className="flex flex-col md:flex-row gap-16 items-start">
+                <div className="flex flex-col md:flex-row gap-10 md:gap-16 items-start">
                     <div className="md:w-1/2 flex flex-col gap-6">
                         <div className="flex items-center gap-3 mb-2 anim-up">
                             <span className="w-6 h-[1px] bg-accent" />
@@ -170,7 +170,7 @@ const TreatmentDetails = () => {
                         </ul>
                     </div>
                 </div>
-                <div className="mt-20 flex justify-center w-full anim-up pb-10">
+                <div className="mt-12 md:mt-16 flex justify-center w-full anim-up pb-10">
                     <button
                         onClick={() => document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' })}
                         className="bg-accent text-white px-10 py-5 rounded-full font-sans-bold uppercase tracking-widest shadow-[0_0_20px_rgba(34,211,238,0.4)] hover:scale-105 transition-transform"
