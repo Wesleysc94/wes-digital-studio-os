@@ -30,7 +30,7 @@ export const Contact = () => {
     return (
         <section id="contato" ref={containerRef} className="py-10 lg:py-16 px-8 md:px-16 w-full max-w-7xl mx-auto">
 
-            <div className="bg-primary text-cream rounded-[3rem] p-10 md:p-16 lg:p-20 relative overflow-hidden shadow-2xl">
+            <div className="bg-dark text-cream rounded-[3rem] p-10 md:p-16 lg:p-20 relative overflow-hidden shadow-2xl">
                 {/* Background Texture/Pattern */}
                 <div className="absolute inset-0 opacity-5 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '40px 40px' }} />
 
@@ -64,10 +64,10 @@ export const Contact = () => {
 
                     {/* Form / CTA Side */}
                     <div className="lg:w-1/2 flex items-center justify-center lg:justify-end">
-                        <div className="contact-anim bg-background text-primary rounded-[2rem] p-8 md:p-10 w-full max-w-md shadow-xl flex flex-col gap-6 shadow-black/20">
+                        <div className="contact-anim bg-background text-foreground rounded-[2rem] p-8 md:p-10 w-full max-w-md shadow-xl flex flex-col gap-6 shadow-black/20">
                             <div className="text-center">
                                 <h3 className="font-sans-bold text-2xl mb-2">Pré-agendamento</h3>
-                                <p className="font-sans-outfit text-sm text-primary/70">
+                                <p className="font-sans-outfit text-sm text-foreground/70">
                                     Preencha os dados e nossa equipe confirmará o seu horário via WhatsApp em minutos.
                                 </p>
                             </div>
@@ -89,13 +89,13 @@ export const Contact = () => {
                                 }}
                             >
                                 <div className="flex flex-col gap-1.5">
-                                    <label htmlFor="nome" className="text-xs tracking-wider uppercase font-semibold text-primary/60 pl-1">Seu Nome</label>
-                                    <input required type="text" id="nome" name="nome" placeholder="Como gosta de ser chamado" className="w-full bg-primary/5 border border-primary/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-accent/50 focus:ring-1 focus:ring-accent/50 transition-all" />
+                                    <label htmlFor="nome" className="text-xs tracking-wider uppercase font-semibold text-foreground/60 pl-1">Seu Nome</label>
+                                    <input required type="text" id="nome" name="nome" placeholder="Como gosta de ser chamado" className="w-full bg-foreground/5 border border-foreground/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-accent/50 focus:ring-1 focus:ring-accent/50 transition-all text-foreground" />
                                 </div>
 
                                 <div className="flex flex-col gap-1.5">
-                                    <label htmlFor="servico" className="text-xs tracking-wider uppercase font-semibold text-primary/60 pl-1">O que você busca?</label>
-                                    <select required id="servico" name="servico" className="w-full bg-primary/5 border border-primary/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-accent/50 focus:ring-1 focus:ring-accent/50 transition-all appearance-none">
+                                    <label htmlFor="servico" className="text-xs tracking-wider uppercase font-semibold text-foreground/60 pl-1">O que você busca?</label>
+                                    <select required id="servico" name="servico" className="w-full bg-foreground/5 border border-foreground/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-accent/50 focus:ring-1 focus:ring-accent/50 transition-all appearance-none text-foreground">
                                         <option value="" disabled selected>Selecione um tratamento</option>
                                         <option value="Lentes de Contato / Estética">Lentes de Contato & Estética</option>
                                         <option value="Implantes / Reabilitação">Implantes & Reabilitação</option>
@@ -106,8 +106,8 @@ export const Contact = () => {
                                 </div>
 
                                 <div className="flex flex-col gap-1.5 mb-2">
-                                    <label htmlFor="turno" className="text-xs tracking-wider uppercase font-semibold text-primary/60 pl-1">Melhor Turno</label>
-                                    <select required id="turno" name="turno" className="w-full bg-primary/5 border border-primary/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-accent/50 focus:ring-1 focus:ring-accent/50 transition-all appearance-none">
+                                    <label htmlFor="turno" className="text-xs tracking-wider uppercase font-semibold text-foreground/60 pl-1">Melhor Turno</label>
+                                    <select required id="turno" name="turno" className="w-full bg-foreground/5 border border-foreground/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-accent/50 focus:ring-1 focus:ring-accent/50 transition-all appearance-none text-foreground">
                                         <option value="" disabled selected>Preferência de horário</option>
                                         <option value="Manhã (08h - 12h)">Manhã (08h - 12h)</option>
                                         <option value="Tarde (13h - 18h)">Tarde (13h - 18h)</option>
@@ -121,7 +121,7 @@ export const Contact = () => {
                                 </button>
                             </form>
 
-                            <p className="font-sans-outfit text-xs text-center text-primary/40 mt-[-10px]">
+                            <p className="font-sans-outfit text-xs text-center text-foreground/40 mt-[-10px]">
                                 Tratamento 100% seguro e confidencial.
                             </p>
                         </div>
