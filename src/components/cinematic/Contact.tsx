@@ -30,16 +30,16 @@ export const Contact = () => {
     return (
         <section id="contato" ref={containerRef} className="py-10 lg:py-16 px-8 md:px-16 w-full max-w-7xl mx-auto">
 
-            <div className="bg-card text-card-foreground rounded-[3rem] p-10 md:p-16 lg:p-20 relative overflow-hidden shadow-2xl border border-border/50">
+            <div className="bg-card text-card-foreground rounded-[3rem] p-6 md:p-10 lg:p-12 relative overflow-hidden shadow-2xl border border-border/50">
                 {/* Background Texture/Pattern */}
                 <div className="absolute inset-0 opacity-5 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, currentColor 1px, transparent 0)', backgroundSize: '40px 40px' }} />
 
-                <div className="relative z-10 flex flex-col lg:flex-row gap-16 justify-between">
+                <div className="relative z-10 flex flex-col lg:flex-row gap-8 lg:gap-16 justify-between">
 
                     {/* Info Side */}
-                    <div className="lg:w-1/2 flex flex-col gap-8">
+                    <div className="lg:w-1/2 flex flex-col gap-6 lg:gap-8">
                         <div>
-                            <h2 className="contact-anim font-serif-drama text-4xl md:text-6xl text-primary mb-4">
+                            <h2 className="contact-anim font-serif-drama text-4xl md:text-5xl lg:text-6xl text-primary mb-4">
                                 Volte a Sorrir.
                             </h2>
                             <p className="contact-anim font-sans-outfit text-foreground/80 text-lg">
@@ -47,7 +47,7 @@ export const Contact = () => {
                             </p>
                         </div>
 
-                        <div className="contact-anim flex flex-col gap-6 mt-4 w-full h-full min-h-[250px] rounded-2xl overflow-hidden shadow-lg border border-cream/10 relative">
+                        <div className="contact-anim flex flex-col gap-6 mt-2 w-full h-full min-h-[200px] lg:min-h-[250px] rounded-2xl overflow-hidden shadow-lg border border-border/10 relative">
                             {/* Google Maps iframe */}
                             <iframe
                                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d117036.78440029519!2d-46.47161821434969!3d-23.551821896792612!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce66fee7ce4bc3%3A0xe138bb92fa68ec2e!2sGuaianases%2C%20S%C3%A3o%20Paulo%20-%20State%20of%20S%C3%A3o%20Paulo!5e0!3m2!1sen!2sbr!4v1715015383562!5m2!1sen!2sbr"
@@ -64,7 +64,7 @@ export const Contact = () => {
 
                     {/* Form / CTA Side */}
                     <div className="lg:w-1/2 flex items-center justify-center lg:justify-end">
-                        <div className="contact-anim bg-background text-foreground rounded-[2rem] p-8 md:p-10 w-full max-w-md shadow-xl flex flex-col gap-6 shadow-black/20">
+                        <div className="contact-anim bg-background text-foreground rounded-[2rem] p-6 lg:p-8 w-full max-w-md shadow-xl flex flex-col gap-6 shadow-black/20">
                             <div className="text-center">
                                 <h3 className="font-sans-bold text-2xl mb-2">Pré-agendamento</h3>
                                 <p className="font-sans-outfit text-sm text-foreground/70">

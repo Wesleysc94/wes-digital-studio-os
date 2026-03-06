@@ -7,15 +7,11 @@ gsap.registerPlugin(ScrollTrigger);
 
 const TreatmentCard = ({ title, description, image, delay, link }: { title: string, description: string, image: string, delay: number, link: string }) => {
     return (
-        <Link to={link} className="treatment-card block relative h-[400px] w-full rounded-[2rem] bg-primary/20 shadow-xl group cursor-pointer border border-border/10">
-            {/* 1. MÁSCARA CLIPPING (ISOLADA) - Mantém a forma redonda fixa usando hack Apple GPU */}
-            <div className="absolute inset-0 w-full h-full rounded-[2rem] overflow-hidden" style={{ transform: 'translate3d(0, 0, 0)', WebkitMaskImage: '-webkit-radial-gradient(white, black)' }}>
-                {/* 2. O ELEMENTO QUE AUMENTA (SCALING) - Ele cresce, mas a máscara o corta. */}
-                <div
-                    className="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] group-hover:scale-110 opacity-60 mix-blend-overlay will-change-transform"
-                    style={{ backgroundImage: `url(${image})` }}
-                />
-            </div>
+        <Link to={link} className="treatment-card block relative h-[400px] w-full rounded-[2rem] overflow-hidden bg-primary/20 shadow-xl group cursor-pointer border border-border/10 isolate">
+            <div
+                className="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] md:group-hover:scale-110 opacity-60 mix-blend-overlay"
+                style={{ backgroundImage: `url(${image})` }}
+            />
             {/* Glassmorphism Solid Base & Gradient Overlay */}
             <div className="absolute inset-0 bg-dark/80 backdrop-blur-[2px] opacity-60 transition-opacity duration-700 group-hover:opacity-80" />
             <div className="absolute inset-0 bg-gradient-to-t from-dark via-dark/50 to-transparent opacity-90" />
