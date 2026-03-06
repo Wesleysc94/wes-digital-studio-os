@@ -100,26 +100,6 @@ export const Reviews = () => {
                             A Arte de Transformar<br className="hidden md:block" /> Vidas e Sorrisos.
                         </h2>
                     </div>
-
-                    {/* Navigation Controls */}
-                    <div className="flex items-center gap-4 shrink-0">
-                        <button
-                            onClick={prevSlide}
-                            disabled={isAnimating}
-                            className="w-14 h-14 rounded-full border border-white/10 flex items-center justify-center text-cream hover:bg-white/5 hover:border-[#FBBF24]/50 transition-all duration-300 disabled:opacity-50 group hover:shadow-[0_0_15px_rgba(251,191,36,0.15)]"
-                            aria-label="Depoimento Anterior"
-                        >
-                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="group-hover:-translate-x-1 transition-transform"><path d="m15 18-6-6 6-6" /></svg>
-                        </button>
-                        <button
-                            onClick={nextSlide}
-                            disabled={isAnimating}
-                            className="w-14 h-14 rounded-full border border-white/10 flex items-center justify-center text-cream hover:bg-white/5 hover:border-[#FBBF24]/50 transition-all duration-300 disabled:opacity-50 group hover:shadow-[0_0_15px_rgba(251,191,36,0.15)]"
-                            aria-label="Próximo Depoimento"
-                        >
-                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="group-hover:translate-x-1 transition-transform"><path d="m9 18 6-6-6-6" /></svg>
-                        </button>
-                    </div>
                 </div>
 
                 {/* Carousel Container */}
@@ -174,9 +154,9 @@ export const Reviews = () => {
                     })}
                 </div>
 
-                {/* Stars and Reviews count minimal badge at the bottom */}
-                <div className="mt-16 pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4">
-                    <div className="flex items-center gap-2 bg-white/5 border border-white/10 px-4 py-2 rounded-full backdrop-blur-sm self-start sm:self-auto">
+                <div className="mt-16 pt-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-6">
+                    {/* Stars and Reviews count */}
+                    <div className="flex items-center gap-2 bg-white/5 border border-white/10 px-4 py-2 rounded-full backdrop-blur-sm self-center md:self-auto">
                         <div className="flex gap-1">
                             {[1, 2, 3, 4, 5].map((star) => (
                                 <svg key={star} xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="#FBBF24" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
@@ -185,24 +165,47 @@ export const Reviews = () => {
                         <span className="text-xs text-cream/80 font-medium tracking-wide border-l border-white/20 pl-2 ml-1">5.0 Média de Pacientes</span>
                     </div>
 
-                    {/* Simple Pagination Dots */}
-                    <div className="flex gap-2">
-                        {REVIEWS.map((_, idx) => (
+                    {/* Navigation Controls & Pagination */}
+                    <div className="flex flex-col sm:flex-row items-center gap-6">
+                        {/* Simple Pagination Dots */}
+                        <div className="flex gap-2 order-2 sm:order-1">
+                            {REVIEWS.map((_, idx) => (
+                                <button
+                                    key={idx}
+                                    aria-label={`Ir para avaliação ${idx + 1}`}
+                                    onClick={() => {
+                                        if (isAnimating || activeIndex === idx) return;
+                                        setDirection(idx > activeIndex ? 'right' : 'left');
+                                        setIsAnimating(true);
+                                        setTimeout(() => {
+                                            setActiveIndex(idx);
+                                            setTimeout(() => setIsAnimating(false), 50);
+                                        }, 300);
+                                    }}
+                                    className={`h-1.5 rounded-full transition-all duration-300 ${activeIndex === idx ? 'w-6 bg-[#FBBF24]' : 'w-1.5 bg-white/20 hover:bg-white/40'}`}
+                                />
+                            ))}
+                        </div>
+
+                        {/* Navigation Arrows */}
+                        <div className="flex items-center gap-3 order-1 sm:order-2 shrink-0">
                             <button
-                                key={idx}
-                                aria-label={`Ir para avaliação ${idx + 1}`}
-                                onClick={() => {
-                                    if (isAnimating || activeIndex === idx) return;
-                                    setDirection(idx > activeIndex ? 'right' : 'left');
-                                    setIsAnimating(true);
-                                    setTimeout(() => {
-                                        setActiveIndex(idx);
-                                        setTimeout(() => setIsAnimating(false), 50);
-                                    }, 300);
-                                }}
-                                className={`h-1.5 rounded-full transition-all duration-300 ${activeIndex === idx ? 'w-6 bg-[#FBBF24]' : 'w-1.5 bg-white/20 hover:bg-white/40'}`}
-                            />
-                        ))}
+                                onClick={prevSlide}
+                                disabled={isAnimating}
+                                className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-cream hover:bg-white/5 hover:border-[#FBBF24]/50 transition-all duration-300 disabled:opacity-50 group hover:shadow-[0_0_15px_rgba(251,191,36,0.15)] bg-dark/50"
+                                aria-label="Depoimento Anterior"
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="group-hover:-translate-x-1 transition-transform"><path d="m15 18-6-6 6-6" /></svg>
+                            </button>
+                            <button
+                                onClick={nextSlide}
+                                disabled={isAnimating}
+                                className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-cream hover:bg-white/5 hover:border-[#FBBF24]/50 transition-all duration-300 disabled:opacity-50 group hover:shadow-[0_0_15px_rgba(251,191,36,0.15)] bg-dark/50"
+                                aria-label="Próximo Depoimento"
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="group-hover:translate-x-1 transition-transform"><path d="m9 18 6-6-6-6" /></svg>
+                            </button>
+                        </div>
                     </div>
                 </div>
 
