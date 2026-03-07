@@ -1,7 +1,7 @@
 # Aura Odonto Premium - Front-End Architecture
 
 <div align="center">
-  <img src="public/mockups/versao azul desktop e mobile.PNG" alt="Aura Odonto Preview" width="600"/>
+  <img src="public/mockups/versao_dark_mobil_e_desktop.PNG" alt="Aura Odonto Preview" width="600"/>
   
   <p><strong>Next-Generation Dental Clinic Interface & High-Conversion Booking Flow</strong></p>
 </div>
@@ -55,11 +55,10 @@ To run the Aura Odonto application in a development environment:
 
 ## 📬 Contact
 
-Engineered by Wesley Silva.
+Engineered by Wesley Carvalho.
 Available for Lead Front-End and Full-Stack Engineering roles.
 
-*   **LinkedIn:** [Wesley Silva](#)
-*   **Workana:** [Wesley Silva](#)
+*   **Workana:** [Wesley Carvalho](https://www.workana.com/freelancer/a6545ec7d8aa1d83db959227a5fa29b4)
 
 ---
 <div align="center">
