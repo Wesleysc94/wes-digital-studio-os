@@ -13,7 +13,7 @@ const items = [
 const Differentials = () => {
   return (
     <section className="relative bg-primary py-20 md:py-28 overflow-hidden">
-      {/* Decorative */}
+      {/* Semantic Background Elements */}
       <div className="absolute top-0 right-0 w-96 h-96 bg-gold/5 rounded-full blur-3xl" />
       <div className="absolute bottom-0 left-0 w-72 h-72 bg-primary-foreground/5 rounded-full blur-3xl" />
 

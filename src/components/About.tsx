@@ -16,7 +16,7 @@ const About = () => {
 
       <div className="container relative z-10">
         <div className="grid gap-12 lg:grid-cols-2 lg:gap-16 items-center">
-          {/* Images */}
+          {/* Image Composition */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -31,7 +31,7 @@ const About = () => {
             </div>
           </motion.div>
 
-          {/* Text */}
+          {/* Content Block */}
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}

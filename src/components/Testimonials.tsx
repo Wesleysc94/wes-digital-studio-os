@@ -41,7 +41,7 @@ const Testimonials = () => {
     });
   }, []);
 
-  // Reset timer whenever user manually changes slide
+  /* Reset auto-advance timer on manual interaction */
   const [lastInteraction, setLastInteraction] = useState(Date.now());
 
   const manualPaginate = useCallback((newDir: number) => {
@@ -56,7 +56,7 @@ const Testimonials = () => {
 
   useEffect(() => {
     const timer = setInterval(() => {
-      // Only auto-advance if no interaction in the last 12 seconds
+      /* Auto-advance threshold */
       if (Date.now() - lastInteraction > 12000) {
         paginate(1);
       }
@@ -94,7 +94,7 @@ const Testimonials = () => {
           </div>
         </motion.div>
 
-        {/* Carousel */}
+        {/* Carousel Viewport */}
         <div className="relative mx-auto mt-16 max-w-2xl">
           <div className="relative min-h-[280px] md:min-h-[240px]">
             <AnimatePresence mode="wait" custom={direction}>
@@ -122,7 +122,7 @@ const Testimonials = () => {
             </AnimatePresence>
           </div>
 
-          {/* Navigation */}
+          {/* Navigation Controls */}
           <div className="relative z-10 mt-8 flex items-center justify-center gap-5">
             <button
               onClick={() => manualPaginate(-1)}
@@ -131,15 +131,14 @@ const Testimonials = () => {
             >
               <ChevronLeft className="h-5 w-5" />
             </button>
-            
+
             <div className="flex gap-2">
               {testimonials.map((_, i) => (
                 <button
                   key={i}
                   onClick={() => manualGoTo(i, i > current ? 1 : -1)}
-                  className={`h-2.5 rounded-full transition-all duration-300 cursor-pointer ${
-                    i === current ? "w-8 bg-primary" : "w-2.5 bg-border hover:bg-primary/40"
-                  }`}
+                  className={`h-2.5 rounded-full transition-all duration-300 cursor-pointer ${i === current ? "w-8 bg-primary" : "w-2.5 bg-border hover:bg-primary/40"
+                    }`}
                   aria-label={`Depoimento ${i + 1}`}
                 />
               ))}

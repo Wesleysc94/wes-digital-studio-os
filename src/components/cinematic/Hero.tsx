@@ -10,7 +10,7 @@ export const Hero = () => {
 
     useEffect(() => {
         const ctx = gsap.context(() => {
-            // Fade out split text initially
+            /* Initial Stagger Animation */
             gsap.fromTo(
                 '.hero-stagger',
                 {
@@ -23,7 +23,7 @@ export const Hero = () => {
                     duration: 0.8,
                     stagger: 0.1,
                     ease: 'power3.out',
-                    delay: 0.1, // Small delay so the page loads first
+                    delay: 0.1, /* Initial mounting delay */
                 }
             );
 
@@ -37,9 +37,9 @@ export const Hero = () => {
             ref={containerRef}
             className="relative w-full min-h-[100dvh] flex flex-col items-center justify-center text-center px-4 md:px-16 overflow-hidden pt-32 pb-16 md:py-0"
         >
-            {/* Background Image with Parallax & Soft Vignette Concept */}
+            {/* Ambient Hero Background */}
             <div className="absolute inset-0 z-0 bg-dark overflow-hidden">
-                {/* Imagem Premium com Efeito Breathe Constante (CSS + GSAP) */}
+                {/* Core Hero Image with CSS Breathe Animation */}
                 <div
                     ref={bgRef}
                     className="absolute inset-0 bg-cover bg-center bg-no-repeat pointer-events-none scale-110"
@@ -50,23 +50,23 @@ export const Hero = () => {
                     }}
                 />
 
-                {/* Overlay Escuro para o Mobile (esconde a logo da imagem atrás do texto) */}
+                {/* Mobile Contrast Overlay */}
                 <div className="absolute inset-0 bg-dark/70 md:bg-dark/40" />
 
-                {/* Máscara radial focada apenas na região de leitura para dar respiro */}
+                {/* Radial reading zone mask */}
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(26,26,26,0.8)_0%,rgba(26,26,26,0)_80%)] pointer-events-none" />
 
-                {/* Efeito Fade out conectando a imagem escura ao fundo natural da próxima seção */}
+                {/* Section Transition Gradient */}
                 <div
                     className="absolute bottom-[-2px] left-0 w-full h-32 pointer-events-none z-10"
                     style={{ background: 'linear-gradient(to top, hsl(var(--background)) 5%, transparent 100%)' }}
                 />
             </div>
 
-            {/* Content wrapper - Centered */}
+            {/* Content Layer */}
             <div className="relative z-10 w-full max-w-4xl text-cream flex flex-col items-center gap-4 mt-8 md:mt-16 mb-4 md:mb-0 text-center">
 
-                {/* Typographic Pattern */}
+                {/* Main Typography Group */}
                 <div className="flex flex-col items-center relative z-20">
                     <h1 className="flex flex-col gap-1 md:gap-2 drop-shadow-[0_10px_30px_rgba(0,0,0,0.8)] text-center">
                         <span className="hero-stagger font-sans-bold text-xs sm:text-sm md:text-base lg:text-lg text-accent uppercase tracking-[0.3em] font-semibold mb-2">
@@ -108,7 +108,7 @@ export const Hero = () => {
                     </button>
                 </div>
 
-                {/* Social Proof Bar */}
+                {/* Social Proof Indicators */}
                 <div className="hero-stagger mt-10 grid grid-cols-3 gap-2 sm:gap-8 border-y border-white/10 py-5 w-full max-w-2xl bg-dark/20 backdrop-blur-sm sm:rounded-3xl sm:border-x px-2 mx-auto transition-all duration-500 hover:bg-dark/40 hover:backdrop-blur-md hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(34,211,238,0.15)] hover:border-white/20 cursor-default group">
                     <div className="flex flex-col items-center transition-transform duration-300 group-hover:-translate-y-1">
                         <div className="flex items-center gap-1 text-accent mb-1 drop-shadow-md">
@@ -128,7 +128,7 @@ export const Hero = () => {
                 </div>
             </div>
 
-            {/* Scroll Indicator */}
+            {/* Scroll CTA */}
             <div className="hero-stagger mt-8 mb-8 md:absolute md:bottom-10 md:mb-0 left-0 w-full z-10 flex justify-center pointer-events-none">
                 <div
                     className="flex flex-col items-center gap-2 pointer-events-auto cursor-pointer group bg-dark/40 backdrop-blur-md px-6 py-3 rounded-full border border-white/10 hover:bg-dark/60 transition-all hover:scale-105 shadow-[0_0_20px_rgba(0,0,0,0.3)] animate-pulse"

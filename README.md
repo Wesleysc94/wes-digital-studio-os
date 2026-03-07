@@ -1,73 +1,67 @@
-# Welcome to your Lovable project
+# Aura Odonto Premium - Front-End Architecture
 
-## Project info
+<div align="center">
+  <img src="public/mockups/versao azul desktop e mobile.PNG" alt="Aura Odonto Preview" width="600"/>
+  
+  <p><strong>Next-Generation Dental Clinic Interface & High-Conversion Booking Flow</strong></p>
+</div>
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+## 💎 About the Project
 
-## How can I edit this code?
+Aura Odonto Premium is a highly sophisticated, high-performance web application designed for a premium dental clinic based in São Paulo. Moving away from traditional, slow monolithic platforms (like WordPress), this application uses modern Front-End architecture to deliver an instantaneous, app-like experience. 
 
-There are several ways of editing your application.
+The primary goal of this system is **High-Ticket Patient Conversion**, leveraging neuromarketing principles, extreme performance, and fluid micro-interactions to build trust and authority in milliseconds.
 
-**Use Lovable**
+## 🚀 Technology Stack
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+*   **Core:** React 18, TypeScript, Vite (Lightning-fast HMR and optimized builds)
+*   **Styling Engine:** Tailwind CSS & Shadcn/UI (Consistent, scalable design system)
+*   **Cinematic Animations:** GSAP (GreenSock) & Framer Motion (Hardware-accelerated stagger effects, scroll triggers, parallax)
+*   **State Management & Data:** React Query (for complex data fetching, though mostly static for extreme speed)
+*   **Routing:** React Router DOM (with route-based AnimatePresence transitions)
+*   **Sliders:** Swiper JS (optimized for seamless, touch-friendly image carousels)
 
-Changes made via Lovable will be committed automatically to this repo.
+## ⚡ Engineering Highlights
 
-**Use your preferred IDE**
+*   **Component-Driven Architecture:** The UI is strictly broken down into highly reusable, scalable `.tsx` components (Hero, Testimonials, Benefits, etc.), following modern composition patterns.
+*   **Zero-Jank Animations:** The Hero section utilizes native CSS `breathe` animations alongside GSAP `ScrollTrigger` and Framer `motion` variants. Animations are hardware-accelerated, targeting only `transform` and `opacity` to maintain stable 60FPS.
+*   **Advanced CSS Masking & Gradients:** Implementation of complex `radial-gradient` masks and glassmorphism (backdrop-blur) effects tailored for performance, mimicking native iOS/macOS aesthetics without heavy image payloads.
+*   **Mobile-First Precision:** Layouts and touch targets are specifically engineered for maximum conversion on mobile devices, where 80%+ of clinic traffic originates.
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+## 💻 Running Locally
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+To run the Aura Odonto application in a development environment:
 
-Follow these steps:
+1.  **Clone the repository:**
+    ```bash
+    git clone https://github.com/Wesleysc94/auraodontopremium.git
+    cd auraodontopremium
+    ```
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+2.  **Install dependencies:**
+    ```bash
+    npm install
+    ```
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+3.  **Start the Vite development server:**
+    ```bash
+    npm run dev
+    ```
 
-# Step 3: Install the necessary dependencies.
-npm i
+4.  **Production build:**
+    ```bash
+    npm run build
+    ```
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+## 📬 Contact
 
-**Edit a file directly in GitHub**
+Engineered by Wesley Silva.
+Available for Lead Front-End and Full-Stack Engineering roles.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+*   **LinkedIn:** [Wesley Silva](#)
+*   **Workana:** [Wesley Silva](#)
 
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+---
+<div align="center">
+  <sub>Focusing on performance, design patterns, and conversion architecture.</sub>
+</div>

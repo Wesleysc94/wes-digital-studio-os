@@ -53,7 +53,7 @@ const Treatments = () => {
           ))}
         </div>
 
-        {/* CTA after treatments */}
+        {/* Lead Generation CTA */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -79,7 +79,7 @@ const Treatments = () => {
           </motion.a>
         </motion.div>
 
-        {/* SEO text */}
+        {/* Local SEO Footer Marker */}
         <p className="mt-12 mx-auto max-w-2xl text-center font-sans text-sm text-muted-foreground/70">
           Clínica odontológica na Av. Paulista especializada em implantes, ortodontia e estética dental.
         </p>
