@@ -1,7 +1,7 @@
-import { ApiRequest, ApiResponse, Lead } from "../_lib/contracts";
-import { createFollowUpEvent, getIntegrationStatus, isGoogleSheetsConfigured, withRuntimeError } from "../_lib/google";
-import { methodNotAllowed, setJsonHeaders } from "../_lib/responses";
-import { appendLeadToSheet } from "../_lib/sheets";
+import { ApiRequest, ApiResponse, Lead } from "../_lib/contracts.js";
+import { createFollowUpEvent, getIntegrationStatus, isGoogleSheetsConfigured, withRuntimeError } from "../_lib/google.js";
+import { methodNotAllowed, setJsonHeaders } from "../_lib/responses.js";
+import { appendLeadToSheet } from "../_lib/sheets.js";
 
 function isLeadBody(body: unknown): body is Omit<Lead, "id" | "createdAt"> {
   if (!body || typeof body !== "object") {

@@ -1,8 +1,8 @@
-import { ApiRequest, ApiResponse, BootstrapPayload } from "../_lib/contracts";
-import { getIntegrationStatus, isGoogleSheetsConfigured, withRuntimeError } from "../_lib/google";
-import { mockLeads, mockProposals, mockTasks } from "../_lib/mock-data";
-import { methodNotAllowed, setJsonHeaders } from "../_lib/responses";
-import { readLeadsFromSheet, readProposalsFromSheet, readTasksFromSheet } from "../_lib/sheets";
+import { ApiRequest, ApiResponse, BootstrapPayload } from "../_lib/contracts.js";
+import { getIntegrationStatus, isGoogleSheetsConfigured, withRuntimeError } from "../_lib/google.js";
+import { mockLeads, mockProposals, mockTasks } from "../_lib/mock-data.js";
+import { methodNotAllowed, setJsonHeaders } from "../_lib/responses.js";
+import { readLeadsFromSheet, readProposalsFromSheet, readTasksFromSheet } from "../_lib/sheets.js";
 
 export default async function handler(request: ApiRequest, response: ApiResponse) {
   setJsonHeaders(response);

@@ -1,4 +1,4 @@
-import { ApiResponse } from "./contracts";
+import { ApiResponse } from "./contracts.js";
 
 export function setJsonHeaders(response: ApiResponse) {
   response.setHeader("Content-Type", "application/json; charset=utf-8");

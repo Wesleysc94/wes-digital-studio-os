@@ -5,8 +5,8 @@ import {
   Proposal,
   TASKS_HEADERS,
   Task,
-} from "./contracts";
-import { getSheetsClient, getSpreadsheetId } from "./google";
+} from "./contracts.js";
+import { getSheetsClient, getSpreadsheetId } from "./google.js";
 
 const SHEET_NAMES = {
   leads: "Leads",

@@ -1,7 +1,7 @@
-import { ApiRequest, ApiResponse, Proposal } from "../_lib/contracts";
-import { getIntegrationStatus, isGoogleSheetsConfigured, withRuntimeError } from "../_lib/google";
-import { methodNotAllowed, setJsonHeaders } from "../_lib/responses";
-import { appendProposalToSheet } from "../_lib/sheets";
+import { ApiRequest, ApiResponse, Proposal } from "../_lib/contracts.js";
+import { getIntegrationStatus, isGoogleSheetsConfigured, withRuntimeError } from "../_lib/google.js";
+import { methodNotAllowed, setJsonHeaders } from "../_lib/responses.js";
+import { appendProposalToSheet } from "../_lib/sheets.js";
 
 function isProposalBody(body: unknown): body is Omit<Proposal, "id" | "createdAt"> {
   if (!body || typeof body !== "object") {

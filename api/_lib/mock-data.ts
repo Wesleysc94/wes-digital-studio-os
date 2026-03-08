@@ -1,4 +1,4 @@
-import { Lead, Proposal, Task } from "./contracts";
+import { Lead, Proposal, Task } from "./contracts.js";
 
 export const mockLeads: Lead[] = [
   {

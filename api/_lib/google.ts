@@ -1,6 +1,6 @@
 import { google } from "googleapis";
 
-import { IntegrationStatus, Lead } from "./contracts";
+import { IntegrationStatus, Lead } from "./contracts.js";
 
 function getEnv() {
   const privateKey = process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, "\n");

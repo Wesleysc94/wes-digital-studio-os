@@ -1,7 +1,7 @@
-import { ApiRequest, ApiResponse, Task } from "../_lib/contracts";
-import { getIntegrationStatus, isGoogleSheetsConfigured, withRuntimeError } from "../_lib/google";
-import { methodNotAllowed, setJsonHeaders } from "../_lib/responses";
-import { appendTaskToSheet } from "../_lib/sheets";
+import { ApiRequest, ApiResponse, Task } from "../_lib/contracts.js";
+import { getIntegrationStatus, isGoogleSheetsConfigured, withRuntimeError } from "../_lib/google.js";
+import { methodNotAllowed, setJsonHeaders } from "../_lib/responses.js";
+import { appendTaskToSheet } from "../_lib/sheets.js";
 
 function isTaskBody(body: unknown): body is Omit<Task, "id" | "createdAt"> {
   if (!body || typeof body !== "object") {
