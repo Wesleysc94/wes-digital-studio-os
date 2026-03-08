@@ -195,43 +195,45 @@ export function CrmPage() {
           <CardDescription>Visao consolidada dos leads e clientes salvos localmente nesta primeira fase.</CardDescription>
         </CardHeader>
         <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Lead</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Proximo contato</TableHead>
-                <TableHead>Valor</TableHead>
-                <TableHead>Etiquetas</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {leads.map((lead) => (
-                <TableRow key={lead.id}>
-                  <TableCell>
-                    <div>
-                      <p className="font-medium text-foreground">{lead.name}</p>
-                      <p className="text-sm text-muted-foreground">{lead.company}</p>
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <Badge className={getLeadStatusClasses(lead.status)}>{lead.status}</Badge>
-                  </TableCell>
-                  <TableCell>{formatShortDate(lead.nextContact)}</TableCell>
-                  <TableCell>{formatCurrency(lead.proposedValue)}</TableCell>
-                  <TableCell>
-                    <div className="flex flex-wrap gap-2">
-                      {lead.tags.map((tag) => (
-                        <Badge key={tag} className="border-border/60 bg-card/70 text-foreground">
-                          {tag}
-                        </Badge>
-                      ))}
-                    </div>
-                  </TableCell>
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Lead</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Proximo contato</TableHead>
+                  <TableHead>Valor</TableHead>
+                  <TableHead>Etiquetas</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+              </TableHeader>
+              <TableBody>
+                {leads.map((lead) => (
+                  <TableRow key={lead.id}>
+                    <TableCell>
+                      <div>
+                        <p className="font-medium text-foreground">{lead.name}</p>
+                        <p className="text-sm text-muted-foreground">{lead.company}</p>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <Badge className={getLeadStatusClasses(lead.status)}>{lead.status}</Badge>
+                    </TableCell>
+                    <TableCell>{formatShortDate(lead.nextContact)}</TableCell>
+                    <TableCell>{formatCurrency(lead.proposedValue)}</TableCell>
+                    <TableCell>
+                      <div className="flex flex-wrap gap-2">
+                        {lead.tags.map((tag) => (
+                          <Badge key={tag} className="border-border/60 bg-card/70 text-foreground">
+                            {tag}
+                          </Badge>
+                        ))}
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
         </CardContent>
       </Card>
     </div>

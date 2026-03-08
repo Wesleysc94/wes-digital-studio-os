@@ -211,37 +211,39 @@ export function BudgetPage() {
             <CardDescription>Registro das propostas geradas nesta instancia inicial do sistema.</CardDescription>
           </CardHeader>
           <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Cliente</TableHead>
-                  <TableHead>Plano</TableHead>
-                  <TableHead>Implantacao</TableHead>
-                  <TableHead>Recorrencia</TableHead>
-                  <TableHead>Status</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {proposals.map((proposal) => (
-                  <TableRow key={proposal.id}>
-                    <TableCell>
-                      <div>
-                        <p className="font-medium text-foreground">{proposal.clientName}</p>
-                        <p className="text-sm text-muted-foreground">{proposal.company}</p>
-                      </div>
-                    </TableCell>
-                    <TableCell>{PROJECT_PLANS[proposal.projectType].label}</TableCell>
-                    <TableCell>{formatCurrency(proposal.implementationTotal)}</TableCell>
-                    <TableCell>{formatCurrency(proposal.monthlyRecurring)}</TableCell>
-                    <TableCell>
-                      <Badge className={getProposalStatusClasses(proposal.status)}>
-                        {proposal.status === "accepted" ? "Aceita" : proposal.status === "sent" ? "Enviada" : "Rascunho"}
-                      </Badge>
-                    </TableCell>
+            <div className="overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Cliente</TableHead>
+                    <TableHead>Plano</TableHead>
+                    <TableHead>Implantacao</TableHead>
+                    <TableHead>Recorrencia</TableHead>
+                    <TableHead>Status</TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {proposals.map((proposal) => (
+                    <TableRow key={proposal.id}>
+                      <TableCell>
+                        <div>
+                          <p className="font-medium text-foreground">{proposal.clientName}</p>
+                          <p className="text-sm text-muted-foreground">{proposal.company}</p>
+                        </div>
+                      </TableCell>
+                      <TableCell>{PROJECT_PLANS[proposal.projectType].label}</TableCell>
+                      <TableCell>{formatCurrency(proposal.implementationTotal)}</TableCell>
+                      <TableCell>{formatCurrency(proposal.monthlyRecurring)}</TableCell>
+                      <TableCell>
+                        <Badge className={getProposalStatusClasses(proposal.status)}>
+                          {proposal.status === "accepted" ? "Aceita" : proposal.status === "sent" ? "Enviada" : "Rascunho"}
+                        </Badge>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
           </CardContent>
         </Card>
       </div>
