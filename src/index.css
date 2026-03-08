@@ -4,97 +4,132 @@
 
 @layer base {
   :root {
-    /* Preset C - Clinical Premium (Odontologia) */
-    /* Navy Blue Escuro (Primary - Autoridade e Confiança Médica) */
-    --primary: 222 47% 11%;
-    /* #0F172A */
-    --primary-foreground: 210 40% 98%;
-    /* Branco Neve */
-
-    /* Dental Cyan / Soft Teal (Accent - Saúde, Limpeza, Modernidade) */
-    --accent: 189 94% 43%;
-    /* #06B6D4 */
-    --accent-foreground: 222 47% 11%;
-    /* Navy */
-
-    /* Background (Branco Neve / Clean) */
-    --background: 0 0% 100%;
-    /* #FFFFFF */
-    --foreground: 222 47% 11%;
-    /* Texto Navy */
-
-    /* Cores Nomeadas Específicas do Projeto */
-    --cream: 210 40% 98%;
-    /* Substituindo a cor creme por Branco Frio */
-    --dark: 222 47% 11%;
-    /* Navy */
-
-    /* Outros tokens shadcn que podem ser usados */
-    --card: 0 0% 100%;
-    --card-foreground: 222 47% 11%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
-
-    --secondary: 214 32% 91%;
-    --secondary-foreground: 222 47% 11%;
-
-    --muted: 214 32% 91%;
-    /* Slate 200 */
-    --muted-foreground: 215 16% 47%;
-    /* Slate 500 */
-
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 214 32% 91%;
-    --input: 214 32% 91%;
-    --ring: 189 94% 43%;
-
-    --radius: 2rem;
+    --background: 222 31% 8%;
+    --foreground: 210 40% 96%;
+    --primary: 210 40% 96%;
+    --primary-foreground: 222 31% 8%;
+    --accent: 191 91% 58%;
+    --accent-foreground: 222 31% 10%;
+    --cream: 210 40% 96%;
+    --dark: 222 31% 6%;
+    --card: 222 27% 11%;
+    --card-foreground: 210 40% 96%;
+    --popover: 222 27% 11%;
+    --popover-foreground: 210 40% 96%;
+    --secondary: 217 20% 17%;
+    --secondary-foreground: 210 40% 96%;
+    --muted: 217 20% 17%;
+    --muted-foreground: 215 20% 72%;
+    --destructive: 0 72% 56%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 218 21% 20%;
+    --input: 218 21% 20%;
+    --ring: 191 91% 58%;
+    --sidebar-background: 222 30% 10%;
+    --sidebar-foreground: 210 40% 96%;
+    --sidebar-primary: 191 91% 58%;
+    --sidebar-primary-foreground: 222 31% 8%;
+    --sidebar-accent: 217 20% 16%;
+    --sidebar-accent-foreground: 210 40% 96%;
+    --sidebar-border: 218 21% 20%;
+    --sidebar-ring: 191 91% 58%;
+    --radius: 1.5rem;
   }
 
-  [data-theme="luxury"] {
-    /* Fundo Global (Grafite Profundo) */
-    --background: 240 10% 6%;
-    /* Fundo geral claro -> Grafite */
-    --foreground: 0 0% 98%;
-    /* Texto geral -> Off-white */
+  [data-theme="light"] {
+    --background: 210 33% 98%;
+    --foreground: 222 47% 11%;
+    --primary: 222 47% 11%;
+    --primary-foreground: 210 33% 98%;
+    --accent: 196 89% 48%;
+    --accent-foreground: 0 0% 100%;
+    --cream: 210 33% 98%;
+    --dark: 222 47% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+    --secondary: 210 30% 94%;
+    --secondary-foreground: 222 47% 11%;
+    --muted: 210 30% 94%;
+    --muted-foreground: 215 16% 40%;
+    --destructive: 0 72% 56%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 214 22% 88%;
+    --input: 214 22% 88%;
+    --ring: 196 89% 48%;
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 222 47% 11%;
+    --sidebar-primary: 196 89% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 210 30% 94%;
+    --sidebar-accent-foreground: 222 47% 11%;
+    --sidebar-border: 214 22% 88%;
+    --sidebar-ring: 196 89% 48%;
+  }
 
-    /* Primary (Usado para os Textos Principais e Títulos em text-primary) */
-    /* No fundo escuro, o text-primary precisa ser CLARO */
-    --primary: 0 0% 98%;
-    /* Off-white puro */
-    --primary-foreground: 240 10% 6%;
-    /* Texto escuro dentro do bg-primary cheio */
+  [data-theme="ruby"] {
+    --background: 346 28% 8%;
+    --foreground: 0 0% 97%;
+    --primary: 0 0% 97%;
+    --primary-foreground: 346 28% 8%;
+    --accent: 343 75% 60%;
+    --accent-foreground: 346 28% 10%;
+    --cream: 0 0% 97%;
+    --dark: 346 30% 6%;
+    --card: 344 22% 11%;
+    --card-foreground: 0 0% 97%;
+    --popover: 344 22% 11%;
+    --popover-foreground: 0 0% 97%;
+    --secondary: 344 18% 17%;
+    --secondary-foreground: 0 0% 97%;
+    --muted: 344 18% 17%;
+    --muted-foreground: 343 14% 74%;
+    --destructive: 0 72% 56%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 344 18% 20%;
+    --input: 344 18% 20%;
+    --ring: 343 75% 60%;
+    --sidebar-background: 346 24% 10%;
+    --sidebar-foreground: 0 0% 97%;
+    --sidebar-primary: 343 75% 60%;
+    --sidebar-primary-foreground: 346 28% 10%;
+    --sidebar-accent: 344 18% 16%;
+    --sidebar-accent-foreground: 0 0% 97%;
+    --sidebar-border: 344 18% 20%;
+    --sidebar-ring: 343 75% 60%;
+  }
 
-    /* Destaques (Dourado Metálico) */
-    --accent: 45 93% 47%;
-    /* #FBBF24 Dourado */
-    --accent-foreground: 240 10% 6%;
-
-    --cream: 0 0% 96%;
-    /* Off-white macio */
-    --dark: 240 10% 4%;
-    /* Quase preto absoluto (Usado no Hero/Footer) */
-
-    --card: 240 10% 8%;
-    /* Pouco mais claro para separar do dark */
-    --card-foreground: 0 0% 98%;
-
-    --popover: 240 10% 6%;
-    --popover-foreground: 0 0% 98%;
-
-    --secondary: 0 0% 15%;
-    --secondary-foreground: 0 0% 98%;
-
-    --muted: 0 0% 15%;
-    --muted-foreground: 0 0% 60%;
-
-    --border: 0 0% 20%;
-    --input: 0 0% 20%;
-    --ring: 45 93% 47%;
-    /* Dourado */
+  [data-theme="gold"] {
+    --background: 35 22% 8%;
+    --foreground: 36 33% 95%;
+    --primary: 36 33% 95%;
+    --primary-foreground: 35 22% 8%;
+    --accent: 38 92% 57%;
+    --accent-foreground: 30 18% 10%;
+    --cream: 36 33% 95%;
+    --dark: 35 22% 6%;
+    --card: 34 18% 12%;
+    --card-foreground: 36 33% 95%;
+    --popover: 34 18% 12%;
+    --popover-foreground: 36 33% 95%;
+    --secondary: 31 13% 18%;
+    --secondary-foreground: 36 33% 95%;
+    --muted: 31 13% 18%;
+    --muted-foreground: 35 20% 74%;
+    --destructive: 0 72% 56%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 31 13% 21%;
+    --input: 31 13% 21%;
+    --ring: 38 92% 57%;
+    --sidebar-background: 34 19% 10%;
+    --sidebar-foreground: 36 33% 95%;
+    --sidebar-primary: 38 92% 57%;
+    --sidebar-primary-foreground: 30 18% 10%;
+    --sidebar-accent: 31 13% 16%;
+    --sidebar-accent-foreground: 36 33% 95%;
+    --sidebar-border: 31 13% 21%;
+    --sidebar-ring: 38 92% 57%;
   }
 }
 
@@ -105,8 +140,8 @@
 
   html,
   body {
-    @apply bg-dark text-foreground antialiased selection:bg-accent selection:text-white;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    @apply bg-background text-foreground antialiased selection:bg-accent selection:text-accent-foreground;
+    font-family: "Inter", sans-serif;
   }
 
   h1,
@@ -115,30 +150,30 @@
   h4,
   h5,
   h6 {
-    @apply tracking-tighter;
+    font-family: "Playfair Display", serif;
+    @apply tracking-tight;
   }
 }
 
 @layer utilities {
   .font-sans-bold {
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: "Inter", sans-serif;
     font-weight: 700;
   }
 
   .font-sans-outfit {
-    font-family: 'Outfit', sans-serif;
+    font-family: "Outfit", sans-serif;
   }
 
   .font-serif-drama {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: "Playfair Display", serif;
     font-style: italic;
   }
 
   .font-mono-data {
-    font-family: 'IBM Plex Mono', monospace;
+    font-family: "IBM Plex Mono", monospace;
   }
 
-  /* Noise Overlay Class */
   .noise-overlay {
     position: fixed;
     inset: 0;
@@ -147,9 +182,21 @@
     opacity: 0.05;
     mix-blend-mode: multiply;
   }
+
+  .app-grid {
+    background-image:
+      linear-gradient(hsl(var(--border) / 0.22) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(var(--border) / 0.22) 1px, transparent 1px);
+    background-size: 32px 32px;
+    mask-image: radial-gradient(circle at center, black 45%, transparent 82%);
+  }
+
+  .glass-card {
+    @apply border border-border/60 bg-card/75 backdrop-blur-xl;
+    box-shadow: 0 24px 80px -42px hsl(var(--accent) / 0.5);
+  }
 }
 
-/* Base resets & globals for smooth interactions */
 html {
   scroll-behavior: smooth;
 }
@@ -158,9 +205,8 @@ body {
   overflow-x: hidden;
 }
 
-/* Hide scrollbar for cleaner look (optional but good for cinematic) */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 7px;
 }
 
 ::-webkit-scrollbar-track {
@@ -168,10 +214,10 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: hsl(var(--primary) / 0.3);
+  background: hsl(var(--accent) / 0.28);
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: hsl(var(--primary) / 0.6);
+  background: hsl(var(--accent) / 0.55);
 }

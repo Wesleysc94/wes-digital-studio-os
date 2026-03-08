@@ -1,0 +1,88 @@
+import { Lead, Proposal, Task } from "./contracts";
+
+export const mockLeads: Lead[] = [
+  {
+    id: "lead-1",
+    name: "Marina Costa",
+    company: "Costa Advogados",
+    segment: "Advocacia",
+    city: "Sao Paulo",
+    instagram: "@costa.adv",
+    website: "https://costaadv.com.br",
+    phone: "+55 11 99222-1001",
+    source: "Instagram",
+    status: "Proposta enviada",
+    proposedValue: 3200,
+    notes: "Quer migrar do WordPress para uma stack moderna e premium.",
+    nextContact: "2026-03-10",
+    tags: ["Quente", "Orcamento enviado"],
+    createdAt: "2026-03-05",
+  },
+  {
+    id: "lead-2",
+    name: "Felipe Rocha",
+    company: "Rocha Odontologia",
+    segment: "Odontologia",
+    city: "Campinas",
+    instagram: "@rochaodonto",
+    website: "",
+    phone: "+55 19 99111-4400",
+    source: "Indicacao",
+    status: "Em conversa",
+    proposedValue: 1800,
+    notes: "Precisa de agenda integrada e landing de conversao com visual premium.",
+    nextContact: "2026-03-09",
+    tags: ["Quente"],
+    createdAt: "2026-03-06",
+  },
+];
+
+export const mockProposals: Proposal[] = [
+  {
+    id: "proposal-1",
+    clientName: "Marina Costa",
+    company: "Costa Advogados",
+    projectType: "site-institucional",
+    extras: ["manutencao-mensal"],
+    implementationTotal: 1200,
+    monthlyRecurring: 97,
+    summary: "Site institucional premium com pages de servicos e captacao via WhatsApp.",
+    createdAt: "2026-03-05",
+    status: "sent",
+  },
+  {
+    id: "proposal-2",
+    clientName: "Julia Teles",
+    company: "Teles Imoveis",
+    projectType: "site-institucional",
+    extras: ["tema-adicional", "entrega-codigo", "manutencao-mensal"],
+    implementationTotal: 1900,
+    monthlyRecurring: 97,
+    summary: "Site institucional com handoff do codigo e contrato mensal de manutencao.",
+    createdAt: "2026-02-24",
+    status: "accepted",
+  },
+];
+
+export const mockTasks: Task[] = [
+  {
+    id: "task-1",
+    title: "Enviar follow-up da Costa Advogados",
+    description: "Reforcar argumento de autoridade e prazo de entrega premium.",
+    priority: "Alta",
+    status: "Aberta",
+    relatedClient: "Costa Advogados",
+    dueDate: "2026-03-09",
+    createdAt: "2026-03-07",
+  },
+  {
+    id: "task-2",
+    title: "Refinar mockup institucional para Rocha Odontologia",
+    description: "Adaptar hero com antes/depois e CTA para WhatsApp.",
+    priority: "Media",
+    status: "Em andamento",
+    relatedClient: "Rocha Odontologia",
+    dueDate: "2026-03-10",
+    createdAt: "2026-03-07",
+  },
+];

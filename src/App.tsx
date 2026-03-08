@@ -2,64 +2,41 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
-import { AnimatePresence, motion } from "framer-motion";
-import IndexCinematic from "./pages/IndexCinematic";
-import NotFound from "./pages/NotFound";
-import TreatmentDetails from "./pages/TreatmentDetails";
-import FloatingWhatsApp from "./components/cinematic/FloatingWhatsApp";
-import { useEffect } from "react";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
 import { ThemeProvider } from "./components/ThemeProvider";
-import { ThemeToggle } from "./components/ThemeToggle";
+import { AppShell } from "./components/os/AppShell";
+import { BudgetPage } from "./pages/BudgetPage";
+import { CrmPage } from "./pages/CrmPage";
+import { DashboardPage } from "./pages/DashboardPage";
+import { FunnelPage } from "./pages/FunnelPage";
+import { ManualPage } from "./pages/ManualPage";
+import { SettingsPage } from "./pages/SettingsPage";
+import { TasksPage } from "./pages/TasksPage";
+import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
-const PageTransition = ({ children }: { children: React.ReactNode }) => {
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
-  return (
-    <div className="w-full min-h-screen">
-      {children}
-    </div>
-  );
-};
-
-const AnimatedRoutes = () => {
-  const location = useLocation();
-
-  return (
-    <AnimatePresence mode="wait" onExitComplete={() => window.scrollTo(0, 0)}>
-      <Routes location={location} key={location.pathname}>
-        <Route
-          path="/"
-          element={<PageTransition><IndexCinematic /></PageTransition>}
-        />
-        <Route
-          path="/tratamentos/:id"
-          element={<PageTransition><TreatmentDetails /></PageTransition>}
-        />
-        <Route
-          path="*"
-          element={<PageTransition><NotFound /></PageTransition>}
-        />
-      </Routes>
-    </AnimatePresence>
-  );
-};
-
 const App = () => (
-  <ThemeProvider defaultTheme="clinic">
+  <ThemeProvider defaultTheme="dark">
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <Toaster />
         <Sonner />
         <BrowserRouter>
-          <AnimatedRoutes />
-          <ThemeToggle />
-          <FloatingWhatsApp />
+          <Routes>
+            <Route path="/" element={<Navigate to="/dashboard" replace />} />
+            <Route element={<AppShell />}>
+              <Route path="/dashboard" element={<DashboardPage />} />
+              <Route path="/crm" element={<CrmPage />} />
+              <Route path="/orcamentos" element={<BudgetPage />} />
+              <Route path="/funil" element={<FunnelPage />} />
+              <Route path="/manual" element={<ManualPage />} />
+              <Route path="/tarefas" element={<TasksPage />} />
+              <Route path="/configuracoes" element={<SettingsPage />} />
+            </Route>
+            <Route path="*" element={<NotFound />} />
+          </Routes>
         </BrowserRouter>
       </TooltipProvider>
     </QueryClientProvider>
