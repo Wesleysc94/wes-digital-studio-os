@@ -16,7 +16,7 @@ export function SettingsPage() {
 
   const handleResetSystem = () => {
     const confirmed = window.confirm(
-      "Tem certeza que deseja limpar os itens descartados e o historico de projetos concluidos? Leads, propostas, tarefas e projetos ativos serao mantidos.",
+      "Tem certeza que deseja limpar os itens descartados? Projetos concluidos, leads, propostas, tarefas e projetos ativos serao mantidos.",
     );
 
     if (!confirmed) return;
@@ -27,7 +27,6 @@ export function SettingsPage() {
         const parsed = JSON.parse(raw);
         if (parsed.state) {
           parsed.state.archive = [];
-          parsed.state.completedProjects = [];
           localStorage.setItem("wes-digital-studio-os-store", JSON.stringify(parsed));
         }
       } catch {
@@ -192,9 +191,9 @@ export function SettingsPage() {
                     <Trash2 className="h-4 w-4" />
                   </div>
                   <div className="flex-1">
-                    <p className="text-sm font-semibold text-foreground">Limpar descartados e historico</p>
+                    <p className="text-sm font-semibold text-foreground">Limpar descartados</p>
                     <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                      Remove itens descartados e projetos concluidos do historico. Leads, propostas, tarefas e projetos ativos permanecem intactos.
+                      Remove leads descartados do historico. Projetos concluidos, leads ativos, propostas, tarefas e projetos ativos permanecem intactos.
                     </p>
                     <Button type="button" variant="outline" className="mt-4 h-10 rounded-full border-red-500/30 px-4 text-red-500 hover:bg-red-500/10 hover:text-red-600" onClick={handleResetSystem}>
                       <Trash2 className="h-4 w-4" />
