@@ -312,14 +312,14 @@ export const salesPlaybook: SalesPlaybookStage[] = [
         label: "Primeiro contato",
         audience: "Cliente sem site",
         message:
-          "Oi, [nome]. Dei uma olhada na presenca digital da [empresa] e percebi um ponto que costuma limitar bastante o crescimento de negocios bons: hoje a empresa depende quase toda de rede social, indicacao ou conversa manual para converter contato.\n\nQuando nao existe uma base propria bem desenhada, muita autoridade se perde no meio do caminho. Eu trabalho criando sites premium com foco em posicionamento, clareza comercial e conversao.\n\nSe fizer sentido, eu posso te mostrar rapidamente como isso ficaria aplicado ao contexto da [empresa], sem compromisso.",
+          "Oi, [nome]. Tudo bem?\n\nMe chamo Wesley, sou da Wes Digital Studio. Cheguei ate a [empresa] enquanto pesquisava negocios do seu segmento e notei que voces ainda concentram boa parte da presenca digital no Instagram, indicacao ou contato manual, sem um site proprio estruturado para sustentar autoridade e facilitar a conversao.\n\nNao estou te chamando para empurrar nada. Meu trabalho e criar sites premium pensados para ajudar empresas a se posicionarem melhor, transmitirem mais confianca e encurtarem o caminho entre interesse e contato.\n\nNo caso da [empresa], isso poderia ajudar principalmente em clareza comercial, percepcao de valor e resposta mais rapida do lead. Se fizer sentido, eu posso te mostrar um diagnostico rapido de como isso poderia funcionar para voces, sem compromisso.",
       },
       {
         id: "abordagem-inicial-site-fraco",
         label: "Primeiro contato",
         audience: "Cliente com site ruim",
         message:
-          "Oi, [nome]. Analisei rapidamente o site da [empresa] e percebi um ponto que costuma pesar bastante na conversao: ele ate informa, mas ainda nao sustenta a autoridade do servico no nivel que o negocio parece entregar.\n\nIsso faz a empresa continuar explicando no manual aquilo que a interface poderia resolver sozinha. Eu redesenho essa camada digital com foco em imagem, narrativa comercial e resposta mais clara.\n\nSe quiser, eu te mostro um diagnostico objetivo do que hoje esta travando a percepcao de valor.",
+          "Oi, [nome]. Tudo bem?\n\nMe chamo Wesley, sou da Wes Digital Studio. Cheguei ate a [empresa] enquanto analisava negocios do seu segmento e acabei entrando no site de voces. Vi um ponto que costuma pesar bastante na conversa comercial: hoje o site ate informa, mas ainda nao sustenta a autoridade do servico no nivel que o negocio parece entregar.\n\nMeu trabalho e justamente redesenhar essa camada digital para que a empresa transmita mais valor, organize melhor a leitura e conduza o visitante para um proximo passo mais claro.\n\nSe fizer sentido para voce, eu posso te mostrar um diagnostico rapido do que hoje esta travando essa percepcao e como isso poderia ser ajustado de forma mais premium.",
       },
       {
         id: "abordagem-inicial-sem-resposta",
