@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
 import { toast } from "sonner";
-import { FileText, Rocket, Send, Sparkles } from "lucide-react";
+import { Copy, FileText, Rocket, Send, Sparkles } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -16,7 +16,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea";
 import { useCreateLeadMutation, useCreateProjectMutation, useCreateProposalMutation } from "@/hooks/use-os-sync";
 import { getProposalStatusClasses, getProposalStatusLabel } from "@/lib/os-helpers";
-import { calculateQuote, formatCurrency, PROPOSAL_EXTRAS, PROJECT_PLANS } from "@/lib/quote";
+import { buildProposalScripts, calculateQuote, formatCurrency, PROPOSAL_EXTRAS, PROJECT_PLANS } from "@/lib/quote";
 import { useOsStore } from "@/store/os-store";
 import { PROJECT_PLAN_KEYS, PROPOSAL_EXTRA_KEYS, type Proposal } from "@/types/os";
 
@@ -73,6 +73,8 @@ export function BudgetPage() {
 
   const watchedProjectType = useWatch({ control: form.control, name: "projectType" }) ?? defaultValues.projectType;
   const watchedExtras = useWatch({ control: form.control, name: "extras" }) ?? defaultValues.extras;
+  const watchedClientName = useWatch({ control: form.control, name: "clientName" }) ?? "";
+  const watchedCompany = useWatch({ control: form.control, name: "company" }) ?? "";
   const watchedCustomTitle = useWatch({ control: form.control, name: "customTitle" }) ?? "";
   const watchedImplementationOverride = normalizeOptionalNumber(useWatch({ control: form.control, name: "implementationOverride" }));
   const watchedRecurringOverride = normalizeOptionalNumber(useWatch({ control: form.control, name: "recurringOverride" }));
@@ -84,6 +86,21 @@ export function BudgetPage() {
     recurringOverride: watchedRecurringOverride,
     pricingNotes: watchedPricingNotes,
   });
+  const proposalScripts = buildProposalScripts({
+    clientName: watchedClientName,
+    company: watchedCompany,
+    planLabel: quotePreview.planLabel,
+    implementationTotal: quotePreview.implementationTotal,
+    monthlyRecurring: quotePreview.monthlyRecurring,
+    includedItems: quotePreview.includedItems,
+    extras: watchedExtras,
+    pricingNotes: watchedPricingNotes,
+  });
+
+  const copyToClipboard = async (content: string, successMessage: string) => {
+    await navigator.clipboard.writeText(content);
+    toast.success(successMessage);
+  };
 
   const onSubmit = async (values: BudgetFormValues) => {
     const implementationOverride = normalizeOptionalNumber(values.implementationOverride);
@@ -343,6 +360,44 @@ export function BudgetPage() {
                   <p className="mt-2 text-sm leading-6 text-muted-foreground">{watchedPricingNotes}</p>
                 </div>
               ) : null}
+            </CardContent>
+          </Card>
+
+          <Card className="glass-card rounded-[2rem]">
+            <CardHeader>
+              <CardTitle className="text-xl">Copy pronta para enviar</CardTitle>
+              <CardDescription>Mensagens escritas para reduzir improviso: copie, cole e ajuste apenas o contexto fino da conversa.</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="surface-soft rounded-[1.75rem] p-5">
+                <p className="eyebrow-label">Uso recomendado</p>
+                <p className="mt-2 text-sm leading-6 text-muted-foreground">
+                  Use o envio consultivo para apresentar a proposta, a ancoragem para sustentar valor, o follow-up para puxar decisao e a resposta de objecao quando o cliente travar no investimento.
+                </p>
+              </div>
+
+              {proposalScripts.map((script) => (
+                <div key={script.id} className="rounded-[1.75rem] border border-border/70 bg-card/60 p-5">
+                  <div className="flex flex-wrap items-start justify-between gap-3">
+                    <div>
+                      <p className="text-base font-semibold text-foreground">{script.title}</p>
+                      <p className="mt-2 text-sm leading-6 text-muted-foreground">{script.description}</p>
+                    </div>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      className="rounded-full border-border bg-card/70 text-foreground hover:bg-secondary hover:text-foreground"
+                      onClick={() => copyToClipboard(script.message, "Mensagem copiada para a area de transferencia.")}
+                    >
+                      <Copy className="h-4 w-4" />
+                      Copiar
+                    </Button>
+                  </div>
+                  <div className="surface-soft mt-4 rounded-[1.5rem] p-4">
+                    <p className="whitespace-pre-wrap text-sm leading-7 text-foreground/84">{script.message}</p>
+                  </div>
+                </div>
+              ))}
             </CardContent>
           </Card>
 

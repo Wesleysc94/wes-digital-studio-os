@@ -171,6 +171,8 @@ export interface SalesPlaybookStage {
   title: string;
   objective: string;
   explanation: string;
+  psychology: string[];
+  watchouts: string[];
   strategy: string[];
   messages: SalesPlaybookMessage[];
 }

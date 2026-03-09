@@ -288,13 +288,23 @@ export const salesPlaybook: SalesPlaybookStage[] = [
   {
     id: "abordagem-inicial",
     title: "Abordagem inicial",
-    objective: "Abrir conversa sem parecer mensagem em massa e gerar curiosidade qualificada.",
+    objective: "Abrir conversa com relevancia, sem parecer disparo em massa e sem queimar a autoridade logo no primeiro contato.",
     explanation:
-      "Nesta etapa voce nao vende escopo. Voce mostra que entendeu um gargalo do negocio e convida o lead para olhar a oportunidade com outro nivel de clareza.",
+      "Nesta etapa voce nao vende escopo nem joga tabela. Voce mostra leitura de contexto, desperta curiosidade e faz o lead sentir que existe um ganho claro em continuar a conversa.",
+    psychology: [
+      "O lead precisa sentir que a mensagem foi escrita para o negocio dele, nao para uma lista fria.",
+      "Ele precisa perceber valor na sua observacao antes mesmo de ouvir preco.",
+      "A conversa tem que parecer leve e segura, nao invasiva nem desesperada.",
+    ],
+    watchouts: [
+      "Nao comece falando de voce por tres linhas seguidas.",
+      "Nao use elogio vazio ou diagnostico exagerado demais.",
+      "Nao feche pedindo reuniao longa; convide para um passo pequeno e facil.",
+    ],
     strategy: [
-      "Comece por uma observacao especifica do negocio ou do site atual.",
-      "Traga o impacto comercial da mudanca: autoridade, conversao ou velocidade de atendimento.",
-      "Feche com convite leve para mostrar um conceito ou diagnostico rapido.",
+      "Comece por um ponto observavel do negocio ou da presenca digital atual.",
+      "Traduza esse ponto para impacto comercial: autoridade, conversao, clareza ou velocidade de atendimento.",
+      "Feche com convite leve para mostrar um diagnostico ou uma ideia aplicada.",
     ],
     messages: [
       {
@@ -302,27 +312,44 @@ export const salesPlaybook: SalesPlaybookStage[] = [
         label: "Primeiro contato",
         audience: "Cliente sem site",
         message:
-          "Oi, [nome]. Dei uma olhada na presenca digital da [empresa] e percebi que hoje voces dependem muito de rede social ou indicacao para converter novos contatos. Eu desenvolvo sites premium pensados para transformar visita em conversa real, com estrutura mais clara, velocidade e posicionamento melhor. Se fizer sentido, eu posso te mostrar em poucos minutos como isso ficaria aplicado ao seu negocio.",
+          "Oi, [nome]. Dei uma olhada na presenca digital da [empresa] e percebi um ponto que costuma limitar bastante o crescimento de negocios bons: hoje a empresa depende quase toda de rede social, indicacao ou conversa manual para converter contato.\n\nQuando nao existe uma base propria bem desenhada, muita autoridade se perde no meio do caminho. Eu trabalho criando sites premium com foco em posicionamento, clareza comercial e conversao.\n\nSe fizer sentido, eu posso te mostrar rapidamente como isso ficaria aplicado ao contexto da [empresa], sem compromisso.",
       },
       {
         id: "abordagem-inicial-site-fraco",
         label: "Primeiro contato",
         audience: "Cliente com site ruim",
         message:
-          "Oi, [nome]. Analisei rapidamente o site da [empresa] e vi um ponto que costuma pesar bastante na conversao: ele informa, mas ainda nao sustenta a autoridade do servico como poderia. Trabalho redesenhando essa camada digital com foco em imagem, clareza e resposta comercial. Se quiser, eu te mostro um diagnostico objetivo do que esta travando hoje.",
+          "Oi, [nome]. Analisei rapidamente o site da [empresa] e percebi um ponto que costuma pesar bastante na conversao: ele ate informa, mas ainda nao sustenta a autoridade do servico no nivel que o negocio parece entregar.\n\nIsso faz a empresa continuar explicando no manual aquilo que a interface poderia resolver sozinha. Eu redesenho essa camada digital com foco em imagem, narrativa comercial e resposta mais clara.\n\nSe quiser, eu te mostro um diagnostico objetivo do que hoje esta travando a percepcao de valor.",
+      },
+      {
+        id: "abordagem-inicial-sem-resposta",
+        label: "Reativacao curta",
+        audience: "Lead sem retorno inicial",
+        message:
+          "Oi, [nome]. Voltando de forma objetiva porque achei que valia insistir nesse ponto: a [empresa] tem espaco real para ganhar mais autoridade digital com uma estrutura mais estrategica.\n\nSe nao for prioridade agora, sem problema. Mas se fizer sentido olhar isso com calma, eu te mostro um diagnostico rapido para voce decidir com mais clareza.",
       },
     ],
   },
   {
     id: "descoberta-da-necessidade",
     title: "Descoberta da necessidade",
-    objective: "Entender como o lead vende hoje, onde perde oportunidades e qual urgencia real existe.",
+    objective: "Entender como o lead vende hoje, onde perde oportunidade, quem decide e qual urgencia real existe.",
     explanation:
-      "Aqui o foco e ouvir. Quanto melhor voce entende processo comercial, objecoes e gargalos, mais facil fica vender uma solucao que parece inevitavel.",
+      "Aqui o foco e ouvir e organizar contexto. Quanto melhor voce entende processo comercial, objecoes, decisor e custo da inercia, mais facil fica vender uma solucao que parece inevitavel.",
+    psychology: [
+      "O lead precisa perceber que voce nao esta empurrando um formato pronto.",
+      "Ele precisa sentir que foi ouvido e que a proposta, se vier, sera precisa.",
+      "Pergunta boa aumenta autoridade porque mostra criterio, nao curiosidade vazia.",
+    ],
+    watchouts: [
+      "Nao transforme descoberta em interrogatorio mecanico.",
+      "Nao avance para preco antes de entender urgencia e decisor.",
+      "Nao deixe a conversa vaga; sempre resuma o que esta ficando claro.",
+    ],
     strategy: [
-      "Pergunte como chegam os contatos e onde a conversa esfria.",
-      "Descubra qual servico mais rentavel precisa de mais visibilidade.",
-      "Entenda prazo, decisor e nivel de urgencia antes de falar de proposta.",
+      "Pergunte como chegam os contatos e em que ponto a conversa costuma esfriar.",
+      "Descubra qual servico ou oferta mais rentavel precisa de mais visibilidade.",
+      "Entenda decisor, prazo e urgencia antes de falar de proposta.",
     ],
     messages: [
       {
@@ -330,27 +357,44 @@ export const salesPlaybook: SalesPlaybookStage[] = [
         label: "Perguntas de descoberta",
         audience: "Uso geral",
         message:
-          "Antes de te sugerir formato ou investimento, quero entender seu contexto. Hoje os clientes chegam mais por indicacao, Instagram, Google ou WhatsApp? Em que momento voce sente que perde mais oportunidade: falta de autoridade, pouca clareza da oferta ou demora para transformar visita em conversa?",
+          "Antes de te sugerir formato ou investimento, quero entender seu contexto com mais precisao.\n\nHoje os clientes chegam mais por indicacao, Instagram, Google ou WhatsApp? Em que ponto voce sente que perde mais oportunidade: falta de autoridade, pouca clareza da oferta ou demora para transformar interesse em conversa real?",
       },
       {
         id: "descoberta-prioridade",
         label: "Mapear urgencia",
         audience: "Uso geral",
         message:
-          "Se a gente melhorasse essa camada digital nas proximas semanas, o que faria mais diferenca para voce agora: gerar mais contatos qualificados, apresentar melhor seu servico premium ou organizar melhor o processo comercial para fechar mais facil?",
+          "Se a gente melhorasse essa camada digital nas proximas semanas, o que faria mais diferenca para voce agora: gerar mais contatos qualificados, apresentar melhor seu servico premium ou facilitar o fechamento de quem ja chega com interesse?",
+      },
+      {
+        id: "descoberta-fechamento-da-conversa",
+        label: "Resumo consultivo",
+        audience: "Uso geral",
+        message:
+          "Pelo que voce me trouxe, o problema nao parece ser falta de esforco comercial, e sim falta de uma estrutura digital que ajude a sustentar valor, conduzir melhor a leitura e reduzir atrito ate o contato. Se entendi certo, faz sentido eu te devolver isso em formato de diagnostico e proposta objetiva.",
       },
     ],
   },
   {
     id: "diagnostico",
     title: "Diagnostico",
-    objective: "Traduzir o problema em linguagem de negocio e dar direcao sem ainda entrar em defesa de preco.",
+    objective: "Traduzir o problema em linguagem de negocio e mostrar custo da inercia antes de entrar em defesa de preco.",
     explanation:
-      "O diagnostico organiza a dor. Quando o lead enxerga com clareza o custo do problema atual, a proposta deixa de parecer gasto e passa a parecer ajuste estrategico.",
+      "O diagnostico organiza a dor e cria clareza. Quando o lead enxerga o custo do problema atual, a proposta deixa de parecer gasto e passa a parecer ajuste estrategico.",
+    psychology: [
+      "O lead precisa sair dessa etapa pensando 'faz sentido resolver isso agora'.",
+      "A clareza do problema vem antes da defesa de escopo.",
+      "Diagnostico bom reposiciona voce como consultor, nao como tirador de pedido.",
+    ],
+    watchouts: [
+      "Nao tecnicize demais a conversa.",
+      "Nao use critica agressiva ao site atual ou ao negocio.",
+      "Nao entregue solucao completa antes de o lead perceber o tamanho do problema.",
+    ],
     strategy: [
-      "Mostre o problema em tres camadas: percepcao, navegacao e conversao.",
-      "Evite excesso tecnico; fale do impacto no atendimento e no fechamento.",
-      "Conduza o lead para a ideia de reposicionamento e nao apenas de redesign.",
+      "Mostre o problema em tres camadas: percepcao, leitura e conversao.",
+      "Evite excesso tecnico; fale do impacto no atendimento, na confianca e no fechamento.",
+      "Conduza o lead para a ideia de reposicionamento, nao apenas redesign.",
     ],
     messages: [
       {
@@ -358,27 +402,44 @@ export const salesPlaybook: SalesPlaybookStage[] = [
         label: "Leitura consultiva",
         audience: "Cliente sem site",
         message:
-          "Hoje o principal gargalo nao e falta de esforco comercial, e falta de uma base propria que sustente autoridade quando alguem pesquisa seu nome ou compara voce com outros prestadores. Sem essa camada, voce depende demais do contato manual e perde eficiencia no processo de convencimento.",
+          "Hoje o principal gargalo nao e falta de esforco comercial. O gargalo e nao existir uma base propria que sustente autoridade quando alguem pesquisa seu nome, compara voce com concorrentes ou precisa decidir com mais seguranca.\n\nSem essa camada, a [empresa] depende demais do contato manual e perde eficiencia no processo de convencimento.",
       },
       {
         id: "diagnostico-site-fraco",
         label: "Leitura consultiva",
         audience: "Cliente com site ruim",
         message:
-          "O site atual ate apresenta informacoes, mas ele nao organiza a decisao do cliente. A leitura esta dispersa, a hierarquia nao sustenta valor e a experiencia nao conduz para uma acao clara. O resultado e um ativo digital que existe, mas ainda nao trabalha a favor do comercial.",
+          "O site atual ate apresenta informacoes, mas ele nao organiza a decisao do cliente. A leitura esta dispersa, a hierarquia nao sustenta valor e a experiencia nao conduz para uma acao clara.\n\nNa pratica, a [empresa] tem um ativo digital que existe, mas ainda nao trabalha a favor do comercial.",
+      },
+      {
+        id: "diagnostico-transicao",
+        label: "Ponte para a proposta",
+        audience: "Uso geral",
+        message:
+          "O ponto central nao e apenas deixar a interface mais bonita. E criar uma estrutura que comunique melhor o nivel do servico, conduza a leitura com mais inteligencia e facilite a conversao. Com isso claro, eu consigo te sugerir uma proposta muito mais coerente com o momento do negocio.",
       },
     ],
   },
   {
     id: "apresentacao-da-solucao",
     title: "Apresentacao da solucao",
-    objective: "Conectar o diagnostico a uma proposta enxuta, premium e orientada por resultado.",
+    objective: "Conectar o diagnostico a uma proposta enxuta, premium e claramente orientada por resultado.",
     explanation:
-      "Nesta etapa o lead precisa sentir que voce esta resolvendo exatamente o problema certo. A solucao precisa soar precisa, nao generica.",
+      "Nesta etapa o lead precisa sentir que voce esta resolvendo exatamente o problema certo. A solucao precisa soar precisa, justificada e proporcional ao momento do negocio.",
+    psychology: [
+      "O lead precisa enxergar coerencia entre problema, formato e investimento.",
+      "A proposta deve dar seguranca, nao excesso de opcao.",
+      "Quando a solucao parece desenhada sob medida, a defesa de valor fica mais facil.",
+    ],
+    watchouts: [
+      "Nao despeje lista gigante de entregas.",
+      "Nao apresente duas ou tres opcoes sem criterio claro.",
+      "Nao trate manutencao ou extras como apendice confuso.",
+    ],
     strategy: [
-      "Apresente o formato ideal e diga por que ele faz sentido para aquele caso.",
-      "Mostre o que entra no projeto e como isso melhora a conversao.",
-      "Separe implantacao e recorrencia para reduzir atrito mental.",
+      "Apresente o formato ideal e diga por que ele faz sentido especificamente para aquele caso.",
+      "Mostre o que entra no projeto e como isso melhora percepcao, leitura e conversao.",
+      "Separe implantacao e recorrencia para reduzir atrito mental na decisao.",
     ],
     messages: [
       {
@@ -386,27 +447,44 @@ export const salesPlaybook: SalesPlaybookStage[] = [
         label: "Apresentar a proposta",
         audience: "Uso geral",
         message:
-          "Pelo que voce me trouxe, eu seguiria por uma estrutura premium e objetiva: uma base visual forte, narrativa comercial mais clara, carregamento rapido e um caminho de conversao direto para WhatsApp ou formulario. Assim voce melhora percepcao de valor e nao depende de explicar tudo no manual toda vez.",
+          "Pelo que voce me trouxe, eu seguiria por uma estrutura premium e objetiva: uma base visual forte, narrativa comercial mais clara, carregamento rapido e um caminho de conversao direto para WhatsApp ou formulario.\n\nAssim voce melhora percepcao de valor e reduz a necessidade de convencer no manual aquilo que a interface deveria resolver sozinha.",
       },
       {
         id: "solucao-investimento",
         label: "Explicar investimento",
         audience: "Uso geral",
         message:
-          "Hoje eu trabalho com dois formatos principais: Landing Page Essencial a partir de R$ 900 e Site Institucional Profissional a partir de R$ 1.200. Quando faz sentido, adicionamos tema extra, entrega de codigo, manutencao mensal ou um ajuste comercial personalizado. Eu separo implantacao e recorrencia justamente para a tomada de decisao ficar mais clara.",
+          "Hoje eu trabalho com formatos que respeitam o momento do negocio. A entrada mais enxuta comeca em Landing Page Essencial a partir de R$ 900. Quando a necessidade pede mais autoridade, narrativa e estrutura, o Site Institucional Profissional parte de R$ 1.200.\n\nQuando faz sentido, adicionamos tema extra, entrega de codigo, manutencao mensal ou ajuste comercial personalizado. Eu separo implantacao e recorrencia justamente para a decisao ficar mais clara.",
+      },
+      {
+        id: "solucao-envio-proposta",
+        label: "Mensagem de envio",
+        audience: "Uso geral",
+        message:
+          "Organizei a proposta para a [empresa] com foco em resolver exatamente o gargalo que apareceu na conversa: melhorar autoridade, clareza comercial e a passagem do interesse para o contato. O racional esta direto, sem excesso de camada. Se fizer sentido, te explico em dois minutos a logica da estrutura e o proximo passo para kickoff.",
       },
     ],
   },
   {
     id: "negociacao",
     title: "Negociacao",
-    objective: "Remover travas sem desvalorizar o projeto e manter a conversa centrada em impacto.",
+    objective: "Remover travas sem desvalorizar o projeto e manter a conversa centrada em impacto, prioridade e ajuste inteligente.",
     explanation:
-      "Negociacao boa nao e desconto automatico. E ajuste de escopo, timing ou prioridade sem desmanchar a percepcao de valor do trabalho.",
+      "Negociacao boa nao e desconto automatico. E leitura correta da objecao: preco, timing, confianca ou prioridade. A resposta muda conforme a trava real.",
+    psychology: [
+      "O lead precisa sentir flexibilidade com criterio, nao desespero para fechar.",
+      "Defesa de valor funciona melhor quando voce mostra custo de manter o problema.",
+      "Ajuste inteligente protege posicionamento e ainda abre caminho para o sim.",
+    ],
+    watchouts: [
+      "Nao responda objecao de preco oferecendo desconto imediato.",
+      "Nao discuta o valor sem antes identificar se a trava e realmente financeira.",
+      "Nao deixe o cliente sair com promessa vaga de 'depois eu vejo'.",
+    ],
     strategy: [
-      "Quando houver resistencia, investigue se a objecao e preco, momento ou confianca.",
-      "Troque desconto por ajuste de escopo ou faseamento.",
-      "Reforce o custo de manter o problema como esta.",
+      "Descubra se a objecao e preco, momento, prioridade ou confianca.",
+      "Troque desconto aleatorio por ajuste de escopo, faseamento ou entrada mais inteligente.",
+      "Reforce o custo de manter o problema como esta e puxe decisao com clareza.",
     ],
     messages: [
       {
@@ -414,14 +492,28 @@ export const salesPlaybook: SalesPlaybookStage[] = [
         label: "Resposta ao 'quanto custa?'",
         audience: "Uso geral",
         message:
-          "Consigo te passar o valor com clareza, mas o mais importante e encaixar o formato certo para o momento do negocio. Se o objetivo e validar rapido, podemos comecar pela estrutura essencial. Se a prioridade e autoridade e posicionamento mais forte, o institucional premium faz mais sentido. Quando necessario, eu ajusto escopo e investimento de forma personalizada, sem perder a coerencia do projeto.",
+          "Consigo te passar o valor com clareza, mas o mais importante aqui e encaixar o formato certo para o momento do negocio. Se o objetivo e validar rapido, podemos começar por uma estrutura mais essencial. Se a prioridade e sustentar mais autoridade e posicionamento, a configuracao premium faz mais sentido.\n\nQuando necessario, eu ajusto escopo e investimento de forma personalizada, mas sem perder coerencia no projeto.",
       },
       {
         id: "negociacao-objecao-momento",
         label: "Quando o lead diz que nao e o momento",
         audience: "Uso geral",
         message:
-          "Faz sentido avaliar timing. O que eu costumo fazer nesses casos e ajustar o ponto de entrada do projeto para voce nao perder o momento comercial. Em vez de travar tudo, a gente define um escopo inicial mais inteligente e deixa a proxima fase planejada quando o contexto abrir melhor.",
+          "Faz sentido avaliar timing. O que eu costumo fazer nesses casos e ajustar o ponto de entrada do projeto para voce nao perder o momento comercial.\n\nEm vez de travar tudo, a gente define um escopo inicial mais inteligente e deixa a fase seguinte planejada para quando o contexto abrir melhor.",
+      },
+      {
+        id: "negociacao-objecao-preco",
+        label: "Quando o lead diz que ficou caro",
+        audience: "Uso geral",
+        message:
+          "Entendo o cuidado com investimento. O ponto aqui e que a proposta nao foi montada como pacote generico, e sim para corrigir um gargalo especifico da [empresa].\n\nSe a trava hoje estiver no caixa ou no momento, eu prefiro reorganizar a entrada do projeto de forma inteligente do que cortar elementos que sustentam resultado e posicionamento.",
+      },
+      {
+        id: "negociacao-followup-sem-resposta",
+        label: "Follow-up apos proposta enviada",
+        audience: "Uso geral",
+        message:
+          "Oi, [nome]. Passando para te deixar a decisao facil. A proposta que te enviei foi desenhada exatamente para resolver o ponto que hoje mais pesa na [empresa]: autoridade, clareza comercial e resposta mais rapida do lead.\n\nSe estiver alinhada, eu reservo a janela de producao. Se houver algum ponto para ajustar em escopo, prazo ou investimento, me fala que eu organizo isso de forma objetiva.",
       },
     ],
   },
@@ -430,7 +522,17 @@ export const salesPlaybook: SalesPlaybookStage[] = [
     title: "Fechamento",
     objective: "Converter a conversa em decisao com proximo passo simples, claro e sem friccao.",
     explanation:
-      "No fechamento, o cliente precisa sentir seguranca. Menos texto, mais direcao. Diga o que acontece depois do sim e torne o kickoff facil.",
+      "No fechamento, o cliente precisa sentir seguranca, direcao e controle. Menos texto, mais proximo passo. Diga o que acontece depois do sim e torne o kickoff facil.",
+    psychology: [
+      "O cliente precisa sentir que o processo esta sob controle.",
+      "Quanto mais claro for o proximo passo, menor a chance de ele esfriar.",
+      "Encerramento elegante tambem protege sua autoridade quando nao houver resposta.",
+    ],
+    watchouts: [
+      "Nao finalize com texto longo demais.",
+      "Nao feche sem dizer o que acontece imediatamente apos o sim.",
+      "Nao deixe conversa morrendo em aberto por semanas; encerre com classe quando necessario.",
+    ],
     strategy: [
       "Resuma decisao, prazo e proximo passo em uma unica mensagem.",
       "Mostre seguranca no processo: briefing, aprovacao visual, entrega e publicacao.",
@@ -439,17 +541,24 @@ export const salesPlaybook: SalesPlaybookStage[] = [
     messages: [
       {
         id: "fechamento-followup",
-        label: "Follow-up final",
+        label: "Convite para decidir",
         audience: "Uso geral",
         message:
-          "Passando para fechar esse ponto com voce. Pelo que alinhamos, o projeto faz sentido e resolve exatamente a camada que hoje esta travando autoridade e conversao. Se estiver de acordo, eu reservo a proxima janela de producao, registro o prazo e te envio o kickoff para iniciarmos ainda hoje.",
+          "Passando para fechar esse ponto com voce. Pelo que alinhamos, o projeto faz sentido e resolve exatamente a camada que hoje esta travando autoridade e conversao na [empresa].\n\nSe estiver de acordo, eu reservo a proxima janela de producao, registro o prazo e te envio o kickoff para iniciarmos de forma objetiva.",
       },
       {
         id: "fechamento-kickoff",
         label: "Mensagem de inicio",
         audience: "Uso geral",
         message:
-          "Perfeito. O proximo passo agora e simples: eu te envio um briefing objetivo, organizo a proposta final com escopo fechado e, assim que receber os materiais essenciais, ja inicio a camada visual. A ideia e manter o processo leve para voce e rapido para a operacao.",
+          "Perfeito. O proximo passo agora e simples: eu te envio um briefing objetivo, organizo o escopo final e, assim que receber os materiais essenciais, ja inicio a camada visual.\n\nA ideia e manter o processo leve para voce e rapido para a operacao, com visibilidade de prazo e entrega desde o inicio.",
+      },
+      {
+        id: "fechamento-encerramento-elegante",
+        label: "Encerramento elegante",
+        audience: "Lead sem retorno prolongado",
+        message:
+          "Oi, [nome]. Vou encerrar esse ponto por aqui para nao ficar te pressionando sem necessidade.\n\nComo a proposta foi desenhada para um contexto especifico da [empresa], prefiro deixar a conversa limpa. Se isso voltar a ser prioridade mais adiante, me chama que eu retomo de forma objetiva e com o mesmo contexto organizado.",
       },
     ],
   },

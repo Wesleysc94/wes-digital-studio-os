@@ -6,6 +6,7 @@ import { SectionHeading } from "@/components/os/SectionHeading";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { createDashboardTourHref } from "@/lib/tour";
 import { useOsStore } from "@/store/os-store";
 
 export function SettingsPage() {
@@ -144,7 +145,7 @@ export function SettingsPage() {
                 </NavLink>
               </Button>
               <Button asChild variant="outline" className="h-11 w-full justify-between rounded-full border-border bg-card/70 px-4 text-foreground hover:bg-secondary hover:text-foreground">
-                <NavLink to="/dashboard?tour=1">
+                <NavLink to={createDashboardTourHref()}>
                   <span className="inline-flex items-center gap-2">
                     <CirclePlay className="h-4 w-4" />
                     Rodar demonstracao guiada

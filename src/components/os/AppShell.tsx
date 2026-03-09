@@ -3,7 +3,7 @@ import { ptBR } from "date-fns/locale";
 import { AnimatePresence, motion } from "framer-motion";
 import { Archive, BookOpen, BriefcaseBusiness, CheckSquare, ChevronRight, CirclePlay, Cog, Compass, LayoutDashboard, Menu, Orbit, ReceiptText, Users, Wifi, X } from "lucide-react";
 import { useMemo, useState } from "react";
-import { NavLink, Outlet, useLocation } from "react-router-dom";
+import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { BrandEmblem } from "@/components/os/BrandEmblem";
@@ -11,6 +11,7 @@ import { RouteSkeleton } from "@/components/os/RouteSkeleton";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useOsBootstrap } from "@/hooks/use-os-sync";
+import { createDashboardTourHref } from "@/lib/tour";
 import { cn } from "@/lib/utils";
 import { useOsStore } from "@/store/os-store";
 
@@ -38,6 +39,7 @@ const NAV_GROUPS = [
 
 export function AppShell() {
   const location = useLocation();
+  const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const bootstrapQuery = useOsBootstrap();
 
@@ -58,6 +60,10 @@ export function AppShell() {
 
   const integrationLabel = integration.mode === "google" ? "Google online" : integration.mode === "mock" ? "Modo mock" : "Modo local";
   const navigationCounts = useMemo(() => ({ "/crm": openLeads, "/orcamentos": sentProposals, "/producao": activeProjects, "/tarefas": pendingTasks, "/descartados": archive.length }), [openLeads, sentProposals, activeProjects, pendingTasks, archive.length]);
+  const startGuidedTour = () => {
+    setMobileMenuOpen(false);
+    navigate(createDashboardTourHref());
+  };
 
   const sidebarContent = (
     <div className="flex min-h-full flex-col">
@@ -77,7 +83,7 @@ export function AppShell() {
             {["CRM", "Producao", "Entregas", "Historico"].map((item) => <span key={item} className="rounded-full border border-border/80 bg-background/58 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-foreground/88 backdrop-blur-sm">{item}</span>)}
           </div>
           <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
-            <Button asChild className="h-10 rounded-full px-4"><NavLink to="/dashboard?tour=1"><CirclePlay className="h-4 w-4" />Iniciar tour</NavLink></Button>
+            <Button type="button" className="h-10 rounded-full px-4" onClick={startGuidedTour}><CirclePlay className="h-4 w-4" />Iniciar tour</Button>
             <Button asChild variant="outline" className="h-10 rounded-full border-border bg-background/62 px-4 text-foreground hover:bg-secondary hover:text-foreground"><NavLink to="/guia"><Compass className="h-4 w-4" />Ver guia</NavLink></Button>
           </div>
         </div>

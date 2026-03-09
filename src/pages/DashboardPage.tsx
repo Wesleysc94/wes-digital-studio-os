@@ -9,7 +9,6 @@ import { EmptyStateCard } from "@/components/os/EmptyStateCard";
 import { MetricCard } from "@/components/os/MetricCard";
 import { SectionHeading } from "@/components/os/SectionHeading";
 import { AppShellOutletContext } from "@/components/os/AppShell";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { formatLongDate, formatRelativeLabel, getArchiveReasonClasses, getLeadStatusClasses, getProjectStatusClasses, getProposalStatusClasses, getProposalStatusLabel, getTaskPriorityClasses, isDueWithinDays, isInCurrentMonth, isPastDue, sortIsoAsc, sortIsoDesc } from "@/lib/os-helpers";
@@ -101,11 +100,12 @@ export function DashboardPage() {
   ] as const;
 
   const isTourActive = searchParams.get("tour") === "1";
+  const tourRunToken = searchParams.get("run") ?? "";
   const activeTourStep = tourSteps[tourStepIndex];
 
   useEffect(() => {
     if (isTourActive) setTourStepIndex(0);
-  }, [isTourActive]);
+  }, [isTourActive, tourRunToken]);
 
   useEffect(() => {
     if (!isTourActive) return;
@@ -123,8 +123,18 @@ export function DashboardPage() {
     sectionRefs.current[id] = element;
   };
   const getSectionClassName = (id: TourSectionId, baseClassName: string) => cn(baseClassName, isTourActive && activeTourStep.id === id && "tour-focus");
-  const startTour = () => { const nextParams = new URLSearchParams(searchParams); nextParams.set("tour", "1"); setSearchParams(nextParams, { replace: false }); };
-  const closeTour = () => { const nextParams = new URLSearchParams(searchParams); nextParams.delete("tour"); setSearchParams(nextParams, { replace: false }); };
+  const startTour = () => {
+    const nextParams = new URLSearchParams(searchParams);
+    nextParams.set("tour", "1");
+    nextParams.set("run", Date.now().toString());
+    setSearchParams(nextParams, { replace: false });
+  };
+  const closeTour = () => {
+    const nextParams = new URLSearchParams(searchParams);
+    nextParams.delete("tour");
+    nextParams.delete("run");
+    setSearchParams(nextParams, { replace: false });
+  };
 
   return (
     <>
@@ -135,9 +145,9 @@ export function DashboardPage() {
           <div className="relative z-10 grid gap-6 xl:grid-cols-[minmax(0,1.22fr)_360px]">
             <div className="max-w-3xl">
               <div className="flex flex-wrap items-center gap-2">
-                <Badge className="status-info">Centro de controle da agencia</Badge>
-                <Badge className={cn("status-neutral", isSyncing && "status-info")}>{isSyncing ? "Sincronizando dados" : "Fluxo completo online"}</Badge>
-                <Badge className="status-neutral">{format(new Date(), "dd 'de' MMMM", { locale: ptBR })}</Badge>
+                <span className="hero-chip hero-chip-accent">Centro de controle da agencia</span>
+                <span className={cn("hero-chip", isSyncing ? "hero-chip-live" : "hero-chip-muted")}>{isSyncing ? "Sincronizando dados" : "Fluxo completo online"}</span>
+                <span className="hero-chip hero-chip-muted">{format(new Date(), "dd 'de' MMMM", { locale: ptBR })}</span>
               </div>
               <h2 className="mt-5 text-3xl font-semibold text-foreground sm:text-[2.55rem]">Leia comercial e producao no mesmo radar, mas com pesos diferentes.</h2>
               <p className="mt-4 max-w-2xl text-base leading-8 text-muted-foreground">O dashboard agora considera cliente fechado, prazo de entrega e bloqueio de producao acima de negociacoes abertas. Ele tambem diz quando limpar o pipeline movendo oportunidades para descartados.</p>
@@ -190,11 +200,11 @@ export function DashboardPage() {
         <div className="grid gap-6 xl:grid-cols-[1.08fr_0.92fr]">
           <motion.section ref={getSectionRef("actions")} variants={revealItem} className={getSectionClassName("actions", "space-y-4 rounded-[28px] p-2 sm:p-3")}>
             <SectionHeading eyebrow="Proximas acoes" title="Fila recomendada do dia" description="A ordem abaixo parte da regra central do sistema: prazo e entrega vencendo passam na frente do resto." />
-            {queueItems.length ? <div className="space-y-3">{queueItems.map((action, index) => (<NavLink key={action.id} to={action.href} className="group block"><Card className="glass-card rounded-[22px] transition-all duration-150 ease-out hover:-translate-y-1 hover:border-accent/22"><CardContent className="flex gap-4 p-5"><div className="flex flex-col items-center"><div className="flex h-10 w-10 items-center justify-center rounded-[16px] bg-secondary text-foreground"><span className="text-sm font-semibold">{index + 1}</span></div>{index !== queueItems.length - 1 ? <div className="mt-2 h-full w-px bg-border" /> : null}</div><div className="min-w-0 flex-1"><div className="flex flex-wrap items-center gap-2"><Badge className={action.badgeClassName}>{action.badge}</Badge><span className="eyebrow-label">{action.meta}</span></div><p className="mt-3 text-lg font-semibold text-foreground">{action.title}</p><p className="mt-2 text-sm leading-6 text-muted-foreground">{action.description}</p></div><ArrowRight className="mt-1 h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-150 group-hover:translate-x-1" /></CardContent></Card></NavLink>))}</div> : <EmptyStateCard icon={Inbox} title="Sua fila imediata esta limpa" description="Nao ha prazo critico, follow-up vencido ou tarefa prioritaria. Bom momento para abastecer o pipeline com um novo lead ou revisar o funil." actionLabel="Cadastrar novo lead" actionHref="/crm" />}
+            {queueItems.length ? <div className="space-y-3">{queueItems.map((action, index) => (<NavLink key={action.id} to={action.href} className="group block"><Card className="glass-card rounded-[22px] transition-all duration-150 ease-out hover:-translate-y-1 hover:border-accent/22"><CardContent className="flex gap-4 p-5"><div className="flex flex-col items-center"><div className="flex h-10 w-10 items-center justify-center rounded-[16px] bg-secondary text-foreground"><span className="text-sm font-semibold">{index + 1}</span></div>{index !== queueItems.length - 1 ? <div className="mt-2 h-full w-px bg-border" /> : null}</div><div className="min-w-0 flex-1"><div className="flex flex-wrap items-center gap-2"><span className={cn("inline-flex items-center rounded-full px-2.5 py-1 text-[11px] font-semibold", action.badgeClassName)}>{action.badge}</span><span className="eyebrow-label">{action.meta}</span></div><p className="mt-3 text-lg font-semibold text-foreground">{action.title}</p><p className="mt-2 text-sm leading-6 text-muted-foreground">{action.description}</p></div><ArrowRight className="mt-1 h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-150 group-hover:translate-x-1" /></CardContent></Card></NavLink>))}</div> : <EmptyStateCard icon={Inbox} title="Sua fila imediata esta limpa" description="Nao ha prazo critico, follow-up vencido ou tarefa prioritaria. Bom momento para abastecer o pipeline com um novo lead ou revisar o funil." actionLabel="Cadastrar novo lead" actionHref="/crm" />}
           </motion.section>
           <motion.section ref={getSectionRef("activity")} variants={revealItem} className={getSectionClassName("activity", "space-y-4 rounded-[28px] p-2 sm:p-3")}>
             <SectionHeading eyebrow="Atividade recente" title="Sistema vivo" description="Leads, projetos, descartes e entregas concluidas aparecem aqui para preservar contexto sem procura manual." />
-            {recentActivity.length ? <Card className="glass-card rounded-[22px]"><CardContent className="space-y-4 p-5">{recentActivity.map((item) => (<NavLink key={item.id} to={item.href} className="group block rounded-[18px] border border-border/80 bg-secondary/35 p-4 transition-all duration-150 ease-out hover:border-accent/18 hover:bg-secondary/55"><div className="flex flex-wrap items-center gap-2"><Badge className={item.badgeClassName}>{item.badge}</Badge><span className="eyebrow-label">{formatRelativeLabel(item.date)}</span></div><p className="mt-3 text-base font-semibold text-foreground">{item.title}</p><p className="mt-2 text-sm leading-6 text-muted-foreground">{item.description}</p></NavLink>))}</CardContent></Card> : <EmptyStateCard icon={Layers3} title="Ainda nao houve movimento recente" description="Assim que voce cadastrar lead, gerar proposta, mover para producao ou concluir uma entrega, o sistema passa a contar a historia da operacao." actionLabel="Gerar a primeira atividade" actionHref="/crm" />}
+            {recentActivity.length ? <Card className="glass-card rounded-[22px]"><CardContent className="space-y-4 p-5">{recentActivity.map((item) => (<NavLink key={item.id} to={item.href} className="group block rounded-[18px] border border-border/80 bg-secondary/35 p-4 transition-all duration-150 ease-out hover:border-accent/18 hover:bg-secondary/55"><div className="flex flex-wrap items-center gap-2"><span className={cn("inline-flex items-center rounded-full px-2.5 py-1 text-[11px] font-semibold", item.badgeClassName)}>{item.badge}</span><span className="eyebrow-label">{formatRelativeLabel(item.date)}</span></div><p className="mt-3 text-base font-semibold text-foreground">{item.title}</p><p className="mt-2 text-sm leading-6 text-muted-foreground">{item.description}</p></NavLink>))}</CardContent></Card> : <EmptyStateCard icon={Layers3} title="Ainda nao houve movimento recente" description="Assim que voce cadastrar lead, gerar proposta, mover para producao ou concluir uma entrega, o sistema passa a contar a historia da operacao." actionLabel="Gerar a primeira atividade" actionHref="/crm" />}
           </motion.section>
         </div>
 
@@ -204,7 +214,7 @@ export function DashboardPage() {
         </motion.section>
       </motion.div>
 
-      {isTourActive ? <motion.aside initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 12 }} transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }} className="fixed bottom-4 left-4 right-4 z-40 sm:left-auto sm:right-6 sm:max-w-[380px]"><div className="surface-panel rounded-[26px] p-5 shadow-[0_30px_90px_-50px_hsl(var(--accent)/0.45)]"><div className="flex items-start justify-between gap-4"><div><p className="eyebrow-label">Demonstracao guiada</p><p className="mt-2 text-xl font-semibold text-foreground">{activeTourStep.title}</p></div><button type="button" aria-label="Fechar demonstracao guiada" className="flex h-9 w-9 items-center justify-center rounded-full border border-border/80 bg-card/80 text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground" onClick={closeTour}><X className="h-4 w-4" /></button></div><p className="mt-3 text-sm leading-7 text-muted-foreground">{activeTourStep.description}</p><div className="mt-4 h-1.5 overflow-hidden rounded-full bg-secondary"><div className="h-full rounded-full bg-accent transition-all duration-200" style={{ width: `${((tourStepIndex + 1) / tourSteps.length) * 100}%` }} /></div><div className="mt-4 flex items-center justify-between gap-3"><Badge className="status-neutral">{tourStepIndex + 1} de {tourSteps.length}</Badge><div className="flex items-center gap-2"><Button type="button" variant="outline" className="h-10 rounded-full border-border bg-card/70 px-4 text-foreground hover:bg-secondary hover:text-foreground" onClick={() => setTourStepIndex((current) => Math.max(current - 1, 0))} disabled={tourStepIndex === 0}>Voltar</Button><Button type="button" className="h-10 rounded-full px-4" onClick={() => { if (tourStepIndex === tourSteps.length - 1) { closeTour(); return; } setTourStepIndex((current) => Math.min(current + 1, tourSteps.length - 1)); }}>{tourStepIndex === tourSteps.length - 1 ? "Concluir" : "Proximo"}<ArrowRight className="h-4 w-4" /></Button></div></div></div></motion.aside> : null}
+      {isTourActive ? <motion.aside initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 12 }} transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }} className="fixed bottom-4 left-4 right-4 z-40 sm:left-auto sm:right-6 sm:max-w-[420px]"><div className="surface-panel rounded-[26px] p-5 shadow-[0_30px_90px_-50px_hsl(var(--accent)/0.45)]"><div className="flex items-start justify-between gap-4"><div><p className="eyebrow-label">Demonstracao guiada</p><p className="mt-2 text-xl font-semibold text-foreground">{activeTourStep.title}</p></div><button type="button" aria-label="Fechar demonstracao guiada" className="flex h-9 w-9 items-center justify-center rounded-full border border-border/80 bg-card/80 text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground" onClick={closeTour}><X className="h-4 w-4" /></button></div><p className="mt-3 text-sm leading-7 text-muted-foreground">{activeTourStep.description}</p><div className="mt-4 h-1.5 overflow-hidden rounded-full bg-secondary"><div className="h-full rounded-full bg-accent transition-all duration-200" style={{ width: `${((tourStepIndex + 1) / tourSteps.length) * 100}%` }} /></div><div className="mt-4 flex flex-wrap items-center justify-between gap-3"><span className="hero-chip hero-chip-muted">{tourStepIndex + 1} de {tourSteps.length}</span><div className="flex items-center gap-2"><Button type="button" variant="outline" className="h-10 rounded-full border-border bg-card/70 px-4 text-foreground hover:bg-secondary hover:text-foreground" onClick={startTour}>Reiniciar</Button><Button type="button" variant="outline" className="h-10 rounded-full border-border bg-card/70 px-4 text-foreground hover:bg-secondary hover:text-foreground" onClick={() => setTourStepIndex((current) => Math.max(current - 1, 0))} disabled={tourStepIndex === 0}>Voltar</Button><Button type="button" className="h-10 rounded-full px-4" onClick={() => { if (tourStepIndex === tourSteps.length - 1) { closeTour(); return; } setTourStepIndex((current) => Math.min(current + 1, tourSteps.length - 1)); }}>{tourStepIndex === tourSteps.length - 1 ? "Concluir" : "Proximo"}<ArrowRight className="h-4 w-4" /></Button></div></div></div></motion.aside> : null}
     </>
   );
 }
