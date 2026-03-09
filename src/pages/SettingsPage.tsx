@@ -1,4 +1,5 @@
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { SectionHeading } from "@/components/os/SectionHeading";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useOsStore } from "@/store/os-store";
@@ -24,13 +25,20 @@ export function SettingsPage() {
     {
       title: "Deploy Vercel",
       status: "Pronto",
-      description: "CLI autenticado. Falta apenas publicar a preview apos configurar as variaveis Google.",
+      description: "Projeto publicado e pronto para operar com as variaveis configuradas em desenvolvimento, preview e producao.",
     },
   ];
 
   return (
-    <div className="grid gap-6 xl:grid-cols-[1fr_0.95fr]">
-      <Card className="glass-card rounded-[2rem]">
+    <div className="space-y-6">
+      <SectionHeading
+        eyebrow="Integracoes e ambiente"
+        title="Verifique o que esta conectado e como o sistema esta operando"
+        description="Use esta tela para conferir se a camada remota esta pronta, o que ainda falta e qual tema deixa sua leitura mais confortavel."
+      />
+
+      <div className="grid gap-6 xl:grid-cols-[1fr_0.95fr]">
+        <Card className="glass-card rounded-[2rem]">
         <CardHeader>
           <CardTitle className="text-xl">Estado das integracoes</CardTitle>
           <CardDescription>
@@ -70,17 +78,18 @@ export function SettingsPage() {
             </div>
           ) : null}
         </CardContent>
-      </Card>
+        </Card>
 
-      <Card className="glass-card rounded-[2rem]">
-        <CardHeader>
-          <CardTitle className="text-xl">Personalizacao visual</CardTitle>
-          <CardDescription>Escolha a atmosfera do painel para combinar com a sessao de trabalho ou a apresentacao.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <ThemeToggle />
-        </CardContent>
-      </Card>
+        <Card className="glass-card rounded-[2rem]">
+          <CardHeader>
+            <CardTitle className="text-xl">Personalizacao visual</CardTitle>
+            <CardDescription>Escolha a atmosfera do painel para combinar com a sessao de trabalho ou a apresentacao.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ThemeToggle />
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }

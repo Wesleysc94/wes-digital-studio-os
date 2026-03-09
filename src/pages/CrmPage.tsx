@@ -5,6 +5,8 @@ import { toast } from "sonner";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { EmptyStateCard } from "@/components/os/EmptyStateCard";
+import { SectionHeading } from "@/components/os/SectionHeading";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
@@ -12,6 +14,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Textarea } from "@/components/ui/textarea";
+import { UserPlus } from "lucide-react";
 import { formatShortDate, getLeadStatusClasses } from "@/lib/os-helpers";
 import { formatCurrency } from "@/lib/quote";
 import { useCreateLeadMutation } from "@/hooks/use-os-sync";
@@ -62,20 +65,41 @@ export function CrmPage() {
   });
 
   const onSubmit = async (values: CrmFormValues) => {
-    const result = await createLeadMutation.mutateAsync(values);
+    const result = await createLeadMutation.mutateAsync({
+      name: values.name,
+      company: values.company,
+      segment: values.segment,
+      city: values.city,
+      instagram: values.instagram ?? "",
+      website: values.website ?? "",
+      phone: values.phone,
+      source: values.source,
+      status: values.status,
+      proposedValue: values.proposedValue,
+      notes: values.notes ?? "",
+      nextContact: values.nextContact,
+      tags: values.tags,
+    });
     form.reset(defaultValues);
     toast.success(result.persisted ? "Lead enviado para a camada remota." : "Lead salvo localmente. Configure Google para persistencia remota.");
   };
 
   return (
-    <div className="grid gap-6 xl:grid-cols-[0.95fr_1.35fr]">
-      <Card className="glass-card rounded-[2rem]">
+    <div className="space-y-6">
+      <SectionHeading
+        eyebrow="Fluxo recomendado"
+        title="Comece registrando o lead com contexto, valor e proximo contato"
+        description="O objetivo aqui nao e preencher planilha. E deixar o proximo passo comercial obvio para voce e para o sistema."
+      />
+
+      <div className="grid gap-6 xl:grid-cols-[0.95fr_1.35fr]">
+        <Card className="glass-card rounded-[2rem]">
         <CardHeader>
           <CardTitle className="text-xl">Novo lead ou cliente</CardTitle>
           <CardDescription>Cadastre oportunidades, preencha os dados minimos e deixe o follow-up agendado.</CardDescription>
         </CardHeader>
         <CardContent>
-          <form className="space-y-5" onSubmit={form.handleSubmit(onSubmit)}>
+          <form id="crm-form" className="space-y-5" onSubmit={form.handleSubmit(onSubmit)}>
             <div className="grid gap-4 md:grid-cols-2">
               <div className="space-y-2">
                 <Label htmlFor="name">Nome</Label>
@@ -187,55 +211,66 @@ export function CrmPage() {
             </Button>
           </form>
         </CardContent>
-      </Card>
+        </Card>
 
-      <Card className="glass-card rounded-[2rem]">
-        <CardHeader>
-          <CardTitle className="text-xl">Pipeline atual</CardTitle>
-          <CardDescription>Visao consolidada dos leads e clientes salvos localmente nesta primeira fase.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="overflow-x-auto">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Lead</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Proximo contato</TableHead>
-                  <TableHead>Valor</TableHead>
-                  <TableHead>Etiquetas</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {leads.map((lead) => (
-                  <TableRow key={lead.id}>
-                    <TableCell>
-                      <div>
-                        <p className="font-medium text-foreground">{lead.name}</p>
-                        <p className="text-sm text-muted-foreground">{lead.company}</p>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <Badge className={getLeadStatusClasses(lead.status)}>{lead.status}</Badge>
-                    </TableCell>
-                    <TableCell>{formatShortDate(lead.nextContact)}</TableCell>
-                    <TableCell>{formatCurrency(lead.proposedValue)}</TableCell>
-                    <TableCell>
-                      <div className="flex flex-wrap gap-2">
-                        {lead.tags.map((tag) => (
-                          <Badge key={tag} className="border-border/60 bg-card/70 text-foreground">
-                            {tag}
-                          </Badge>
-                        ))}
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
-        </CardContent>
-      </Card>
+        <Card className="glass-card rounded-[2rem]">
+          <CardHeader>
+            <CardTitle className="text-xl">Pipeline atual</CardTitle>
+            <CardDescription>Visualize rapidamente quem entrou, em que etapa esta e quando voce deve agir de novo.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            {leads.length ? (
+              <div className="overflow-x-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Lead</TableHead>
+                      <TableHead>Status</TableHead>
+                      <TableHead>Proximo contato</TableHead>
+                      <TableHead>Valor</TableHead>
+                      <TableHead>Etiquetas</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {leads.map((lead) => (
+                      <TableRow key={lead.id}>
+                        <TableCell>
+                          <div>
+                            <p className="font-medium text-foreground">{lead.name}</p>
+                            <p className="text-sm text-muted-foreground">{lead.company}</p>
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <Badge className={getLeadStatusClasses(lead.status)}>{lead.status}</Badge>
+                        </TableCell>
+                        <TableCell>{formatShortDate(lead.nextContact)}</TableCell>
+                        <TableCell>{formatCurrency(lead.proposedValue)}</TableCell>
+                        <TableCell>
+                          <div className="flex flex-wrap gap-2">
+                            {lead.tags.map((tag) => (
+                              <Badge key={tag} className="border-border/60 bg-card/70 text-foreground">
+                                {tag}
+                              </Badge>
+                            ))}
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+            ) : (
+              <EmptyStateCard
+                icon={UserPlus}
+                title="Seu pipeline ainda esta vazio"
+                description="Comece registrando o primeiro lead com nome, empresa, status e proximo contato. A partir dai o CRM passa a orientar seu dia."
+                actionLabel="Cadastrar primeiro lead"
+                actionHref="/crm#crm-form"
+              />
+            )}
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }

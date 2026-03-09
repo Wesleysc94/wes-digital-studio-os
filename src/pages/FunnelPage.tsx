@@ -1,12 +1,35 @@
+import { Copy, MessagesSquare, Radar, Sparkles, Target } from "lucide-react";
 import { toast } from "sonner";
 
+import { SectionHeading } from "@/components/os/SectionHeading";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { funnelTemplates } from "@/data/mock-operations";
+import { salesPlaybook } from "@/data/mock-operations";
 import { getLeadStatusClasses } from "@/lib/os-helpers";
 import { useOsStore } from "@/store/os-store";
 import { LEAD_STATUS_OPTIONS } from "@/types/os";
+
+function getRecommendedStage(activeLeads: number, proposalsSent: number, awaitingResponse: number) {
+  if (awaitingResponse > 0 || proposalsSent > 0) {
+    return {
+      title: "Negociacao e fechamento",
+      description: "Seu foco do dia esta em recuperar contexto, tirar objecoes do caminho e transformar proposta em decisao.",
+    };
+  }
+
+  if (activeLeads > 0) {
+    return {
+      title: "Descoberta e diagnostico",
+      description: "O pipeline tem conversa aberta. Agora vale aprofundar dor, urgencia e impacto comercial antes de falar de escopo.",
+    };
+  }
+
+  return {
+    title: "Abordagem inicial",
+    description: "Sem pipeline ativo, sua prioridade e abrir novas conversas com diagnostico e convite leve para avancar.",
+  };
+}
 
 export function FunnelPage() {
   const leads = useOsStore((state) => state.leads);
@@ -16,54 +39,151 @@ export function FunnelPage() {
     total: leads.filter((lead) => lead.status === status).length,
   }));
 
+  const activeLeads = leads.filter((lead) => !["Fechado", "Perdido"].includes(lead.status)).length;
+  const proposalsSent = leads.filter((lead) => lead.status === "Proposta enviada").length;
+  const awaitingResponse = leads.filter((lead) => lead.status === "Aguardando resposta").length;
+  const recommendedStage = getRecommendedStage(activeLeads, proposalsSent, awaitingResponse);
+
   const copyToClipboard = async (content: string) => {
     await navigator.clipboard.writeText(content);
     toast.success("Mensagem copiada para a area de transferencia.");
   };
 
   return (
-    <div className="space-y-6">
-      <div className="grid gap-4 md:grid-cols-3 xl:grid-cols-6">
-        {stageCounts.map((stage) => (
-          <Card key={stage.status} className="glass-card rounded-[1.75rem]">
-            <CardContent className="p-5">
-              <p className="text-sm text-muted-foreground">{stage.status}</p>
-              <div className="mt-3 flex items-end justify-between gap-3">
-                <p className="text-3xl font-semibold text-foreground">{stage.total}</p>
-                <Badge className={getLeadStatusClasses(stage.status)}>{stage.total} lead(s)</Badge>
+    <div className="space-y-6 xl:space-y-8">
+      <div className="grid gap-6 xl:grid-cols-[1.1fr_0.9fr]">
+        <Card className="glass-card rounded-[30px] border-white/10">
+          <CardHeader>
+            <SectionHeading
+              eyebrow="Playbook comercial"
+              title="Funil de vendas orientado por etapa"
+              description="Use este modulo como roteiro real da conversa. Cada etapa explica objetivo, estrategia e mensagem recomendada."
+            />
+          </CardHeader>
+          <CardContent className="pt-0">
+            <div className="rounded-[24px] border border-accent/20 bg-accent/10 p-5">
+              <div className="flex items-center gap-3">
+                <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-accent/20 bg-slate-950/30 text-accent">
+                  <Radar className="h-5 w-5" />
+                </div>
+                <div>
+                  <p className="text-[11px] uppercase tracking-[0.28em] text-accent/80">Foco sugerido hoje</p>
+                  <p className="mt-1 text-xl font-semibold text-white">{recommendedStage.title}</p>
+                </div>
               </div>
-            </CardContent>
-          </Card>
-        ))}
+              <p className="mt-4 text-sm leading-7 text-white/68">{recommendedStage.description}</p>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="glass-card rounded-[30px] border-white/10">
+          <CardHeader>
+            <CardTitle className="text-2xl text-white">Radar do pipeline</CardTitle>
+            <CardDescription>Leitura rapida do momento comercial para saber qual etapa precisa de mais energia.</CardDescription>
+          </CardHeader>
+          <CardContent className="grid gap-3 sm:grid-cols-2">
+            {stageCounts.map((stage) => (
+              <div key={stage.status} className="rounded-[22px] border border-white/8 bg-white/[0.03] p-4">
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <p className="text-sm text-white/78">{stage.status}</p>
+                  <Badge className={getLeadStatusClasses(stage.status)}>{stage.total}</Badge>
+                </div>
+                <p className="mt-3 text-xs leading-5 text-white/45">
+                  {stage.total ? "Existe movimento real nessa etapa." : "Sem item ativo nessa fase agora."}
+                </p>
+              </div>
+            ))}
+          </CardContent>
+        </Card>
       </div>
 
-      <div className="grid gap-6 xl:grid-cols-2">
-        {(["Cliente sem site", "Cliente com site ruim"] as const).map((audience) => (
-          <Card key={audience} className="glass-card rounded-[2rem]">
-            <CardHeader>
-              <CardTitle className="text-xl">{audience}</CardTitle>
-              <CardDescription>Scripts prontos para abordagem, objecoes e fechamento.</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {funnelTemplates
-                .filter((template) => template.audience === audience)
-                .map((template) => (
-                  <div key={template.id} className="rounded-[1.75rem] border border-border/60 bg-card/60 p-5">
-                    <div className="flex items-start justify-between gap-3">
-                      <div>
-                        <p className="font-medium text-foreground">{template.title}</p>
-                        <p className="text-sm text-muted-foreground">{template.audience}</p>
+      <div className="space-y-4">
+        <SectionHeading
+          eyebrow="Etapas da venda"
+          title="Como conduzir a conversa de ponta a ponta"
+          description="Cada bloco abaixo foi escrito para reduzir improviso e aumentar clareza comercial."
+        />
+
+        <div className="space-y-5">
+          {salesPlaybook.map((stage, index) => (
+            <Card key={stage.id} className="glass-card rounded-[30px] border-white/10">
+              <CardContent className="p-6 sm:p-7">
+                <div className="grid gap-6 xl:grid-cols-[280px_minmax(0,1fr)]">
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-slate-950/40 text-accent">
+                        <span className="text-base font-semibold">{index + 1}</span>
                       </div>
-                      <Button type="button" variant="outline" className="rounded-2xl" onClick={() => copyToClipboard(template.message)}>
-                        Copiar
-                      </Button>
+                      <div>
+                        <p className="text-[11px] uppercase tracking-[0.28em] text-white/38">Etapa {index + 1}</p>
+                        <h3 className="mt-1 text-2xl font-semibold text-white">{stage.title}</h3>
+                      </div>
                     </div>
-                    <p className="mt-4 whitespace-pre-wrap text-sm leading-relaxed text-foreground/85">{template.message}</p>
+
+                    <div className="rounded-[24px] border border-white/8 bg-white/[0.03] p-4">
+                      <div className="flex items-start gap-3">
+                        <Target className="mt-0.5 h-4 w-4 text-accent" />
+                        <div>
+                          <p className="text-sm font-medium text-white">Objetivo da etapa</p>
+                          <p className="mt-2 text-sm leading-6 text-white/62">{stage.objective}</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="rounded-[24px] border border-white/8 bg-white/[0.03] p-4">
+                      <div className="flex items-start gap-3">
+                        <Sparkles className="mt-0.5 h-4 w-4 text-accent" />
+                        <div>
+                          <p className="text-sm font-medium text-white">Como pensar essa fase</p>
+                          <p className="mt-2 text-sm leading-6 text-white/62">{stage.explanation}</p>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                ))}
-            </CardContent>
-          </Card>
-        ))}
+
+                  <div className="space-y-5">
+                    <div className="rounded-[24px] border border-white/8 bg-white/[0.03] p-5">
+                      <div className="flex items-center gap-3">
+                        <MessagesSquare className="h-4 w-4 text-accent" />
+                        <p className="text-sm font-medium text-white">Estrategia de abordagem</p>
+                      </div>
+                      <div className="mt-4 grid gap-3 md:grid-cols-3">
+                        {stage.strategy.map((item) => (
+                          <div key={item} className="rounded-[18px] border border-white/8 bg-slate-950/35 p-4 text-sm leading-6 text-white/64">
+                            {item}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="grid gap-4 xl:grid-cols-2">
+                      {stage.messages.map((message) => (
+                        <div key={message.id} className="rounded-[24px] border border-white/8 bg-white/[0.03] p-5">
+                          <div className="flex items-start justify-between gap-3">
+                            <div>
+                              <p className="text-sm font-medium text-white">{message.label}</p>
+                              <p className="mt-1 text-xs uppercase tracking-[0.22em] text-white/36">{message.audience}</p>
+                            </div>
+                            <Button
+                              type="button"
+                              variant="outline"
+                              className="rounded-full border-white/10 bg-white/[0.03] text-white hover:bg-white/[0.08] hover:text-white"
+                              onClick={() => copyToClipboard(message.message)}
+                            >
+                              <Copy className="h-4 w-4" />
+                              Copiar
+                            </Button>
+                          </div>
+                          <p className="mt-4 whitespace-pre-wrap text-sm leading-7 text-white/74">{message.message}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
       </div>
     </div>
   );

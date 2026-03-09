@@ -2,11 +2,9 @@ import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { AnimatePresence, motion } from "framer-motion";
 import {
-  ArrowUpRight,
   BookOpen,
   CheckSquare,
   ChevronRight,
-  CircleDot,
   Cog,
   LayoutDashboard,
   Menu,
@@ -14,6 +12,7 @@ import {
   ReceiptText,
   Sparkles,
   Users,
+  Wifi,
   X,
 } from "lucide-react";
 import { useMemo, useState } from "react";
@@ -22,6 +21,7 @@ import { NavLink, Outlet, useLocation } from "react-router-dom";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { RouteSkeleton } from "@/components/os/RouteSkeleton";
 import { cn } from "@/lib/utils";
 import { useOsBootstrap } from "@/hooks/use-os-sync";
 import { useOsStore } from "@/store/os-store";
@@ -32,175 +32,189 @@ type RouteMeta = {
   description: string;
 };
 
+export type AppShellOutletContext = {
+  pageMeta: RouteMeta;
+  isBootstrapping: boolean;
+  isSyncing: boolean;
+};
+
 const ROUTE_META: Record<string, RouteMeta> = {
   "/dashboard": {
     kicker: "Central operacional",
     title: "Dashboard operacional",
-    description: "Leitura executiva da operacao comercial, follow-ups e receita da micro-agencia.",
+    description: "Entenda o contexto do dia, o que exige acao e qual e o proximo movimento recomendado.",
   },
   "/crm": {
     kicker: "Pipeline comercial",
     title: "CRM de leads e clientes",
-    description: "Cadastre oportunidades, acompanhe status e transforme contato em proposta com menos atrito.",
+    description: "Cadastre oportunidades, acompanhe respostas e mantenha a negociacao organizada.",
   },
   "/orcamentos": {
     kicker: "Fechamento comercial",
     title: "Gerador de orcamentos",
-    description: "Monte propostas com escopo, extras, implantacao e recorrencia em uma unica tela.",
+    description: "Construa propostas claras, com escopo, extras e recorrencia bem separados.",
   },
   "/funil": {
-    kicker: "Cadencia comercial",
+    kicker: "Playbook de vendas",
     title: "Funil de vendas",
-    description: "Scripts, respostas e mensagens para destravar prospeccao e follow-up sem improviso.",
+    description: "Use mensagens consultivas, estrategia de etapa e roteiro de fechamento sem improviso.",
   },
   "/manual": {
-    kicker: "Base interna",
+    kicker: "Operacao interna",
     title: "Manual da operacao",
-    description: "Precos, fluxo de venda, entrega, manutencao e renovacoes documentados no mesmo sistema.",
+    description: "Regras comerciais, entrega, manutencao e renovacao para padronizar a agencia.",
   },
   "/tarefas": {
     kicker: "Execucao diaria",
     title: "Tarefas e manutencoes",
-    description: "Controle o que precisa ser entregue, reaberto ou concluido sem depender de memoria.",
+    description: "Priorize entregas, follow-ups e itens recorrentes sem perder contexto.",
   },
   "/configuracoes": {
     kicker: "Infraestrutura",
     title: "Configuracoes do sistema",
-    description: "Monitore integracoes, variaveis e modo operacional do ambiente em tempo real.",
+    description: "Acompanhe integracoes, sincronizacao e preferencias do ambiente em tempo real.",
   },
 };
 
-const NAVIGATION = [
-  { href: "/dashboard", label: "Dashboard", helper: "Visao executiva", icon: LayoutDashboard },
-  { href: "/crm", label: "CRM", helper: "Leads e clientes", icon: Users },
-  { href: "/orcamentos", label: "Orcamentos", helper: "Propostas e planos", icon: ReceiptText },
-  { href: "/funil", label: "Funil", helper: "Scripts de venda", icon: Orbit },
-  { href: "/manual", label: "Manual", helper: "Base de conhecimento", icon: BookOpen },
-  { href: "/tarefas", label: "Tarefas", helper: "Execucao diaria", icon: CheckSquare },
-  { href: "/configuracoes", label: "Configuracoes", helper: "Integracoes e ambiente", icon: Cog },
+const NAV_GROUPS = [
+  {
+    label: "Hoje",
+    items: [{ href: "/dashboard", label: "Dashboard", helper: "Visao executiva", icon: LayoutDashboard }],
+  },
+  {
+    label: "Comercial",
+    items: [
+      { href: "/crm", label: "CRM", helper: "Leads e clientes", icon: Users },
+      { href: "/orcamentos", label: "Orcamentos", helper: "Propostas e planos", icon: ReceiptText },
+      { href: "/funil", label: "Funil", helper: "Playbook de vendas", icon: Orbit },
+    ],
+  },
+  {
+    label: "Operacao",
+    items: [
+      { href: "/manual", label: "Manual", helper: "Base da agencia", icon: BookOpen },
+      { href: "/tarefas", label: "Tarefas", helper: "Execucao e manutencao", icon: CheckSquare },
+      { href: "/configuracoes", label: "Configuracoes", helper: "Integracoes e tema", icon: Cog },
+    ],
+  },
 ] as const;
 
 export function AppShell() {
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  useOsBootstrap();
+  const bootstrapQuery = useOsBootstrap();
 
   const leads = useOsStore((state) => state.leads);
   const proposals = useOsStore((state) => state.proposals);
   const tasks = useOsStore((state) => state.tasks);
   const integration = useOsStore((state) => state.integration);
+  const syncedAt = useOsStore((state) => state.syncedAt);
 
   const pageMeta = ROUTE_META[location.pathname] ?? ROUTE_META["/dashboard"];
-
+  const isBootstrapping = bootstrapQuery.isLoading && !syncedAt;
   const openLeads = leads.filter((lead) => !["Fechado", "Perdido"].includes(lead.status)).length;
   const sentProposals = proposals.filter((proposal) => proposal.status === "sent").length;
   const pendingTasks = tasks.filter((task) => task.status !== "Concluida").length;
-  const followUps = leads.filter((lead) => !["Fechado", "Perdido"].includes(lead.status) && lead.nextContact).length;
-
-  const quickActions = useMemo(
-    () => [
-      { href: "/crm", label: "Cadastrar lead", caption: "Abrir pipeline", tone: "primary" as const },
-      { href: "/orcamentos", label: "Gerar proposta", caption: "Montar oferta", tone: "secondary" as const },
-      { href: "/tarefas", label: "Organizar sprint", caption: "Executar agora", tone: "secondary" as const },
-    ],
-    [],
-  );
 
   const integrationLabel =
     integration.mode === "google" ? "Google online" : integration.mode === "mock" ? "Modo mock" : "Modo local";
 
-  const sideSummary = [
-    { label: "Leads abertos", value: openLeads },
-    { label: "Propostas em curso", value: sentProposals },
-    { label: "Tarefas pendentes", value: pendingTasks },
-  ];
+  const navigationCounts = useMemo(
+    () => ({
+      "/crm": openLeads,
+      "/orcamentos": proposals.length,
+      "/funil": sentProposals,
+      "/tarefas": pendingTasks,
+    }),
+    [openLeads, pendingTasks, proposals.length, sentProposals],
+  );
 
   const sidebarContent = (
     <div className="flex h-full flex-col">
-      <div className="rounded-[28px] border border-white/10 bg-white/[0.04] p-5 shadow-[0_30px_80px_-48px_rgba(0,0,0,0.8)]">
+      <div className="rounded-[28px] border border-white/10 bg-white/[0.04] p-5 shadow-[0_28px_80px_-50px_rgba(0,0,0,0.75)]">
         <div className="flex items-center gap-3">
-          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[linear-gradient(135deg,hsl(var(--accent)),rgba(255,255,255,0.75))] text-slate-950 shadow-[0_18px_50px_-22px_hsl(var(--accent))]">
+          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[linear-gradient(135deg,hsl(var(--accent)),rgba(255,255,255,0.78))] text-slate-950">
             <Sparkles className="h-5 w-5" />
           </div>
           <div className="min-w-0">
-            <p className="text-[11px] uppercase tracking-[0.34em] text-white/45">Micro-agencia OS</p>
-            <p className="truncate text-lg font-semibold text-white">Wes Digital Studio</p>
+            <p className="text-[11px] uppercase tracking-[0.34em] text-white/42">WES Digital Studio</p>
+            <p className="truncate text-lg font-semibold text-white">OS operacional</p>
           </div>
         </div>
 
-        <p className="mt-4 text-sm leading-7 text-white/68">
-          Sistema interno para leads, propostas, tarefas e follow-ups com base operacional unica.
+        <p className="mt-4 text-sm leading-7 text-white/60">
+          CRM, funil, orcamentos, tarefas e manual em uma unica camada de operacao.
         </p>
       </div>
 
-      <nav className="mt-6 space-y-2">
-        {NAVIGATION.map((item) => {
-          const count =
-            item.href === "/crm"
-              ? openLeads
-              : item.href === "/orcamentos"
-                ? proposals.length
-                : item.href === "/funil"
-                  ? sentProposals
-                  : item.href === "/tarefas"
-                    ? pendingTasks
-                    : undefined;
+      <div className="mt-6 space-y-5">
+        {NAV_GROUPS.map((group) => (
+          <div key={group.label}>
+            <p className="mb-2 px-1 text-[11px] uppercase tracking-[0.28em] text-white/32">{group.label}</p>
+            <div className="space-y-2">
+              {group.items.map((item) => (
+                <NavLink
+                  key={item.href}
+                  to={item.href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={({ isActive }) =>
+                    cn(
+                      "group flex items-center gap-3 rounded-[22px] border px-4 py-3 transition-all duration-200",
+                      isActive
+                        ? "border-accent/50 bg-accent/12 text-white shadow-[0_18px_50px_-34px_hsl(var(--accent))]"
+                        : "border-white/8 bg-white/[0.025] text-white/72 hover:border-white/16 hover:bg-white/[0.05]",
+                    )
+                  }
+                >
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-slate-950/40 text-accent">
+                    <item.icon className="h-4 w-4" />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm font-medium">{item.label}</p>
+                    <p className="text-xs text-white/42">{item.helper}</p>
+                  </div>
+                  {item.href in navigationCounts ? (
+                    <span className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-xs font-medium text-white/70">
+                      {navigationCounts[item.href as keyof typeof navigationCounts]}
+                    </span>
+                  ) : (
+                    <ChevronRight className="h-4 w-4 text-white/28 transition-transform duration-200 group-hover:translate-x-0.5" />
+                  )}
+                </NavLink>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
 
-          return (
-            <NavLink
-              key={item.href}
-              to={item.href}
-              onClick={() => setMobileMenuOpen(false)}
-              className={({ isActive }) =>
-                cn(
-                  "group flex items-center gap-3 rounded-[24px] border px-4 py-3 transition-all duration-200",
-                  isActive
-                    ? "border-accent/50 bg-accent/12 text-white shadow-[0_20px_70px_-38px_hsl(var(--accent))]"
-                    : "border-white/6 bg-white/[0.025] text-white/72 hover:border-white/15 hover:bg-white/[0.045]",
-                )
-              }
-            >
-              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-slate-950/45 text-accent">
-                <item.icon className="h-4 w-4" />
-              </div>
-              <div className="min-w-0 flex-1">
-                <p className="text-sm font-medium">{item.label}</p>
-                <p className="text-xs text-white/45">{item.helper}</p>
-              </div>
-              {count !== undefined ? (
-                <span className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-xs font-medium text-white/72">
-                  {count}
-                </span>
-              ) : (
-                <ChevronRight className="h-4 w-4 text-white/30 transition-transform duration-200 group-hover:translate-x-0.5" />
-              )}
-            </NavLink>
-          );
-        })}
-      </nav>
-
-      <div className="mt-6 rounded-[28px] border border-white/10 bg-white/[0.035] p-5">
-        <div className="mb-4 flex items-start justify-between gap-3">
+      <div className="mt-6 rounded-[24px] border border-white/10 bg-white/[0.03] p-4">
+        <div className="flex items-center justify-between gap-3">
           <div>
-            <p className="text-sm font-medium text-white">Ambiente ativo</p>
-            <p className="mt-1 text-xs leading-5 text-white/45">Integracoes e cadencia operacional desta instancia.</p>
+            <p className="text-sm font-medium text-white">Saude do sistema</p>
+            <p className="mt-1 text-xs leading-5 text-white/42">Status da camada remota e da sincronizacao.</p>
           </div>
           <Badge className="border-accent/30 bg-accent/10 text-accent">{integrationLabel}</Badge>
         </div>
 
-        <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-1">
-          {sideSummary.map((item) => (
-            <div key={item.label} className="rounded-2xl border border-white/8 bg-slate-950/35 px-4 py-3">
-              <p className="text-[11px] uppercase tracking-[0.24em] text-white/35">{item.label}</p>
-              <p className="mt-2 text-2xl font-semibold text-white">{item.value}</p>
-            </div>
-          ))}
+        <div className="mt-4 grid gap-3 sm:grid-cols-3 lg:grid-cols-1">
+          <div className="rounded-2xl border border-white/8 bg-slate-950/40 px-4 py-3">
+            <p className="text-[11px] uppercase tracking-[0.24em] text-white/32">Leads abertos</p>
+            <p className="mt-2 text-2xl font-semibold text-white">{openLeads}</p>
+          </div>
+          <div className="rounded-2xl border border-white/8 bg-slate-950/40 px-4 py-3">
+            <p className="text-[11px] uppercase tracking-[0.24em] text-white/32">Propostas no radar</p>
+            <p className="mt-2 text-2xl font-semibold text-white">{sentProposals}</p>
+          </div>
+          <div className="rounded-2xl border border-white/8 bg-slate-950/40 px-4 py-3">
+            <p className="text-[11px] uppercase tracking-[0.24em] text-white/32">Pendencias abertas</p>
+            <p className="mt-2 text-2xl font-semibold text-white">{pendingTasks}</p>
+          </div>
         </div>
       </div>
 
       <div className="mt-6">
-        <ThemeToggle />
+        <ThemeToggle variant="compact" />
       </div>
     </div>
   );
@@ -208,8 +222,8 @@ export function AppShell() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <div className="pointer-events-none fixed inset-0 overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(44,195,255,0.18),transparent_26%),radial-gradient(circle_at_bottom_left,rgba(23,37,84,0.28),transparent_34%),linear-gradient(180deg,rgba(2,6,23,0.28),rgba(2,6,23,0.04))]" />
-        <div className="app-grid absolute inset-0 opacity-40" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(44,195,255,0.14),transparent_24%),radial-gradient(circle_at_bottom_left,rgba(21,38,86,0.26),transparent_32%),linear-gradient(180deg,rgba(2,6,23,0.28),rgba(2,6,23,0.08))]" />
+        <div className="app-grid absolute inset-0 opacity-35" />
       </div>
 
       <AnimatePresence>
@@ -218,21 +232,21 @@ export function AppShell() {
             <motion.button
               type="button"
               aria-label="Fechar menu"
-              className="fixed inset-0 z-40 bg-slate-950/70 backdrop-blur-sm lg:hidden"
+              className="fixed inset-0 z-40 bg-slate-950/74 backdrop-blur-sm lg:hidden"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setMobileMenuOpen(false)}
             />
             <motion.aside
-              initial={{ x: -24, opacity: 0 }}
+              initial={{ x: -28, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
-              exit={{ x: -24, opacity: 0 }}
+              exit={{ x: -28, opacity: 0 }}
               transition={{ duration: 0.18, ease: "easeOut" }}
-              className="fixed inset-y-0 left-0 z-50 w-[88vw] max-w-[320px] border-r border-white/10 bg-[#07111f]/96 p-4 backdrop-blur-2xl lg:hidden"
+              className="fixed inset-y-0 left-0 z-50 w-[88vw] max-w-[324px] border-r border-white/10 bg-[#07111f]/96 p-4 backdrop-blur-2xl lg:hidden"
             >
               <div className="mb-5 flex items-center justify-between">
-                <p className="text-sm font-medium text-white">Navegacao</p>
+                <p className="text-sm font-medium text-white">Menu operacional</p>
                 <Button
                   type="button"
                   variant="ghost"
@@ -254,7 +268,7 @@ export function AppShell() {
       </aside>
 
       <div className="relative z-10 lg:pl-[296px]">
-        <header className="sticky top-0 z-20 border-b border-white/8 bg-background/72 backdrop-blur-xl">
+        <header className="sticky top-0 z-20 border-b border-white/8 bg-background/78 backdrop-blur-xl">
           <div className="mx-auto flex max-w-[1480px] items-center justify-between gap-4 px-4 py-4 sm:px-6 xl:px-8">
             <div className="flex min-w-0 items-center gap-3">
               <Button
@@ -269,80 +283,37 @@ export function AppShell() {
               <div className="min-w-0">
                 <p className="text-[11px] uppercase tracking-[0.32em] text-white/38">{pageMeta.kicker}</p>
                 <h1 className="truncate text-lg font-semibold text-white sm:text-2xl">{pageMeta.title}</h1>
+                <p className="mt-1 hidden text-sm text-white/48 md:block">{pageMeta.description}</p>
               </div>
             </div>
 
-            <div className="hidden items-center gap-2 lg:flex">
+            <div className="hidden items-center gap-2 xl:flex">
               <Badge className="border-white/10 bg-white/[0.04] text-white/78">
                 {format(new Date(), "dd 'de' MMMM", { locale: ptBR })}
               </Badge>
-              <Badge className="border-accent/20 bg-accent/10 text-accent">{followUps} follow-ups</Badge>
-              <Badge className="border-white/10 bg-white/[0.04] text-white/78">{integrationLabel}</Badge>
+              <Badge className="border-white/10 bg-white/[0.04] text-white/72">
+                <Wifi className="mr-1.5 h-3.5 w-3.5" />
+                {bootstrapQuery.isFetching ? "Sincronizando" : integrationLabel}
+              </Badge>
+              {syncedAt ? (
+                <Badge className="border-white/10 bg-white/[0.04] text-white/72">
+                  Atualizado {format(new Date(syncedAt), "HH:mm")}
+                </Badge>
+              ) : null}
             </div>
           </div>
         </header>
 
         <main className="mx-auto max-w-[1480px] px-4 py-6 sm:px-6 xl:px-8 xl:py-8">
-          <section className="mb-8 grid gap-4 xl:grid-cols-[minmax(0,1.4fr)_360px]">
-            <div className="overflow-hidden rounded-[32px] border border-white/10 bg-[linear-gradient(135deg,rgba(5,10,20,0.88),rgba(8,28,44,0.72)_55%,rgba(37,99,235,0.18))] p-6 shadow-[0_32px_120px_-54px_rgba(0,0,0,0.75)] sm:p-8">
-              <div className="flex flex-wrap items-center gap-2">
-                <Badge className="border-accent/30 bg-accent/10 text-accent">Operacao interna</Badge>
-                <Badge className="border-white/10 bg-white/[0.04] text-white/70">{openLeads} leads em aberto</Badge>
-              </div>
-
-              <h2 className="mt-5 max-w-3xl text-3xl font-semibold text-white sm:text-4xl">{pageMeta.title}</h2>
-              <p className="mt-4 max-w-2xl text-sm leading-7 text-white/68 sm:text-base">{pageMeta.description}</p>
-
-              <div className="mt-6 flex flex-wrap gap-3">
-                {quickActions.map((action) => (
-                  <NavLink
-                    key={action.href}
-                    to={action.href}
-                    className={cn(
-                      "group inline-flex items-center gap-3 rounded-full border px-4 py-2.5 text-sm font-medium transition-all duration-200",
-                      action.tone === "primary"
-                        ? "border-accent/35 bg-accent/12 text-white hover:bg-accent/18"
-                        : "border-white/10 bg-white/[0.04] text-white/78 hover:bg-white/[0.08]",
-                    )}
-                  >
-                    <span>{action.label}</span>
-                    <span className="text-white/45">{action.caption}</span>
-                    <ArrowUpRight className="h-4 w-4 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-                  </NavLink>
-                ))}
-              </div>
-            </div>
-
-            <div className="grid gap-4 sm:grid-cols-3 xl:grid-cols-1">
-              {[
-                { label: "Leads quentes", value: openLeads, helper: "Oportunidades que ainda precisam de acao." },
-                { label: "Propostas ativas", value: sentProposals, helper: "Negociacoes em analise comercial." },
-                { label: "Execucao da semana", value: pendingTasks, helper: "Itens pendentes para destravar faturamento." },
-              ].map((item) => (
-                <div
-                  key={item.label}
-                  className="rounded-[28px] border border-white/10 bg-white/[0.045] p-5 shadow-[0_25px_80px_-50px_rgba(0,0,0,0.7)]"
-                >
-                  <div className="flex items-center justify-between gap-3">
-                    <p className="text-[11px] uppercase tracking-[0.28em] text-white/40">{item.label}</p>
-                    <CircleDot className="h-4 w-4 text-accent" />
-                  </div>
-                  <p className="mt-4 text-4xl font-semibold text-white">{item.value}</p>
-                  <p className="mt-3 text-sm leading-6 text-white/58">{item.helper}</p>
-                </div>
-              ))}
-            </div>
-          </section>
-
           <AnimatePresence mode="wait">
             <motion.div
               key={location.pathname}
-              initial={{ opacity: 0, y: 12 }}
+              initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -12 }}
+              exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.18, ease: "easeOut" }}
             >
-              <Outlet />
+              {isBootstrapping ? <RouteSkeleton /> : <Outlet context={{ pageMeta, isBootstrapping, isSyncing: bootstrapQuery.isFetching }} />}
             </motion.div>
           </AnimatePresence>
         </main>

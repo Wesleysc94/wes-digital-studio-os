@@ -6,12 +6,13 @@ interface MetricCardProps {
   title: string;
   value: string;
   helper: string;
+  insight: string;
   icon: LucideIcon;
 }
 
-export function MetricCard({ title, value, helper, icon: Icon }: MetricCardProps) {
+export function MetricCard({ title, value, helper, insight, icon: Icon }: MetricCardProps) {
   return (
-    <Card className="glass-card overflow-hidden rounded-[28px]">
+    <Card className="glass-card overflow-hidden rounded-[28px] border-white/10">
       <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-3">
         <div className="space-y-2">
           <p className="text-[11px] uppercase tracking-[0.28em] text-muted-foreground">{title}</p>
@@ -21,8 +22,12 @@ export function MetricCard({ title, value, helper, icon: Icon }: MetricCardProps
           <Icon className="h-5 w-5" />
         </div>
       </CardHeader>
-      <CardContent>
+      <CardContent className="space-y-4">
         <p className="max-w-[18rem] text-sm leading-6 text-muted-foreground">{helper}</p>
+        <div className="rounded-2xl border border-white/8 bg-white/[0.03] px-4 py-3">
+          <p className="text-xs uppercase tracking-[0.24em] text-white/32">Insight</p>
+          <p className="mt-2 text-sm leading-6 text-white/72">{insight}</p>
+        </div>
       </CardContent>
     </Card>
   );

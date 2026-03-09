@@ -2,9 +2,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { toast } from "sonner";
+import { ClipboardList } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { EmptyStateCard } from "@/components/os/EmptyStateCard";
+import { SectionHeading } from "@/components/os/SectionHeading";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -45,7 +48,11 @@ export function TasksPage() {
 
   const onSubmit = async (values: TaskFormValues) => {
     const result = await createTaskMutation.mutateAsync({
-      ...values,
+      title: values.title,
+      description: values.description,
+      priority: values.priority,
+      relatedClient: values.relatedClient ?? "",
+      dueDate: values.dueDate,
       status: "Aberta",
     });
     form.reset(defaultValues);
@@ -53,14 +60,21 @@ export function TasksPage() {
   };
 
   return (
-    <div className="grid gap-6 xl:grid-cols-[0.95fr_1.35fr]">
-      <Card className="glass-card rounded-[2rem]">
+    <div className="space-y-6">
+      <SectionHeading
+        eyebrow="Execucao diaria"
+        title="Registre o que precisa acontecer para o comercial e a entrega nao perderem ritmo"
+        description="Tarefa boa e tarefa acionavel: titulo direto, prioridade, prazo e cliente relacionado."
+      />
+
+      <div className="grid gap-6 xl:grid-cols-[0.95fr_1.35fr]">
+        <Card className="glass-card rounded-[2rem]">
         <CardHeader>
           <CardTitle className="text-xl">Nova tarefa</CardTitle>
           <CardDescription>Registre follow-ups, manutencoes e entregas para nao depender da memoria.</CardDescription>
         </CardHeader>
         <CardContent>
-          <form className="space-y-5" onSubmit={form.handleSubmit(onSubmit)}>
+          <form id="task-form" className="space-y-5" onSubmit={form.handleSubmit(onSubmit)}>
             <div className="space-y-2">
               <Label htmlFor="title">Titulo</Label>
               <Input id="title" {...form.register("title")} />
@@ -105,34 +119,45 @@ export function TasksPage() {
             </Button>
           </form>
         </CardContent>
-      </Card>
+        </Card>
 
-      <div className="space-y-4">
-        {tasks.map((task) => (
-          <Card key={task.id} className="glass-card rounded-[2rem]">
-            <CardContent className="p-5">
-              <div className="flex flex-wrap items-start justify-between gap-3">
-                <div>
-                  <p className="text-lg font-medium text-foreground">{task.title}</p>
-                  <p className="mt-1 text-sm text-muted-foreground">{task.relatedClient || "Sem cliente vinculado"}</p>
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  <Badge className={getTaskPriorityClasses(task.priority)}>{task.priority}</Badge>
-                  <Badge className={getTaskStatusClasses(task.status)}>{task.status}</Badge>
-                </div>
-              </div>
+        <div className="space-y-4">
+          {tasks.length ? (
+            tasks.map((task) => (
+              <Card key={task.id} className="glass-card rounded-[2rem]">
+                <CardContent className="p-5">
+                  <div className="flex flex-wrap items-start justify-between gap-3">
+                    <div>
+                      <p className="text-lg font-medium text-foreground">{task.title}</p>
+                      <p className="mt-1 text-sm text-muted-foreground">{task.relatedClient || "Sem cliente vinculado"}</p>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      <Badge className={getTaskPriorityClasses(task.priority)}>{task.priority}</Badge>
+                      <Badge className={getTaskStatusClasses(task.status)}>{task.status}</Badge>
+                    </div>
+                  </div>
 
-              <p className="mt-4 text-sm leading-relaxed text-foreground/85">{task.description}</p>
+                  <p className="mt-4 text-sm leading-relaxed text-foreground/85">{task.description}</p>
 
-              <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
-                <p className="text-sm text-muted-foreground">Prazo: {formatShortDate(task.dueDate)}</p>
-                <Button type="button" variant="outline" className="rounded-2xl" onClick={() => toggleTaskStatus(task.id)}>
-                  {task.status === "Concluida" ? "Reabrir" : "Marcar como concluida"}
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+                  <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
+                    <p className="text-sm text-muted-foreground">Prazo: {formatShortDate(task.dueDate)}</p>
+                    <Button type="button" variant="outline" className="rounded-2xl" onClick={() => toggleTaskStatus(task.id)}>
+                      {task.status === "Concluida" ? "Reabrir" : "Marcar como concluida"}
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ))
+          ) : (
+            <EmptyStateCard
+              icon={ClipboardList}
+              title="Nenhuma tarefa aberta"
+              description="Cadastre a primeira tarefa para usar o sistema como sua fila real de execucao, nao como lembranca solta."
+              actionLabel="Criar primeira tarefa"
+              actionHref="/tarefas#task-form"
+            />
+          )}
+        </div>
       </div>
     </div>
   );

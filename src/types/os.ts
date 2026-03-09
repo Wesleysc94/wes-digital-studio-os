@@ -96,6 +96,22 @@ export interface FunnelTemplate {
   message: string;
 }
 
+export interface SalesPlaybookMessage {
+  id: string;
+  label: string;
+  audience: string;
+  message: string;
+}
+
+export interface SalesPlaybookStage {
+  id: string;
+  title: string;
+  objective: string;
+  explanation: string;
+  strategy: string[];
+  messages: SalesPlaybookMessage[];
+}
+
 export interface IntegrationStatus {
   mode: IntegrationMode;
   googleSheetsConfigured: boolean;

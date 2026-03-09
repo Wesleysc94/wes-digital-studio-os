@@ -2,9 +2,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
 import { toast } from "sonner";
+import { FileText } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { EmptyStateCard } from "@/components/os/EmptyStateCard";
+import { SectionHeading } from "@/components/os/SectionHeading";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
@@ -65,14 +68,21 @@ export function BudgetPage() {
   };
 
   return (
-    <div className="grid gap-6 xl:grid-cols-[0.95fr_1.35fr]">
-      <Card className="glass-card rounded-[2rem]">
+    <div className="space-y-6">
+      <SectionHeading
+        eyebrow="Fechamento comercial"
+        title="Monte uma proposta clara antes de discutir detalhes tecnicos"
+        description="Use esta tela para transformar necessidade em oferta objetiva, com implantacao, extras e recorrencia bem explicados."
+      />
+
+      <div className="grid gap-6 xl:grid-cols-[0.95fr_1.35fr]">
+        <Card className="glass-card rounded-[2rem]">
         <CardHeader>
           <CardTitle className="text-xl">Montar proposta</CardTitle>
           <CardDescription>Defina o escopo base, selecione extras e gere um resumo comercial claro.</CardDescription>
         </CardHeader>
         <CardContent>
-          <form className="space-y-5" onSubmit={form.handleSubmit(onSubmit)}>
+          <form id="budget-form" className="space-y-5" onSubmit={form.handleSubmit(onSubmit)}>
             <div className="grid gap-4 md:grid-cols-2">
               <div className="space-y-2">
                 <Label htmlFor="clientName">Nome do cliente</Label>
@@ -156,10 +166,10 @@ export function BudgetPage() {
             </Button>
           </form>
         </CardContent>
-      </Card>
+        </Card>
 
-      <div className="space-y-6">
-        <Card className="glass-card rounded-[2rem]">
+        <div className="space-y-6">
+          <Card className="glass-card rounded-[2rem]">
           <CardHeader>
             <CardTitle className="text-xl">Resumo executivo</CardTitle>
             <CardDescription>Vista pronta para apresentar ao cliente no WhatsApp, chamada ou proposta.</CardDescription>
@@ -203,49 +213,60 @@ export function BudgetPage() {
               </div>
             </div>
           </CardContent>
-        </Card>
+          </Card>
 
-        <Card className="glass-card rounded-[2rem]">
-          <CardHeader>
-            <CardTitle className="text-xl">Historico de propostas</CardTitle>
-            <CardDescription>Registro das propostas geradas nesta instancia inicial do sistema.</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="overflow-x-auto">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Cliente</TableHead>
-                    <TableHead>Plano</TableHead>
-                    <TableHead>Implantacao</TableHead>
-                    <TableHead>Recorrencia</TableHead>
-                    <TableHead>Status</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {proposals.map((proposal) => (
-                    <TableRow key={proposal.id}>
-                      <TableCell>
-                        <div>
-                          <p className="font-medium text-foreground">{proposal.clientName}</p>
-                          <p className="text-sm text-muted-foreground">{proposal.company}</p>
-                        </div>
-                      </TableCell>
-                      <TableCell>{PROJECT_PLANS[proposal.projectType].label}</TableCell>
-                      <TableCell>{formatCurrency(proposal.implementationTotal)}</TableCell>
-                      <TableCell>{formatCurrency(proposal.monthlyRecurring)}</TableCell>
-                      <TableCell>
-                        <Badge className={getProposalStatusClasses(proposal.status)}>
-                          {proposal.status === "accepted" ? "Aceita" : proposal.status === "sent" ? "Enviada" : "Rascunho"}
-                        </Badge>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
-          </CardContent>
-        </Card>
+          <Card className="glass-card rounded-[2rem]">
+            <CardHeader>
+              <CardTitle className="text-xl">Historico de propostas</CardTitle>
+              <CardDescription>Registro das propostas geradas para nao perder contexto de valor, plano e status.</CardDescription>
+            </CardHeader>
+            <CardContent>
+              {proposals.length ? (
+                <div className="overflow-x-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Cliente</TableHead>
+                        <TableHead>Plano</TableHead>
+                        <TableHead>Implantacao</TableHead>
+                        <TableHead>Recorrencia</TableHead>
+                        <TableHead>Status</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {proposals.map((proposal) => (
+                        <TableRow key={proposal.id}>
+                          <TableCell>
+                            <div>
+                              <p className="font-medium text-foreground">{proposal.clientName}</p>
+                              <p className="text-sm text-muted-foreground">{proposal.company}</p>
+                            </div>
+                          </TableCell>
+                          <TableCell>{PROJECT_PLANS[proposal.projectType].label}</TableCell>
+                          <TableCell>{formatCurrency(proposal.implementationTotal)}</TableCell>
+                          <TableCell>{formatCurrency(proposal.monthlyRecurring)}</TableCell>
+                          <TableCell>
+                            <Badge className={getProposalStatusClasses(proposal.status)}>
+                              {proposal.status === "accepted" ? "Aceita" : proposal.status === "sent" ? "Enviada" : "Rascunho"}
+                            </Badge>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+              ) : (
+                <EmptyStateCard
+                  icon={FileText}
+                  title="Nenhuma proposta gerada ainda"
+                  description="Quando voce montar o primeiro orcamento, essa area passa a guardar historico, status e comparacao de planos."
+                  actionLabel="Gerar primeira proposta"
+                  actionHref="/orcamentos#budget-form"
+                />
+              )}
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </div>
   );

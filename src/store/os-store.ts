@@ -1,7 +1,6 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
-import { mockLeads, mockProposals, mockTasks } from "@/data/mock-operations";
 import { BootstrapPayload, IntegrationStatus, Lead, LeadInput, LeadStatus, Proposal, ProposalInput, Task, TaskInput } from "@/types/os";
 
 const defaultIntegration: IntegrationStatus = {
@@ -32,9 +31,9 @@ interface OsState {
 export const useOsStore = create<OsState>()(
   persist(
     (set) => ({
-      leads: mockLeads,
-      proposals: mockProposals,
-      tasks: mockTasks,
+      leads: [],
+      proposals: [],
+      tasks: [],
       integration: defaultIntegration,
       syncedAt: null,
       hydrateFromBootstrap: (payload) =>

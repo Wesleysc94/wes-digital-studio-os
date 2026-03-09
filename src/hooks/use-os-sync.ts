@@ -26,6 +26,14 @@ function updateLocalSync(integration: IntegrationStatus, syncedAt: string) {
   });
 }
 
+function buildLocalIntegration(base: IntegrationStatus): IntegrationStatus {
+  return {
+    ...base,
+    mode: "local",
+    canWrite: false,
+  };
+}
+
 function buildLocalLead(lead: LeadInput): Lead {
   return {
     ...lead,
@@ -88,11 +96,7 @@ export function useCreateLeadMutation() {
 
         return {
           item,
-          integration: {
-            ...bootstrap.integration,
-            mode: "local",
-            canWrite: false,
-          },
+          integration: buildLocalIntegration(bootstrap.integration),
           syncedAt: new Date().toISOString(),
           persisted: false,
         };
@@ -129,11 +133,7 @@ export function useCreateProposalMutation() {
 
         return {
           item,
-          integration: {
-            ...bootstrap.integration,
-            mode: "local",
-            canWrite: false,
-          },
+          integration: buildLocalIntegration(bootstrap.integration),
           syncedAt: new Date().toISOString(),
           persisted: false,
         };
@@ -170,11 +170,7 @@ export function useCreateTaskMutation() {
 
         return {
           item,
-          integration: {
-            ...bootstrap.integration,
-            mode: "local",
-            canWrite: false,
-          },
+          integration: buildLocalIntegration(bootstrap.integration),
           syncedAt: new Date().toISOString(),
           persisted: false,
         };
