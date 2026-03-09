@@ -1,9 +1,11 @@
 import { calculateQuote } from "@/lib/quote";
-import { Lead, ManualSection, Proposal, SalesPlaybookStage, Task } from "@/types/os";
+import { ArchiveEntry, CompletedProject, Lead, ManualSection, Project, Proposal, SalesPlaybookStage, Task } from "@/types/os";
 
 const premiumSiteQuote = calculateQuote("site-institucional", ["manutencao-mensal"]);
 const landingQuote = calculateQuote("landing-essencial", ["tema-adicional"]);
-const fullStackQuote = calculateQuote("site-institucional", ["tema-adicional", "entrega-codigo", "manutencao-mensal"]);
+const fullStackQuote = calculateQuote("site-institucional", ["tema-adicional", "entrega-codigo", "manutencao-mensal"], {
+  customTitle: "Site Institucional Premium com entrega guiada",
+});
 
 export const mockLeads: Lead[] = [
   {
@@ -70,7 +72,7 @@ export const mockLeads: Lead[] = [
     status: "Novo lead",
     proposedValue: 2200,
     notes: "Sem site atual. Forte chance de conversao se a abordagem mostrar autoridade visual.",
-    nextContact: "2026-03-08",
+    nextContact: "2026-03-11",
     tags: ["Sem resposta"],
     createdAt: "2026-03-07",
   },
@@ -86,7 +88,7 @@ export const mockLeads: Lead[] = [
     source: "WhatsApp",
     status: "Fechado",
     proposedValue: 2900,
-    notes: "Ja fechou o pacote institucional com manutencao.",
+    notes: "Fechou o pacote institucional com manutencao e esta em fase final de revisao.",
     nextContact: "2026-03-18",
     tags: ["Quente"],
     createdAt: "2026-02-25",
@@ -105,6 +107,10 @@ export const mockProposals: Proposal[] = [
     summary: "Site institucional premium com pages de servicos e captacao via WhatsApp.",
     createdAt: "2026-03-05",
     status: "sent",
+    customTitle: "",
+    implementationOverride: null,
+    recurringOverride: null,
+    pricingNotes: "",
   },
   {
     id: "proposal-2",
@@ -117,6 +123,10 @@ export const mockProposals: Proposal[] = [
     summary: "Landing page focada em implantes com dois temas para campanha.",
     createdAt: "2026-03-06",
     status: "draft",
+    customTitle: "",
+    implementationOverride: null,
+    recurringOverride: null,
+    pricingNotes: "",
   },
   {
     id: "proposal-3",
@@ -126,9 +136,13 @@ export const mockProposals: Proposal[] = [
     extras: ["tema-adicional", "entrega-codigo", "manutencao-mensal"],
     implementationTotal: fullStackQuote.implementationTotal,
     monthlyRecurring: fullStackQuote.monthlyRecurring,
-    summary: "Site institucional com handoff do codigo e contrato mensal de manutencao.",
+    summary: "Site institucional com handoff do codigo, manutencao e linguagem visual premium.",
     createdAt: "2026-02-24",
     status: "accepted",
+    customTitle: "Site institucional premium com refinamento comercial",
+    implementationOverride: 2600,
+    recurringOverride: 147,
+    pricingNotes: "Ajuste comercial para escopo maior e onboarding dedicado.",
   },
 ];
 
@@ -145,13 +159,13 @@ export const mockTasks: Task[] = [
   },
   {
     id: "task-2",
-    title: "Refinar mockup institucional para Rocha Odontologia",
-    description: "Adaptar hero com antes/depois e CTA para WhatsApp.",
-    priority: "Media",
+    title: "Aprovar hero final da Teles Imoveis",
+    description: "Consolidar ajustes finais antes de subir para entrega e onboarding.",
+    priority: "Alta",
     status: "Em andamento",
-    relatedClient: "Rocha Odontologia",
+    relatedClient: "Teles Imoveis",
     dueDate: "2026-03-10",
-    createdAt: "2026-03-07",
+    createdAt: "2026-03-08",
   },
   {
     id: "task-3",
@@ -165,6 +179,54 @@ export const mockTasks: Task[] = [
   },
 ];
 
+export const mockProjects: Project[] = [
+  {
+    id: "project-1",
+    leadId: "lead-5",
+    proposalId: "proposal-3",
+    clientName: "Julia Teles",
+    company: "Teles Imoveis",
+    projectType: "site-institucional",
+    status: "Revisao",
+    implementationTotal: 2600,
+    monthlyRecurring: 147,
+    dueDate: "2026-03-14",
+    nextMilestone: "2026-03-10",
+    maintenanceActive: true,
+    notes: "Aguardando validacao final das paginas internas e disparo do onboarding.",
+    deliverySummary: "Site institucional premium com prova social, CTA para WhatsApp e base de manutencao.",
+    createdAt: "2026-02-26",
+  },
+];
+
+export const mockArchive: ArchiveEntry[] = [
+  {
+    id: "archive-1",
+    leadId: "lead-archive-1",
+    name: "Camila Prado",
+    company: "Prado Clinica Integrada",
+    statusAtArchive: "Perdido",
+    reason: "Preco fora do contexto",
+    notes: "Entrou no radar, mas o momento financeiro travou a decisao.",
+    archivedAt: "2026-03-02",
+  },
+];
+
+export const mockCompletedProjects: CompletedProject[] = [
+  {
+    id: "completed-1",
+    projectId: "project-old-1",
+    clientName: "Arthur Lima",
+    company: "Lima Odontologia Estetica",
+    projectType: "landing-essencial",
+    implementationTotal: 1400,
+    monthlyRecurring: 97,
+    deliveredAt: "2026-02-12",
+    notes: "Entrega feita com onboarding por WhatsApp e checklist final enviado.",
+    deliverySummary: "Landing premium para implantes com CTA, prova social e campanha principal publicada.",
+  },
+];
+
 export const manualSections: ManualSection[] = [
   {
     id: "pricing",
@@ -175,6 +237,7 @@ export const manualSections: ManualSection[] = [
       "Site Institucional Profissional: R$ 1.200 como base da autoridade digital.",
       "Tema adicional: R$ 200 quando o cliente quer mais de uma atmosfera visual.",
       "Entrega do codigo: R$ 500 para handoff completo e documentado.",
+      "Sempre que a negociacao fugir do padrao, documente override e justificativa comercial.",
     ],
   },
   {
@@ -211,11 +274,12 @@ export const manualSections: ManualSection[] = [
   {
     id: "delivery",
     title: "Fluxo de entrega",
-    summary: "Mantenha o processo enxuto para nao travar a operacao da micro-agencia.",
+    summary: "Depois do sim, o cliente entra numa esteira visivel ate a conclusao do projeto.",
     bullets: [
       "Kickoff com briefing curto e assets essenciais.",
       "Wireframe rapido e aprovacao visual.",
       "Desenvolvimento, revisao final, publicacao e onboarding do cliente.",
+      "Ao concluir, registrar entrega no historico de projetos finalizados.",
     ],
   },
 ];
@@ -329,7 +393,7 @@ export const salesPlaybook: SalesPlaybookStage[] = [
         label: "Explicar investimento",
         audience: "Uso geral",
         message:
-          "Hoje eu trabalho com dois formatos principais: Landing Page Essencial a partir de R$ 900 e Site Institucional Profissional a partir de R$ 1.200. Quando faz sentido, adicionamos tema extra, entrega de codigo ou manutencao mensal. Eu separo implantacao e recorrencia justamente para a tomada de decisao ficar mais clara.",
+          "Hoje eu trabalho com dois formatos principais: Landing Page Essencial a partir de R$ 900 e Site Institucional Profissional a partir de R$ 1.200. Quando faz sentido, adicionamos tema extra, entrega de codigo, manutencao mensal ou um ajuste comercial personalizado. Eu separo implantacao e recorrencia justamente para a tomada de decisao ficar mais clara.",
       },
     ],
   },
@@ -350,7 +414,7 @@ export const salesPlaybook: SalesPlaybookStage[] = [
         label: "Resposta ao 'quanto custa?'",
         audience: "Uso geral",
         message:
-          "Consigo te passar o valor com clareza, mas o mais importante e encaixar o formato certo para o momento do negocio. Se o objetivo e validar rapido, podemos comecar pela estrutura essencial. Se a prioridade e autoridade e posicionamento mais forte, o institucional premium faz mais sentido. Assim voce investe no que realmente move a operacao.",
+          "Consigo te passar o valor com clareza, mas o mais importante e encaixar o formato certo para o momento do negocio. Se o objetivo e validar rapido, podemos comecar pela estrutura essencial. Se a prioridade e autoridade e posicionamento mais forte, o institucional premium faz mais sentido. Quando necessario, eu ajusto escopo e investimento de forma personalizada, sem perder a coerencia do projeto.",
       },
       {
         id: "negociacao-objecao-momento",
@@ -378,7 +442,7 @@ export const salesPlaybook: SalesPlaybookStage[] = [
         label: "Follow-up final",
         audience: "Uso geral",
         message:
-          "Passando para fechar esse ponto com voce. Pelo que alinhamos, o projeto faz sentido e resolve exatamente a camada que hoje esta travando autoridade e conversao. Se estiver de acordo, eu reservo a proxima janela de producao, te envio o kickoff e ja deixamos os primeiros materiais alinhados ainda hoje.",
+          "Passando para fechar esse ponto com voce. Pelo que alinhamos, o projeto faz sentido e resolve exatamente a camada que hoje esta travando autoridade e conversao. Se estiver de acordo, eu reservo a proxima janela de producao, registro o prazo e te envio o kickoff para iniciarmos ainda hoje.",
       },
       {
         id: "fechamento-kickoff",

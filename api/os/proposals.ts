@@ -3,7 +3,9 @@ import { getIntegrationStatus, isGoogleSheetsConfigured, withRuntimeError } from
 import { methodNotAllowed, setJsonHeaders } from "../_lib/responses.js";
 import { appendProposalToSheet } from "../_lib/sheets.js";
 
-function isProposalBody(body: unknown): body is Omit<Proposal, "id" | "createdAt"> {
+type ProposalMutationBody = Omit<Proposal, "id" | "createdAt"> & Partial<Pick<Proposal, "id" | "createdAt">>;
+
+function isProposalBody(body: unknown): body is ProposalMutationBody {
   if (!body || typeof body !== "object") {
     return false;
   }
@@ -23,10 +25,15 @@ export default async function handler(request: ApiRequest, response: ApiResponse
     return response.status(400).json({ error: "Invalid proposal payload." });
   }
 
+  const proposalBody = request.body;
   const proposal: Proposal = {
-    ...request.body,
-    id: crypto.randomUUID(),
-    createdAt: new Date().toISOString(),
+    ...proposalBody,
+    customTitle: proposalBody.customTitle ?? "",
+    implementationOverride: proposalBody.implementationOverride ?? null,
+    recurringOverride: proposalBody.recurringOverride ?? null,
+    pricingNotes: proposalBody.pricingNotes ?? "",
+    id: proposalBody.id ?? crypto.randomUUID(),
+    createdAt: proposalBody.createdAt ?? new Date().toISOString(),
   };
 
   const integration = getIntegrationStatus();

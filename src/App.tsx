@@ -13,6 +13,8 @@ const DashboardPage = lazy(() => import("./pages/DashboardPage").then((module) =
 const GuidePage = lazy(() => import("./pages/GuidePage").then((module) => ({ default: module.GuidePage })));
 const CrmPage = lazy(() => import("./pages/CrmPage").then((module) => ({ default: module.CrmPage })));
 const BudgetPage = lazy(() => import("./pages/BudgetPage").then((module) => ({ default: module.BudgetPage })));
+const ProductionPage = lazy(() => import("./pages/ProductionPage").then((module) => ({ default: module.ProductionPage })));
+const DiscardedPage = lazy(() => import("./pages/DiscardedPage").then((module) => ({ default: module.DiscardedPage })));
 const FunnelPage = lazy(() => import("./pages/FunnelPage").then((module) => ({ default: module.FunnelPage })));
 const ManualPage = lazy(() => import("./pages/ManualPage").then((module) => ({ default: module.ManualPage })));
 const TasksPage = lazy(() => import("./pages/TasksPage").then((module) => ({ default: module.TasksPage })));
@@ -36,6 +38,8 @@ const App = () => (
                 <Route path="/guia" element={<GuidePage />} />
                 <Route path="/crm" element={<CrmPage />} />
                 <Route path="/orcamentos" element={<BudgetPage />} />
+                <Route path="/producao" element={<ProductionPage />} />
+                <Route path="/descartados" element={<DiscardedPage />} />
                 <Route path="/funil" element={<FunnelPage />} />
                 <Route path="/manual" element={<ManualPage />} />
                 <Route path="/tarefas" element={<TasksPage />} />

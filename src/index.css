@@ -38,6 +38,10 @@
     --surface-subtle: 204 28% 93%;
     --surface-strong: 205 58% 99%;
     --shadow-color: 218 25% 68%;
+    --glow-primary: 191 92% 45%;
+    --glow-secondary: 191 92% 45%;
+    --grid-alpha: 0.16;
+    --grid-size: 26px;
     --radius: 1rem;
   }
 
@@ -74,76 +78,88 @@
     --surface-subtle: 220 20% 15%;
     --surface-strong: 223 42% 8%;
     --shadow-color: 222 60% 3%;
+    --glow-primary: 191 92% 56%;
+    --glow-secondary: 208 92% 42%;
+    --grid-alpha: 0.18;
+    --grid-size: 26px;
   }
 
   [data-theme="ruby"] {
-    --background: 336 28% 8%;
+    --background: 342 32% 5%;
     --foreground: 0 0% 96%;
-    --primary: 343 78% 62%;
+    --primary: 343 84% 61%;
     --primary-foreground: 346 28% 10%;
-    --accent: 343 78% 62%;
+    --accent: 343 84% 61%;
     --accent-foreground: 346 28% 10%;
-    --card: 336 22% 11%;
+    --card: 341 24% 8%;
     --card-foreground: 0 0% 96%;
-    --popover: 336 22% 11%;
+    --popover: 341 24% 8%;
     --popover-foreground: 0 0% 96%;
-    --secondary: 334 18% 15%;
+    --secondary: 339 20% 10%;
     --secondary-foreground: 0 0% 96%;
-    --muted: 334 16% 17%;
+    --muted: 338 18% 12%;
     --muted-foreground: 338 16% 72%;
     --destructive: 0 72% 56%;
     --destructive-foreground: 0 0% 98%;
-    --border: 334 16% 22%;
-    --input: 334 16% 22%;
-    --ring: 343 78% 62%;
-    --sidebar-background: 336 25% 9%;
+    --border: 338 18% 19%;
+    --input: 338 18% 19%;
+    --ring: 343 84% 61%;
+    --sidebar-background: 341 28% 6%;
     --sidebar-foreground: 0 0% 96%;
-    --sidebar-primary: 343 78% 62%;
+    --sidebar-primary: 343 84% 61%;
     --sidebar-primary-foreground: 346 28% 10%;
-    --sidebar-accent: 334 18% 15%;
+    --sidebar-accent: 339 20% 10%;
     --sidebar-accent-foreground: 0 0% 96%;
-    --sidebar-border: 334 16% 18%;
-    --sidebar-ring: 343 78% 62%;
-    --surface-panel: 336 22% 11%;
-    --surface-soft: 334 18% 15%;
-    --surface-subtle: 334 16% 18%;
-    --surface-strong: 336 28% 9%;
-    --shadow-color: 347 54% 4%;
+    --sidebar-border: 338 18% 14%;
+    --sidebar-ring: 343 84% 61%;
+    --surface-panel: 341 24% 8%;
+    --surface-soft: 339 20% 10%;
+    --surface-subtle: 338 18% 12%;
+    --surface-strong: 342 30% 6%;
+    --shadow-color: 347 54% 2%;
+    --glow-primary: 344 84% 54%;
+    --glow-secondary: 28 96% 42%;
+    --grid-alpha: 0.17;
+    --grid-size: 28px;
   }
 
   [data-theme="aura"] {
-    --background: 35 20% 8%;
+    --background: 36 24% 5%;
     --foreground: 39 40% 95%;
-    --primary: 39 92% 58%;
+    --primary: 39 96% 56%;
     --primary-foreground: 31 20% 10%;
-    --accent: 39 92% 58%;
+    --accent: 39 96% 56%;
     --accent-foreground: 31 20% 10%;
-    --card: 35 16% 11%;
+    --card: 35 18% 8%;
     --card-foreground: 39 40% 95%;
-    --popover: 35 16% 11%;
+    --popover: 35 18% 8%;
     --popover-foreground: 39 40% 95%;
-    --secondary: 34 14% 15%;
+    --secondary: 34 16% 10%;
     --secondary-foreground: 39 40% 95%;
-    --muted: 34 12% 17%;
+    --muted: 34 14% 12%;
     --muted-foreground: 35 18% 72%;
     --destructive: 0 72% 56%;
     --destructive-foreground: 0 0% 98%;
-    --border: 34 13% 22%;
-    --input: 34 13% 22%;
-    --ring: 39 92% 58%;
-    --sidebar-background: 35 18% 9%;
+    --border: 34 15% 18%;
+    --input: 34 15% 18%;
+    --ring: 39 96% 56%;
+    --sidebar-background: 35 22% 6%;
     --sidebar-foreground: 39 40% 95%;
-    --sidebar-primary: 39 92% 58%;
+    --sidebar-primary: 39 96% 56%;
     --sidebar-primary-foreground: 31 20% 10%;
-    --sidebar-accent: 34 14% 15%;
+    --sidebar-accent: 34 16% 10%;
     --sidebar-accent-foreground: 39 40% 95%;
-    --sidebar-border: 34 13% 18%;
-    --sidebar-ring: 39 92% 58%;
-    --surface-panel: 35 16% 11%;
-    --surface-soft: 34 14% 14%;
-    --surface-subtle: 34 12% 17%;
-    --surface-strong: 35 20% 9%;
-    --shadow-color: 33 44% 5%;
+    --sidebar-border: 34 15% 14%;
+    --sidebar-ring: 39 96% 56%;
+    --surface-panel: 35 18% 8%;
+    --surface-soft: 34 16% 10%;
+    --surface-subtle: 34 14% 12%;
+    --surface-strong: 36 24% 6%;
+    --shadow-color: 33 44% 2%;
+    --glow-primary: 39 96% 54%;
+    --glow-secondary: 190 88% 42%;
+    --grid-alpha: 0.18;
+    --grid-size: 28px;
   }
 
   * {
@@ -161,8 +177,9 @@
     @apply bg-background text-foreground antialiased selection:bg-accent selection:text-accent-foreground;
     font-family: "Manrope", sans-serif;
     background-image:
-      radial-gradient(circle at top right, hsl(var(--accent) / 0.12), transparent 24%),
-      radial-gradient(circle at bottom left, hsl(var(--accent) / 0.08), transparent 26%),
+      radial-gradient(circle at top right, hsl(var(--glow-primary) / 0.18), transparent 22%),
+      radial-gradient(circle at bottom left, hsl(var(--glow-secondary) / 0.1), transparent 28%),
+      radial-gradient(circle at top left, hsl(var(--glow-primary) / 0.08), transparent 26%),
       linear-gradient(180deg, hsl(var(--background)), hsl(var(--background)));
   }
 
@@ -184,7 +201,9 @@
 @layer components {
   .glass-card {
     border: 1px solid hsl(var(--border) / 0.78);
-    background: linear-gradient(180deg, hsl(var(--card) / 0.98), hsl(var(--card) / 0.92));
+    background:
+      linear-gradient(180deg, hsl(var(--card) / 0.98), hsl(var(--surface-soft) / 0.94)),
+      radial-gradient(circle at top left, hsl(var(--glow-primary) / 0.07), transparent 44%);
     box-shadow:
       0 24px 60px -42px hsl(var(--shadow-color) / 0.35),
       inset 0 1px 0 hsl(var(--foreground) / 0.05);
@@ -193,7 +212,10 @@
 
   .surface-panel {
     border: 1px solid hsl(var(--border) / 0.8);
-    background: linear-gradient(180deg, hsl(var(--surface-panel) / 0.98), hsl(var(--surface-soft) / 0.96));
+    background:
+      linear-gradient(180deg, hsl(var(--surface-panel) / 0.98), hsl(var(--surface-soft) / 0.96) 68%, hsl(var(--surface-strong) / 0.95)),
+      radial-gradient(circle at top left, hsl(var(--glow-primary) / 0.08), transparent 46%),
+      radial-gradient(circle at bottom right, hsl(var(--glow-secondary) / 0.05), transparent 50%);
     box-shadow: 0 28px 70px -46px hsl(var(--shadow-color) / 0.34);
   }
 
@@ -222,18 +244,18 @@
   .app-grid,
   .brand-grid {
     background-image:
-      linear-gradient(hsl(var(--accent) / 0.14) 1px, transparent 1px),
-      linear-gradient(90deg, hsl(var(--accent) / 0.14) 1px, transparent 1px);
-    animation: gridFlow 8s linear infinite;
+      linear-gradient(hsl(var(--accent) / var(--grid-alpha)) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(var(--accent) / var(--grid-alpha)) 1px, transparent 1px);
+    animation: gridFlow 10s linear infinite;
   }
 
   .app-grid {
-    background-size: 26px 26px;
+    background-size: var(--grid-size) var(--grid-size);
     mask-image: linear-gradient(to bottom, transparent 0%, black 12%, black 88%, transparent 100%);
   }
 
   .brand-grid {
-    background-size: 22px 22px;
+    background-size: calc(var(--grid-size) - 4px) calc(var(--grid-size) - 4px);
   }
 
   .tour-focus {

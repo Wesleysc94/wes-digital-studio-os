@@ -9,10 +9,10 @@ type BrandEmblemProps = {
 
 const sizeClasses = {
   sm: {
-    shell: "h-16 w-16",
-    outer: "-inset-4 blur-2xl",
-    innerRing: "inset-[6px]",
-    label: "text-[2.75rem] pr-1.5",
+    shell: "h-20 w-20",
+    outer: "-inset-5 blur-[30px]",
+    innerRing: "inset-[8px]",
+    label: "text-[3.45rem]",
     particlePrimary: "h-2 w-2",
     particleSecondary: "h-1.5 w-1.5",
   },

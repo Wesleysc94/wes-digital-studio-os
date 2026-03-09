@@ -7,6 +7,13 @@ type QuoteLine = {
   note?: string;
 };
 
+type QuoteOverrides = {
+  customTitle?: string;
+  implementationOverride?: number | null;
+  recurringOverride?: number | null;
+  pricingNotes?: string;
+};
+
 export const PROJECT_PLANS: Record<
   ProjectPlanKey,
   {
@@ -64,14 +71,15 @@ export const PROPOSAL_EXTRAS: Record<
   },
 };
 
-export function calculateQuote(projectType: ProjectPlanKey, extras: ProposalExtraKey[]) {
+export function calculateQuote(projectType: ProjectPlanKey, extras: ProposalExtraKey[], overrides: QuoteOverrides = {}) {
   const plan = PROJECT_PLANS[projectType];
 
   const lineItems: QuoteLine[] = [
     {
-      label: plan.label,
+      label: overrides.customTitle?.trim() || plan.label,
       value: plan.implementation,
       type: "implementation",
+      note: overrides.pricingNotes?.trim() || undefined,
     },
     ...extras.map((extra) => ({
       label: PROPOSAL_EXTRAS[extra].label,
@@ -81,20 +89,27 @@ export function calculateQuote(projectType: ProjectPlanKey, extras: ProposalExtr
     })),
   ];
 
-  const implementationTotal = lineItems
+  const calculatedImplementation = lineItems
     .filter((item) => item.type === "implementation")
     .reduce((total, item) => total + item.value, 0);
 
-  const monthlyRecurring = lineItems
+  const calculatedRecurring = lineItems
     .filter((item) => item.type === "recurring")
     .reduce((total, item) => total + item.value, 0);
 
+  const implementationTotal = overrides.implementationOverride ?? calculatedImplementation;
+  const monthlyRecurring = overrides.recurringOverride ?? calculatedRecurring;
+
   return {
     plan,
+    planLabel: overrides.customTitle?.trim() || plan.label,
     lineItems,
     implementationTotal,
     monthlyRecurring,
+    calculatedImplementation,
+    calculatedRecurring,
     includedItems: plan.includes,
+    pricingNotes: overrides.pricingNotes?.trim() || "",
   };
 }
 

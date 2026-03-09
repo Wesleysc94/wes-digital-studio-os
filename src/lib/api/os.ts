@@ -1,7 +1,38 @@
-import { BootstrapPayload, IntegrationStatus, Lead, LeadInput, Proposal, ProposalInput, Task, TaskInput } from "@/types/os";
+import {
+  ArchiveLeadInput,
+  BootstrapPayload,
+  CompleteProjectInput,
+  IntegrationStatus,
+  Lead,
+  LeadMutationInput,
+  Project,
+  ProjectMutationInput,
+  Proposal,
+  ProposalMutationInput,
+  Task,
+  TaskMutationInput,
+  ArchiveEntry,
+  CompletedProject,
+} from "@/types/os";
 
 type EntityMutationResponse<T> = {
   item: T;
+  integration: IntegrationStatus;
+  syncedAt: string;
+  persisted: boolean;
+};
+
+type ArchiveMutationResponse = {
+  lead: Lead;
+  archiveItem: ArchiveEntry;
+  integration: IntegrationStatus;
+  syncedAt: string;
+  persisted: boolean;
+};
+
+type CompleteProjectResponse = {
+  project: Project;
+  completedProject: CompletedProject;
   integration: IntegrationStatus;
   syncedAt: string;
   persisted: boolean;
@@ -21,7 +52,7 @@ export async function fetchBootstrap(): Promise<BootstrapPayload> {
   return parseJson<BootstrapPayload>(response);
 }
 
-export async function createLeadRemote(lead: LeadInput) {
+export async function createLeadRemote(lead: LeadMutationInput) {
   const response = await fetch("/api/os/leads", {
     method: "POST",
     headers: {
@@ -33,7 +64,7 @@ export async function createLeadRemote(lead: LeadInput) {
   return parseJson<EntityMutationResponse<Lead>>(response);
 }
 
-export async function createProposalRemote(proposal: ProposalInput) {
+export async function createProposalRemote(proposal: ProposalMutationInput) {
   const response = await fetch("/api/os/proposals", {
     method: "POST",
     headers: {
@@ -45,7 +76,7 @@ export async function createProposalRemote(proposal: ProposalInput) {
   return parseJson<EntityMutationResponse<Proposal>>(response);
 }
 
-export async function createTaskRemote(task: TaskInput) {
+export async function createTaskRemote(task: TaskMutationInput) {
   const response = await fetch("/api/os/tasks", {
     method: "POST",
     headers: {
@@ -55,4 +86,40 @@ export async function createTaskRemote(task: TaskInput) {
   });
 
   return parseJson<EntityMutationResponse<Task>>(response);
+}
+
+export async function createProjectRemote(project: ProjectMutationInput) {
+  const response = await fetch("/api/os/projects", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(project),
+  });
+
+  return parseJson<EntityMutationResponse<Project>>(response);
+}
+
+export async function archiveLeadRemote(payload: ArchiveLeadInput) {
+  const response = await fetch("/api/os/archive", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  });
+
+  return parseJson<ArchiveMutationResponse>(response);
+}
+
+export async function completeProjectRemote(payload: CompleteProjectInput) {
+  const response = await fetch("/api/os/projects-complete", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  });
+
+  return parseJson<CompleteProjectResponse>(response);
 }

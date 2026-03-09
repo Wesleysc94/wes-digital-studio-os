@@ -1,8 +1,15 @@
 import { ApiRequest, ApiResponse, BootstrapPayload } from "../_lib/contracts.js";
 import { getIntegrationStatus, isGoogleSheetsConfigured, withRuntimeError } from "../_lib/google.js";
-import { mockLeads, mockProposals, mockTasks } from "../_lib/mock-data.js";
+import { mockArchive, mockCompletedProjects, mockLeads, mockProjects, mockProposals, mockTasks } from "../_lib/mock-data.js";
 import { methodNotAllowed, setJsonHeaders } from "../_lib/responses.js";
-import { readLeadsFromSheet, readProposalsFromSheet, readTasksFromSheet } from "../_lib/sheets.js";
+import {
+  readArchiveFromSheet,
+  readCompletedProjectsFromSheet,
+  readLeadsFromSheet,
+  readProjectsFromSheet,
+  readProposalsFromSheet,
+  readTasksFromSheet,
+} from "../_lib/sheets.js";
 
 export default async function handler(request: ApiRequest, response: ApiResponse) {
   setJsonHeaders(response);
@@ -18,6 +25,9 @@ export default async function handler(request: ApiRequest, response: ApiResponse
       leads: mockLeads,
       proposals: mockProposals,
       tasks: mockTasks,
+      projects: mockProjects,
+      archive: mockArchive,
+      completedProjects: mockCompletedProjects,
       integration,
       syncedAt: new Date().toISOString(),
     };
@@ -26,16 +36,22 @@ export default async function handler(request: ApiRequest, response: ApiResponse
   }
 
   try {
-    const [leads, proposals, tasks] = await Promise.all([
+    const [leads, proposals, tasks, projects, archive, completedProjects] = await Promise.all([
       readLeadsFromSheet(),
       readProposalsFromSheet(),
       readTasksFromSheet(),
+      readProjectsFromSheet(),
+      readArchiveFromSheet(),
+      readCompletedProjectsFromSheet(),
     ]);
 
     const payload: BootstrapPayload = {
       leads,
       proposals,
       tasks,
+      projects,
+      archive,
+      completedProjects,
       integration,
       syncedAt: new Date().toISOString(),
     };
@@ -51,6 +67,9 @@ export default async function handler(request: ApiRequest, response: ApiResponse
       leads: mockLeads,
       proposals: mockProposals,
       tasks: mockTasks,
+      projects: mockProjects,
+      archive: mockArchive,
+      completedProjects: mockCompletedProjects,
       integration: degradedIntegration,
       syncedAt: new Date().toISOString(),
     };

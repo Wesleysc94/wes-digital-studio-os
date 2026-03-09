@@ -1,6 +1,6 @@
 import { google } from "googleapis";
 
-import { IntegrationStatus, Lead } from "./contracts.js";
+import { IntegrationStatus, Lead, Project } from "./contracts.js";
 
 function getEnv() {
   const privateKey = process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, "\n");
@@ -57,6 +57,16 @@ function getGoogleAuth(scopes: string[]) {
   });
 }
 
+function formatCalendarDate(date: string) {
+  return new Date(`${date}T12:00:00-03:00`).toISOString();
+}
+
+function nextDay(date: string) {
+  const baseDate = new Date(`${date}T12:00:00-03:00`);
+  baseDate.setDate(baseDate.getDate() + 1);
+  return baseDate.toISOString().slice(0, 10);
+}
+
 export function getSpreadsheetId() {
   return getEnv().spreadsheetId;
 }
@@ -90,8 +100,8 @@ export async function createFollowUpEvent(lead: Lead) {
 
   const calendar = getCalendarClient();
   const calendarId = getEnv().calendarId;
-  const startDateTime = new Date(`${lead.nextContact}T10:00:00-03:00`).toISOString();
-  const endDateTime = new Date(`${lead.nextContact}T10:30:00-03:00`).toISOString();
+  const startDateTime = formatCalendarDate(lead.nextContact);
+  const endDateTime = formatCalendarDate(nextDay(lead.nextContact));
 
   await calendar.events.insert({
     calendarId,
@@ -111,6 +121,37 @@ export async function createFollowUpEvent(lead: Lead) {
       },
       end: {
         dateTime: endDateTime,
+        timeZone: "America/Sao_Paulo",
+      },
+    },
+  });
+}
+
+export async function createProjectDeadlineEvent(project: Project) {
+  if (!isGoogleCalendarConfigured()) {
+    return;
+  }
+
+  const calendar = getCalendarClient();
+  const calendarId = getEnv().calendarId;
+
+  await calendar.events.insert({
+    calendarId,
+    requestBody: {
+      summary: `Entrega | ${project.company}`,
+      description: [
+        `Cliente: ${project.clientName}`,
+        `Empresa: ${project.company}`,
+        `Status inicial: ${project.status}`,
+        `Proximo marco: ${project.nextMilestone}`,
+        `Resumo: ${project.deliverySummary || project.notes || "Sem resumo"}`,
+      ].join("\n"),
+      start: {
+        date: project.dueDate,
+        timeZone: "America/Sao_Paulo",
+      },
+      end: {
+        date: nextDay(project.dueDate),
         timeZone: "America/Sao_Paulo",
       },
     },

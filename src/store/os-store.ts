@@ -1,7 +1,16 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
-import { BootstrapPayload, IntegrationStatus, Lead, LeadInput, LeadStatus, Proposal, ProposalInput, Task, TaskInput } from "@/types/os";
+import {
+  ArchiveEntry,
+  BootstrapPayload,
+  CompletedProject,
+  IntegrationStatus,
+  Lead,
+  Project,
+  Proposal,
+  Task,
+} from "@/types/os";
 
 const defaultIntegration: IntegrationStatus = {
   mode: "local",
@@ -11,20 +20,33 @@ const defaultIntegration: IntegrationStatus = {
   missing: ["GOOGLE_SERVICE_ACCOUNT_EMAIL", "GOOGLE_PRIVATE_KEY", "GOOGLE_SHEETS_SPREADSHEET_ID", "GOOGLE_CALENDAR_ID"],
 };
 
+type UpsertableEntity = { id: string };
+
+function upsertById<T extends UpsertableEntity>(collection: T[], item: T) {
+  return [item, ...collection.filter((currentItem) => currentItem.id !== item.id)];
+}
+
+function mergeManyById<T extends UpsertableEntity>(collection: T[], items: T[]) {
+  return items.reduce((result, item) => upsertById(result, item), collection);
+}
+
 interface OsState {
   leads: Lead[];
   proposals: Proposal[];
   tasks: Task[];
+  projects: Project[];
+  archive: ArchiveEntry[];
+  completedProjects: CompletedProject[];
   integration: IntegrationStatus;
   syncedAt: string | null;
   hydrateFromBootstrap: (payload: BootstrapPayload) => void;
-  addLeadEntity: (lead: Lead) => void;
-  addProposalEntity: (proposal: Proposal) => void;
-  addTaskEntity: (task: Task) => void;
-  addLead: (lead: LeadInput) => void;
-  updateLeadStatus: (leadId: string, status: LeadStatus) => void;
-  addProposal: (proposal: ProposalInput) => void;
-  addTask: (task: TaskInput) => void;
+  upsertLeadEntity: (lead: Lead) => void;
+  upsertProposalEntity: (proposal: Proposal) => void;
+  upsertTaskEntity: (task: Task) => void;
+  upsertProjectEntity: (project: Project) => void;
+  archiveLeadEntity: (lead: Lead, archiveItem: ArchiveEntry) => void;
+  completeProjectEntity: (project: Project, completedProject: CompletedProject) => void;
+  setIntegrationState: (integration: IntegrationStatus, syncedAt: string) => void;
   toggleTaskStatus: (taskId: string) => void;
 }
 
@@ -34,6 +56,9 @@ export const useOsStore = create<OsState>()(
       leads: [],
       proposals: [],
       tasks: [],
+      projects: [],
+      archive: [],
+      completedProjects: [],
       integration: defaultIntegration,
       syncedAt: null,
       hydrateFromBootstrap: (payload) =>
@@ -41,57 +66,42 @@ export const useOsStore = create<OsState>()(
           leads: payload.leads,
           proposals: payload.proposals,
           tasks: payload.tasks,
+          projects: payload.projects,
+          archive: payload.archive,
+          completedProjects: payload.completedProjects,
           integration: payload.integration,
           syncedAt: payload.syncedAt,
         })),
-      addLeadEntity: (lead) =>
+      upsertLeadEntity: (lead) =>
         set((state) => ({
-          leads: [lead, ...state.leads.filter((currentLead) => currentLead.id !== lead.id)],
+          leads: upsertById(state.leads, lead),
         })),
-      addProposalEntity: (proposal) =>
+      upsertProposalEntity: (proposal) =>
         set((state) => ({
-          proposals: [proposal, ...state.proposals.filter((currentProposal) => currentProposal.id !== proposal.id)],
+          proposals: upsertById(state.proposals, proposal),
         })),
-      addTaskEntity: (task) =>
+      upsertTaskEntity: (task) =>
         set((state) => ({
-          tasks: [task, ...state.tasks.filter((currentTask) => currentTask.id !== task.id)],
+          tasks: upsertById(state.tasks, task),
         })),
-      addLead: (lead) =>
+      upsertProjectEntity: (project) =>
         set((state) => ({
-          leads: [
-            {
-              ...lead,
-              id: crypto.randomUUID(),
-              createdAt: new Date().toISOString(),
-            },
-            ...state.leads,
-          ],
+          projects: upsertById(state.projects, project),
         })),
-      updateLeadStatus: (leadId, status) =>
+      archiveLeadEntity: (lead, archiveItem) =>
         set((state) => ({
-          leads: state.leads.map((lead) => (lead.id === leadId ? { ...lead, status } : lead)),
+          leads: upsertById(state.leads, lead),
+          archive: upsertById(state.archive, archiveItem),
         })),
-      addProposal: (proposal) =>
+      completeProjectEntity: (project, completedProject) =>
         set((state) => ({
-          proposals: [
-            {
-              ...proposal,
-              id: crypto.randomUUID(),
-              createdAt: new Date().toISOString(),
-            },
-            ...state.proposals,
-          ],
+          projects: upsertById(state.projects, project),
+          completedProjects: upsertById(state.completedProjects, completedProject),
         })),
-      addTask: (task) =>
-        set((state) => ({
-          tasks: [
-            {
-              ...task,
-              id: crypto.randomUUID(),
-              createdAt: new Date().toISOString(),
-            },
-            ...state.tasks,
-          ],
+      setIntegrationState: (integration, syncedAt) =>
+        set(() => ({
+          integration,
+          syncedAt,
         })),
       toggleTaskStatus: (taskId) =>
         set((state) => ({
@@ -108,6 +118,26 @@ export const useOsStore = create<OsState>()(
     {
       name: "wes-digital-studio-os-store",
       storage: createJSONStorage(() => localStorage),
+      partialize: (state) => ({
+        leads: state.leads,
+        proposals: state.proposals,
+        tasks: state.tasks,
+        projects: state.projects,
+        archive: state.archive,
+        completedProjects: state.completedProjects,
+        integration: state.integration,
+        syncedAt: state.syncedAt,
+      }),
+      merge: (persistedState, currentState) => ({
+        ...currentState,
+        ...(persistedState as Partial<OsState>),
+        leads: mergeManyById(currentState.leads, (persistedState as Partial<OsState>)?.leads ?? []),
+        proposals: mergeManyById(currentState.proposals, (persistedState as Partial<OsState>)?.proposals ?? []),
+        tasks: mergeManyById(currentState.tasks, (persistedState as Partial<OsState>)?.tasks ?? []),
+        projects: mergeManyById(currentState.projects, (persistedState as Partial<OsState>)?.projects ?? []),
+        archive: mergeManyById(currentState.archive, (persistedState as Partial<OsState>)?.archive ?? []),
+        completedProjects: mergeManyById(currentState.completedProjects, (persistedState as Partial<OsState>)?.completedProjects ?? []),
+      }),
     },
   ),
 );

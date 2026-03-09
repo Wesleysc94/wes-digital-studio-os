@@ -1,4 +1,4 @@
-import { Lead, Proposal, Task } from "./contracts.js";
+import { ArchiveEntry, CompletedProject, Lead, Project, Proposal, Task } from "./contracts.js";
 
 export const mockLeads: Lead[] = [
   {
@@ -35,6 +35,23 @@ export const mockLeads: Lead[] = [
     tags: ["Quente"],
     createdAt: "2026-03-06",
   },
+  {
+    id: "lead-5",
+    name: "Julia Teles",
+    company: "Teles Imoveis",
+    segment: "Imobiliaria",
+    city: "Goiania",
+    instagram: "@telesimoveis",
+    website: "https://telesimoveis.com.br",
+    phone: "+55 62 98111-2190",
+    source: "WhatsApp",
+    status: "Fechado",
+    proposedValue: 2900,
+    notes: "Fechou o pacote institucional com manutencao e esta em fase final de revisao.",
+    nextContact: "2026-03-18",
+    tags: ["Quente"],
+    createdAt: "2026-02-25",
+  },
 ];
 
 export const mockProposals: Proposal[] = [
@@ -44,11 +61,15 @@ export const mockProposals: Proposal[] = [
     company: "Costa Advogados",
     projectType: "site-institucional",
     extras: ["manutencao-mensal"],
-    implementationTotal: 1200,
+    implementationTotal: 1297,
     monthlyRecurring: 97,
     summary: "Site institucional premium com pages de servicos e captacao via WhatsApp.",
     createdAt: "2026-03-05",
     status: "sent",
+    customTitle: "",
+    implementationOverride: null,
+    recurringOverride: null,
+    pricingNotes: "",
   },
   {
     id: "proposal-2",
@@ -56,11 +77,15 @@ export const mockProposals: Proposal[] = [
     company: "Teles Imoveis",
     projectType: "site-institucional",
     extras: ["tema-adicional", "entrega-codigo", "manutencao-mensal"],
-    implementationTotal: 1900,
-    monthlyRecurring: 97,
+    implementationTotal: 2600,
+    monthlyRecurring: 147,
     summary: "Site institucional com handoff do codigo e contrato mensal de manutencao.",
     createdAt: "2026-02-24",
     status: "accepted",
+    customTitle: "Site institucional premium com refinamento comercial",
+    implementationOverride: 2600,
+    recurringOverride: 147,
+    pricingNotes: "Ajuste comercial para escopo maior e onboarding dedicado.",
   },
 ];
 
@@ -77,12 +102,60 @@ export const mockTasks: Task[] = [
   },
   {
     id: "task-2",
-    title: "Refinar mockup institucional para Rocha Odontologia",
-    description: "Adaptar hero com antes/depois e CTA para WhatsApp.",
-    priority: "Media",
+    title: "Aprovar hero final da Teles Imoveis",
+    description: "Consolidar ajustes finais antes de subir para entrega e onboarding.",
+    priority: "Alta",
     status: "Em andamento",
-    relatedClient: "Rocha Odontologia",
+    relatedClient: "Teles Imoveis",
     dueDate: "2026-03-10",
-    createdAt: "2026-03-07",
+    createdAt: "2026-03-08",
+  },
+];
+
+export const mockProjects: Project[] = [
+  {
+    id: "project-1",
+    leadId: "lead-5",
+    proposalId: "proposal-2",
+    clientName: "Julia Teles",
+    company: "Teles Imoveis",
+    projectType: "site-institucional",
+    status: "Revisao",
+    implementationTotal: 2600,
+    monthlyRecurring: 147,
+    dueDate: "2026-03-14",
+    nextMilestone: "2026-03-10",
+    maintenanceActive: true,
+    notes: "Aguardando validacao final das paginas internas e disparo do onboarding.",
+    deliverySummary: "Site institucional premium com prova social, CTA para WhatsApp e base de manutencao.",
+    createdAt: "2026-02-26",
+  },
+];
+
+export const mockArchive: ArchiveEntry[] = [
+  {
+    id: "archive-1",
+    leadId: "lead-archive-1",
+    name: "Camila Prado",
+    company: "Prado Clinica Integrada",
+    statusAtArchive: "Perdido",
+    reason: "Preco fora do contexto",
+    notes: "Entrou no radar, mas o momento financeiro travou a decisao.",
+    archivedAt: "2026-03-02",
+  },
+];
+
+export const mockCompletedProjects: CompletedProject[] = [
+  {
+    id: "completed-1",
+    projectId: "project-old-1",
+    clientName: "Arthur Lima",
+    company: "Lima Odontologia Estetica",
+    projectType: "landing-essencial",
+    implementationTotal: 1400,
+    monthlyRecurring: 97,
+    deliveredAt: "2026-02-12",
+    notes: "Entrega feita com onboarding por WhatsApp e checklist final enviado.",
+    deliverySummary: "Landing premium para implantes com CTA, prova social e campanha principal publicada.",
   },
 ];

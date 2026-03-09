@@ -10,7 +10,7 @@ import {
 } from "date-fns";
 import { ptBR } from "date-fns/locale";
 
-import { LeadStatus, ProposalStatus, TaskPriority, TaskStatus } from "@/types/os";
+import { ArchiveReason, LeadStatus, ProjectStatus, ProposalStatus, TaskPriority, TaskStatus } from "@/types/os";
 
 export function formatShortDate(date: string) {
   return format(parseISO(date), "dd MMM", { locale: ptBR });
@@ -41,6 +41,12 @@ export function isUpcomingFollowUp(date: string) {
 
 export function isPastDue(date: string) {
   return isBefore(parseISO(date), startOfDay(new Date()));
+}
+
+export function isDueWithinDays(date: string, days: number) {
+  const parsedDate = parseISO(date);
+  const today = startOfDay(new Date());
+  return !isBefore(parsedDate, today) && isBefore(parsedDate, addDays(today, days + 1));
 }
 
 export function isInCurrentMonth(date: string) {
@@ -111,6 +117,34 @@ export function getTaskStatusClasses(status: TaskStatus) {
       return "status-success";
     case "Em andamento":
       return "status-progress";
+    default:
+      return "status-neutral";
+  }
+}
+
+export function getProjectStatusClasses(status: ProjectStatus) {
+  switch (status) {
+    case "Concluido":
+      return "status-success";
+    case "Entregue":
+      return "status-info";
+    case "Pronto para entrega":
+    case "Revisao":
+      return "status-warning";
+    case "Aguardando cliente":
+      return "status-progress";
+    default:
+      return "status-neutral";
+  }
+}
+
+export function getArchiveReasonClasses(reason: ArchiveReason) {
+  switch (reason) {
+    case "Perdido para concorrente":
+    case "Preco fora do contexto":
+      return "status-danger";
+    case "Projeto pausado":
+      return "status-warning";
     default:
       return "status-neutral";
   }

@@ -3,7 +3,9 @@ import { getIntegrationStatus, isGoogleSheetsConfigured, withRuntimeError } from
 import { methodNotAllowed, setJsonHeaders } from "../_lib/responses.js";
 import { appendTaskToSheet } from "../_lib/sheets.js";
 
-function isTaskBody(body: unknown): body is Omit<Task, "id" | "createdAt"> {
+type TaskMutationBody = Omit<Task, "id" | "createdAt"> & Partial<Pick<Task, "id" | "createdAt">>;
+
+function isTaskBody(body: unknown): body is TaskMutationBody {
   if (!body || typeof body !== "object") {
     return false;
   }
@@ -25,8 +27,8 @@ export default async function handler(request: ApiRequest, response: ApiResponse
 
   const task: Task = {
     ...request.body,
-    id: crypto.randomUUID(),
-    createdAt: new Date().toISOString(),
+    id: request.body.id ?? crypto.randomUUID(),
+    createdAt: request.body.createdAt ?? new Date().toISOString(),
   };
 
   const integration = getIntegrationStatus();

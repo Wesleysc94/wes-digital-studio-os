@@ -28,12 +28,18 @@ const taskSchema = z.object({
 
 type TaskFormValues = z.infer<typeof taskSchema>;
 
+function getDateOffset(days: number) {
+  const baseDate = new Date();
+  baseDate.setDate(baseDate.getDate() + days);
+  return baseDate.toISOString().slice(0, 10);
+}
+
 const defaultValues: TaskFormValues = {
   title: "",
   description: "",
   priority: "Media",
   relatedClient: "",
-  dueDate: "2026-03-11",
+  dueDate: getDateOffset(2),
 };
 
 export function TasksPage() {
