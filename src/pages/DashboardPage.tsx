@@ -25,12 +25,11 @@ import { SectionHeading } from "@/components/os/SectionHeading";
 import { AppShellOutletContext } from "@/components/os/AppShell";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import {
   formatLongDate,
   formatRelativeLabel,
-  formatShortDate,
   getLeadStatusClasses,
   getProposalStatusClasses,
   getProposalStatusLabel,
@@ -194,7 +193,7 @@ export function DashboardPage() {
       href: "/crm",
       meta: formatLongDate(lead.nextContact),
       badge: "Follow-up",
-      badgeClassName: "border-amber-400/30 bg-amber-500/15 text-amber-300",
+      badgeClassName: "status-warning",
     })),
     ...proposalsAwaitingReturn.sort((first, second) => sortIsoAsc(first.createdAt, second.createdAt)).map((proposal) => ({
       id: `proposal-${proposal.id}`,
@@ -315,37 +314,37 @@ export function DashboardPage() {
 
   return (
     <motion.div className="space-y-6 xl:space-y-8" initial="hidden" animate="show" variants={revealContainer}>
-      <motion.section variants={revealItem} className="rounded-[32px] border border-white/10 bg-white/[0.035] p-6 shadow-[0_28px_90px_-50px_rgba(0,0,0,0.78)] sm:p-8">
+      <motion.section variants={revealItem} className="surface-panel rounded-[28px] p-6 sm:p-7">
         <div className="grid gap-6 xl:grid-cols-[minmax(0,1.3fr)_360px]">
           <div className="max-w-3xl">
-            <p className="text-[11px] uppercase tracking-[0.32em] text-white/38">Header operacional</p>
-            <h2 className="mt-3 text-3xl font-semibold text-white sm:text-4xl">WES Digital Studio OS</h2>
-            <p className="mt-4 text-base leading-8 text-white/62">
+            <p className="eyebrow-label">Header operacional</p>
+            <h2 className="mt-3 text-3xl font-semibold text-foreground sm:text-[2.4rem]">WES Digital Studio OS</h2>
+            <p className="mt-4 max-w-2xl text-base leading-8 text-muted-foreground">
               Voce esta no centro de controle da agencia. Comece pelas prioridades do dia, execute a proxima acao e deixe o
               sistema guiar o restante.
             </p>
 
             <div className="mt-5 flex flex-wrap gap-2">
-              <Badge className="border-white/10 bg-white/[0.04] text-white/78">{format(new Date(), "dd 'de' MMMM", { locale: ptBR })}</Badge>
-              <Badge className={cn("border-white/10 bg-white/[0.04] text-white/72", isSyncing && "border-accent/25 bg-accent/10 text-accent")}>
+              <Badge className="status-neutral">{format(new Date(), "dd 'de' MMMM", { locale: ptBR })}</Badge>
+              <Badge className={cn("status-neutral", isSyncing && "status-info")}>
                 {isSyncing ? "Sincronizando dados" : "Painel pronto para operar"}
               </Badge>
             </div>
 
             <div className="mt-5 flex flex-wrap gap-3">
-              <Button asChild className="rounded-full px-5">
+              <Button asChild className="h-10 rounded-full px-4">
                 <NavLink to="/crm">
                   <UserPlus className="h-4 w-4" />
                   Novo lead
                 </NavLink>
               </Button>
-              <Button asChild variant="outline" className="rounded-full border-white/10 bg-white/[0.03] px-5 text-white hover:bg-white/[0.08] hover:text-white">
+              <Button asChild variant="outline" className="h-10 rounded-full border-border bg-card/70 px-4 text-foreground hover:bg-secondary hover:text-foreground">
                 <NavLink to="/orcamentos">
                   <ReceiptText className="h-4 w-4" />
                   Gerar orcamento
                 </NavLink>
               </Button>
-              <Button asChild variant="outline" className="rounded-full border-white/10 bg-white/[0.03] px-5 text-white hover:bg-white/[0.08] hover:text-white">
+              <Button asChild variant="outline" className="h-10 rounded-full border-border bg-card/70 px-4 text-foreground hover:bg-secondary hover:text-foreground">
                 <NavLink to="/tarefas">
                   <ListChecks className="h-4 w-4" />
                   Nova tarefa
@@ -354,37 +353,37 @@ export function DashboardPage() {
             </div>
 
             <div className="mt-6 hidden gap-3 sm:grid sm:grid-cols-3">
-              <div className="rounded-[22px] border border-white/8 bg-slate-950/28 px-4 py-3">
-                <p className="text-[11px] uppercase tracking-[0.22em] text-white/34">Pipeline aberto</p>
-                <p className="mt-2 text-2xl font-semibold text-white">{leadsActiveCount}</p>
+              <div className="surface-soft rounded-[18px] px-4 py-3">
+                <p className="eyebrow-label">Pipeline aberto</p>
+                <p className="mt-2 text-2xl font-semibold text-foreground">{leadsActiveCount}</p>
               </div>
-              <div className="rounded-[22px] border border-white/8 bg-slate-950/28 px-4 py-3">
-                <p className="text-[11px] uppercase tracking-[0.22em] text-white/34">Retornos pendentes</p>
-                <p className="mt-2 text-2xl font-semibold text-white">{awaitingResponseLeads.length + proposalsAwaitingReturn.length}</p>
+              <div className="surface-soft rounded-[18px] px-4 py-3">
+                <p className="eyebrow-label">Retornos pendentes</p>
+                <p className="mt-2 text-2xl font-semibold text-foreground">{awaitingResponseLeads.length + proposalsAwaitingReturn.length}</p>
               </div>
-              <div className="rounded-[22px] border border-white/8 bg-slate-950/28 px-4 py-3">
-                <p className="text-[11px] uppercase tracking-[0.22em] text-white/34">Pendencias criticas</p>
-                <p className="mt-2 text-2xl font-semibold text-white">{overdueFollowUps.length + priorityTasks.length}</p>
+              <div className="surface-soft rounded-[18px] px-4 py-3">
+                <p className="eyebrow-label">Pendencias criticas</p>
+                <p className="mt-2 text-2xl font-semibold text-foreground">{overdueFollowUps.length + priorityTasks.length}</p>
               </div>
             </div>
           </div>
 
-          <div className="rounded-[28px] border border-accent/20 bg-accent/10 p-5 shadow-[0_24px_70px_-45px_hsl(var(--accent))]">
-            <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-accent/25 bg-slate-950/35 text-accent">
+          <div className="rounded-[24px] border border-accent/22 bg-accent/10 p-5 shadow-[0_18px_44px_-30px_hsl(var(--accent))]">
+            <div className="flex h-11 w-11 items-center justify-center rounded-[18px] border border-accent/22 bg-background/55 text-accent">
               <recommendedAction.icon className="h-5 w-5" />
             </div>
-            <p className="mt-5 text-[11px] uppercase tracking-[0.28em] text-accent/80">Proxima melhor acao</p>
-            <h3 className="mt-3 text-2xl font-semibold text-white">{recommendedAction.title}</h3>
-            <p className="mt-3 text-sm leading-7 text-white/68">{recommendedAction.description}</p>
+            <p className="mt-5 text-[11px] font-semibold uppercase tracking-[0.28em] text-accent">Proxima melhor acao</p>
+            <h3 className="mt-3 text-2xl font-semibold text-foreground">{recommendedAction.title}</h3>
+            <p className="mt-3 text-sm leading-7 text-foreground/78">{recommendedAction.description}</p>
 
-            <div className="mt-5 rounded-[22px] border border-white/10 bg-slate-950/35 p-4">
-              <p className="text-xs uppercase tracking-[0.22em] text-white/38">Por que isso vem primeiro</p>
-              <p className="mt-2 text-sm leading-6 text-white/64">
+            <div className="surface-subtle mt-5 rounded-[18px] p-4">
+              <p className="eyebrow-label">Por que isso vem primeiro</p>
+              <p className="mt-2 text-sm leading-6 text-muted-foreground">
                 O sistema leu follow-ups, propostas e tarefas abertas para indicar o proximo movimento com maior impacto.
               </p>
             </div>
 
-            <Button asChild className="mt-5 w-full rounded-full">
+            <Button asChild className="mt-5 h-10 w-full rounded-full">
               <NavLink to={recommendedAction.href}>
                 {recommendedAction.actionLabel}
                 <ArrowRight className="h-4 w-4" />
@@ -405,23 +404,23 @@ export function DashboardPage() {
             <Tooltip key={item.title}>
               <TooltipTrigger asChild>
                 <NavLink to={item.href} className="group">
-                  <Card className="glass-card h-full rounded-[28px] border-white/10 transition-all duration-200 hover:-translate-y-1 hover:border-accent/25 hover:bg-white/[0.055]">
+                  <Card className="glass-card h-full rounded-[22px] transition-all duration-150 ease-out hover:-translate-y-1 hover:border-accent/24 hover:shadow-[0_18px_38px_-30px_hsl(var(--accent)/0.35)]">
                     <CardContent className="p-5">
                       <div className="flex items-start justify-between gap-3">
-                        <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-slate-950/35 text-accent">
-                          <item.icon className="h-5 w-5" />
+                        <div className="flex h-11 w-11 items-center justify-center rounded-[18px] bg-secondary text-accent">
+                          <item.icon className="h-4.5 w-4.5" />
                         </div>
-                        <ArrowRight className="h-4 w-4 text-white/28 transition-transform duration-200 group-hover:translate-x-1" />
+                        <ArrowRight className="h-4 w-4 text-muted-foreground transition-transform duration-150 group-hover:translate-x-1" />
                       </div>
-                      <p className="mt-5 text-[11px] uppercase tracking-[0.28em] text-white/38">{item.title}</p>
-                      <p className="mt-3 text-4xl font-semibold text-white">{item.value}</p>
-                      <p className="mt-3 text-sm leading-6 text-white/58">{item.description}</p>
+                      <p className="eyebrow-label mt-5">{item.title}</p>
+                      <p className="mt-3 text-4xl font-semibold text-foreground">{item.value}</p>
+                      <p className="mt-3 text-sm leading-6 text-muted-foreground">{item.description}</p>
                       <p className="mt-5 text-sm font-medium text-accent">{item.cta}</p>
                     </CardContent>
                   </Card>
                 </NavLink>
               </TooltipTrigger>
-              <TooltipContent className="max-w-[18rem] border-white/10 bg-slate-950/90 text-white">
+              <TooltipContent className="max-w-[18rem] border-border bg-popover text-popover-foreground">
                 Clique para ir direto para a area responsavel por esse bloco.
               </TooltipContent>
             </Tooltip>
@@ -454,23 +453,23 @@ export function DashboardPage() {
             <div className="space-y-3">
               {nextActions.map((action, index) => (
                 <NavLink key={action.id} to={action.href} className="group block">
-                  <Card className="glass-card rounded-[26px] border-white/10 transition-all duration-200 hover:-translate-y-1 hover:border-accent/20">
+                  <Card className="glass-card rounded-[22px] transition-all duration-150 ease-out hover:-translate-y-1 hover:border-accent/22">
                     <CardContent className="flex gap-4 p-5">
                       <div className="flex flex-col items-center">
-                        <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-white/10 bg-slate-950/40 text-white">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-[16px] bg-secondary text-foreground">
                           <span className="text-sm font-semibold">{index + 1}</span>
                         </div>
-                        {index !== nextActions.length - 1 ? <div className="mt-2 h-full w-px bg-white/10" /> : null}
+                        {index !== nextActions.length - 1 ? <div className="mt-2 h-full w-px bg-border" /> : null}
                       </div>
                       <div className="min-w-0 flex-1">
                         <div className="flex flex-wrap items-center gap-2">
                           <Badge className={action.badgeClassName}>{action.badge}</Badge>
-                          <span className="text-xs uppercase tracking-[0.22em] text-white/32">{action.meta}</span>
+                          <span className="eyebrow-label">{action.meta}</span>
                         </div>
-                        <p className="mt-3 text-lg font-medium text-white">{action.title}</p>
-                        <p className="mt-2 text-sm leading-6 text-white/58">{action.description}</p>
+                        <p className="mt-3 text-lg font-semibold text-foreground">{action.title}</p>
+                        <p className="mt-2 text-sm leading-6 text-muted-foreground">{action.description}</p>
                       </div>
-                      <ArrowRight className="mt-1 h-4 w-4 shrink-0 text-white/28 transition-transform duration-200 group-hover:translate-x-1" />
+                      <ArrowRight className="mt-1 h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-150 group-hover:translate-x-1" />
                     </CardContent>
                   </Card>
                 </NavLink>
@@ -495,16 +494,16 @@ export function DashboardPage() {
           />
 
           {recentActivity.length ? (
-            <Card className="glass-card rounded-[28px] border-white/10">
+            <Card className="glass-card rounded-[22px]">
               <CardContent className="space-y-4 p-5">
                 {recentActivity.map((item) => (
-                  <NavLink key={item.id} to={item.href} className="group block rounded-[22px] border border-white/8 bg-white/[0.03] p-4 transition-all duration-200 hover:border-accent/20 hover:bg-white/[0.05]">
+                  <NavLink key={item.id} to={item.href} className="group block rounded-[18px] border border-border/80 bg-secondary/35 p-4 transition-all duration-150 ease-out hover:border-accent/18 hover:bg-secondary/55">
                     <div className="flex flex-wrap items-center gap-2">
                       <Badge className={item.badgeClassName}>{item.badge}</Badge>
-                      <span className="text-xs uppercase tracking-[0.22em] text-white/32">{formatRelativeLabel(item.date)}</span>
+                      <span className="eyebrow-label">{formatRelativeLabel(item.date)}</span>
                     </div>
-                    <p className="mt-3 text-base font-medium text-white">{item.title}</p>
-                    <p className="mt-2 text-sm leading-6 text-white/58">{item.description}</p>
+                    <p className="mt-3 text-base font-semibold text-foreground">{item.title}</p>
+                    <p className="mt-2 text-sm leading-6 text-muted-foreground">{item.description}</p>
                   </NavLink>
                 ))}
               </CardContent>
@@ -530,16 +529,16 @@ export function DashboardPage() {
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
           {shortcuts.map((shortcut) => (
             <NavLink key={shortcut.title} to={shortcut.href} className="group">
-              <Card className="glass-card h-full rounded-[26px] border-white/10 transition-all duration-200 hover:-translate-y-1 hover:border-accent/20">
+              <Card className="glass-card h-full rounded-[22px] transition-all duration-150 ease-out hover:-translate-y-1 hover:border-accent/20">
                 <CardContent className="p-5">
-                  <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-slate-950/35 text-accent">
-                    <shortcut.icon className="h-5 w-5" />
+                  <div className="flex h-11 w-11 items-center justify-center rounded-[18px] bg-secondary text-accent">
+                    <shortcut.icon className="h-4.5 w-4.5" />
                   </div>
-                  <p className="mt-5 text-lg font-medium text-white">{shortcut.title}</p>
-                  <p className="mt-2 text-sm leading-6 text-white/58">{shortcut.description}</p>
+                  <p className="mt-5 text-lg font-semibold text-foreground">{shortcut.title}</p>
+                  <p className="mt-2 text-sm leading-6 text-muted-foreground">{shortcut.description}</p>
                   <p className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-accent">
                     Abrir modulo
-                    <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
+                    <ArrowRight className="h-4 w-4 transition-transform duration-150 group-hover:translate-x-1" />
                   </p>
                 </CardContent>
               </Card>

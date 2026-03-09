@@ -52,7 +52,7 @@ export function FunnelPage() {
   return (
     <div className="space-y-6 xl:space-y-8">
       <div className="grid gap-6 xl:grid-cols-[1.1fr_0.9fr]">
-        <Card className="glass-card rounded-[30px] border-white/10">
+        <Card className="glass-card rounded-[24px]">
           <CardHeader>
             <SectionHeading
               eyebrow="Playbook comercial"
@@ -61,34 +61,34 @@ export function FunnelPage() {
             />
           </CardHeader>
           <CardContent className="pt-0">
-            <div className="rounded-[24px] border border-accent/20 bg-accent/10 p-5">
+            <div className="rounded-[20px] border border-accent/20 bg-accent/10 p-5">
               <div className="flex items-center gap-3">
-                <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-accent/20 bg-slate-950/30 text-accent">
+                <div className="flex h-11 w-11 items-center justify-center rounded-[18px] bg-background/60 text-accent">
                   <Radar className="h-5 w-5" />
                 </div>
                 <div>
-                  <p className="text-[11px] uppercase tracking-[0.28em] text-accent/80">Foco sugerido hoje</p>
-                  <p className="mt-1 text-xl font-semibold text-white">{recommendedStage.title}</p>
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-accent">Foco sugerido hoje</p>
+                  <p className="mt-1 text-xl font-semibold text-foreground">{recommendedStage.title}</p>
                 </div>
               </div>
-              <p className="mt-4 text-sm leading-7 text-white/68">{recommendedStage.description}</p>
+              <p className="mt-4 text-sm leading-7 text-foreground/78">{recommendedStage.description}</p>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="glass-card rounded-[30px] border-white/10">
+        <Card className="glass-card rounded-[24px]">
           <CardHeader>
-            <CardTitle className="text-2xl text-white">Radar do pipeline</CardTitle>
+            <CardTitle className="text-2xl text-foreground">Radar do pipeline</CardTitle>
             <CardDescription>Leitura rapida do momento comercial para saber qual etapa precisa de mais energia.</CardDescription>
           </CardHeader>
           <CardContent className="grid gap-3 sm:grid-cols-2">
             {stageCounts.map((stage) => (
-              <div key={stage.status} className="rounded-[22px] border border-white/8 bg-white/[0.03] p-4">
+              <div key={stage.status} className="surface-soft rounded-[18px] p-4">
                 <div className="flex flex-wrap items-center justify-between gap-3">
-                  <p className="text-sm text-white/78">{stage.status}</p>
+                  <p className="text-sm font-semibold text-foreground">{stage.status}</p>
                   <Badge className={getLeadStatusClasses(stage.status)}>{stage.total}</Badge>
                 </div>
-                <p className="mt-3 text-xs leading-5 text-white/45">
+                <p className="mt-3 text-xs leading-5 text-muted-foreground">
                   {stage.total ? "Existe movimento real nessa etapa." : "Sem item ativo nessa fase agora."}
                 </p>
               </div>
@@ -106,50 +106,50 @@ export function FunnelPage() {
 
         <div className="space-y-5">
           {salesPlaybook.map((stage, index) => (
-            <Card key={stage.id} className="glass-card rounded-[30px] border-white/10">
+            <Card key={stage.id} className="glass-card rounded-[24px]">
               <CardContent className="p-6 sm:p-7">
                 <div className="grid gap-6 xl:grid-cols-[280px_minmax(0,1fr)]">
                   <div className="space-y-4">
                     <div className="flex items-center gap-3">
-                      <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-slate-950/40 text-accent">
+                      <div className="flex h-12 w-12 items-center justify-center rounded-[18px] bg-secondary text-accent">
                         <span className="text-base font-semibold">{index + 1}</span>
                       </div>
                       <div>
-                        <p className="text-[11px] uppercase tracking-[0.28em] text-white/38">Etapa {index + 1}</p>
-                        <h3 className="mt-1 text-2xl font-semibold text-white">{stage.title}</h3>
+                        <p className="eyebrow-label">Etapa {index + 1}</p>
+                        <h3 className="mt-1 text-2xl font-semibold text-foreground">{stage.title}</h3>
                       </div>
                     </div>
 
-                    <div className="rounded-[24px] border border-white/8 bg-white/[0.03] p-4">
+                    <div className="surface-soft rounded-[18px] p-4">
                       <div className="flex items-start gap-3">
                         <Target className="mt-0.5 h-4 w-4 text-accent" />
                         <div>
-                          <p className="text-sm font-medium text-white">Objetivo da etapa</p>
-                          <p className="mt-2 text-sm leading-6 text-white/62">{stage.objective}</p>
+                          <p className="text-sm font-semibold text-foreground">Objetivo da etapa</p>
+                          <p className="mt-2 text-sm leading-6 text-muted-foreground">{stage.objective}</p>
                         </div>
                       </div>
                     </div>
 
-                    <div className="rounded-[24px] border border-white/8 bg-white/[0.03] p-4">
+                    <div className="surface-soft rounded-[18px] p-4">
                       <div className="flex items-start gap-3">
                         <Sparkles className="mt-0.5 h-4 w-4 text-accent" />
                         <div>
-                          <p className="text-sm font-medium text-white">Como pensar essa fase</p>
-                          <p className="mt-2 text-sm leading-6 text-white/62">{stage.explanation}</p>
+                          <p className="text-sm font-semibold text-foreground">Como pensar essa fase</p>
+                          <p className="mt-2 text-sm leading-6 text-muted-foreground">{stage.explanation}</p>
                         </div>
                       </div>
                     </div>
                   </div>
 
                   <div className="space-y-5">
-                    <div className="rounded-[24px] border border-white/8 bg-white/[0.03] p-5">
+                    <div className="surface-soft rounded-[18px] p-5">
                       <div className="flex items-center gap-3">
                         <MessagesSquare className="h-4 w-4 text-accent" />
-                        <p className="text-sm font-medium text-white">Estrategia de abordagem</p>
+                        <p className="text-sm font-semibold text-foreground">Estrategia de abordagem</p>
                       </div>
                       <div className="mt-4 grid gap-3 md:grid-cols-3">
                         {stage.strategy.map((item) => (
-                          <div key={item} className="rounded-[18px] border border-white/8 bg-slate-950/35 p-4 text-sm leading-6 text-white/64">
+                          <div key={item} className="surface-subtle rounded-[16px] p-4 text-sm leading-6 text-muted-foreground">
                             {item}
                           </div>
                         ))}
@@ -158,23 +158,23 @@ export function FunnelPage() {
 
                     <div className="grid gap-4 xl:grid-cols-2">
                       {stage.messages.map((message) => (
-                        <div key={message.id} className="rounded-[24px] border border-white/8 bg-white/[0.03] p-5">
+                        <div key={message.id} className="surface-soft rounded-[18px] p-5">
                           <div className="flex items-start justify-between gap-3">
                             <div>
-                              <p className="text-sm font-medium text-white">{message.label}</p>
-                              <p className="mt-1 text-xs uppercase tracking-[0.22em] text-white/36">{message.audience}</p>
+                              <p className="text-sm font-semibold text-foreground">{message.label}</p>
+                              <p className="eyebrow-label mt-1">{message.audience}</p>
                             </div>
                             <Button
                               type="button"
                               variant="outline"
-                              className="rounded-full border-white/10 bg-white/[0.03] text-white hover:bg-white/[0.08] hover:text-white"
+                              className="h-9 rounded-full border-border bg-card/70 px-3 text-foreground hover:bg-secondary hover:text-foreground"
                               onClick={() => copyToClipboard(message.message)}
                             >
                               <Copy className="h-4 w-4" />
                               Copiar
                             </Button>
                           </div>
-                          <p className="mt-4 whitespace-pre-wrap text-sm leading-7 text-white/74">{message.message}</p>
+                          <p className="mt-4 whitespace-pre-wrap text-sm leading-7 text-foreground/82">{message.message}</p>
                         </div>
                       ))}
                     </div>

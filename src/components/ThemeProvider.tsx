@@ -20,26 +20,26 @@ export const themeOptions: Array<{
 }> = [
   {
     value: "dark",
-    label: "Dark",
-    description: "Painel cinematografico com contraste alto e fundo grafite.",
+    label: "Midnight",
+    description: "Contraste alto para foco continuo e leitura noturna.",
     preview: "from-cyan-400 via-slate-500 to-slate-950",
   },
   {
     value: "light",
-    label: "Light",
-    description: "Layout clean para operacao diurna e leitura longa.",
+    label: "Paper",
+    description: "Tema claro para operacao diurna, tabelas e leitura longa.",
     preview: "from-sky-200 via-white to-slate-200",
   },
   {
     value: "ruby",
     label: "Ruby",
-    description: "Tom editorial com destaque em vinho premium.",
+    description: "Tom editorial com energia comercial e contraste equilibrado.",
     preview: "from-rose-400 via-fuchsia-600 to-zinc-950",
   },
   {
     value: "gold",
-    label: "Gold",
-    description: "Tema de luxo com acentos ambar e sombra quente.",
+    label: "Amber",
+    description: "Paleta quente para apresentacao e leitura mais aconchegante.",
     preview: "from-amber-300 via-orange-500 to-zinc-950",
   },
 ];
@@ -47,13 +47,13 @@ export const themeOptions: Array<{
 const STORAGE_KEY = "wes-digital-studio-os-theme";
 
 const initialState: ThemeProviderState = {
-  theme: "dark",
+  theme: "light",
   setTheme: () => null,
 };
 
 const ThemeProviderContext = createContext<ThemeProviderState>(initialState);
 
-export function ThemeProvider({ children, defaultTheme = "dark", ...props }: ThemeProviderProps) {
+export function ThemeProvider({ children, defaultTheme = "light", ...props }: ThemeProviderProps) {
   const [theme, setTheme] = useState<Theme>(() => {
     const storedTheme = localStorage.getItem(STORAGE_KEY) as Theme | null;
     return storedTheme ?? defaultTheme;

@@ -58,28 +58,28 @@ export function sortIsoDesc(firstDate: string, secondDate: string) {
 export function getLeadStatusClasses(status: LeadStatus) {
   switch (status) {
     case "Fechado":
-      return "bg-emerald-500/15 text-emerald-300 border-emerald-400/30";
+      return "status-success";
     case "Perdido":
-      return "bg-rose-500/15 text-rose-300 border-rose-400/30";
+      return "status-danger";
     case "Proposta enviada":
-      return "bg-sky-500/15 text-sky-300 border-sky-400/30";
+      return "status-info";
     case "Aguardando resposta":
-      return "bg-amber-500/15 text-amber-300 border-amber-400/30";
+      return "status-warning";
     case "Em conversa":
-      return "bg-violet-500/15 text-violet-300 border-violet-400/30";
+      return "status-progress";
     default:
-      return "bg-border/60 text-foreground border-border";
+      return "status-neutral";
   }
 }
 
 export function getProposalStatusClasses(status: ProposalStatus) {
   switch (status) {
     case "accepted":
-      return "bg-emerald-500/15 text-emerald-300 border-emerald-400/30";
+      return "status-success";
     case "sent":
-      return "bg-sky-500/15 text-sky-300 border-sky-400/30";
+      return "status-info";
     default:
-      return "bg-border/60 text-foreground border-border";
+      return "status-neutral";
   }
 }
 
@@ -97,21 +97,21 @@ export function getProposalStatusLabel(status: ProposalStatus) {
 export function getTaskPriorityClasses(priority: TaskPriority) {
   switch (priority) {
     case "Alta":
-      return "bg-rose-500/15 text-rose-300 border-rose-400/30";
+      return "status-danger";
     case "Media":
-      return "bg-amber-500/15 text-amber-300 border-amber-400/30";
+      return "status-warning";
     default:
-      return "bg-sky-500/15 text-sky-300 border-sky-400/30";
+      return "status-info";
   }
 }
 
 export function getTaskStatusClasses(status: TaskStatus) {
   switch (status) {
     case "Concluida":
-      return "bg-emerald-500/15 text-emerald-300 border-emerald-400/30";
+      return "status-success";
     case "Em andamento":
-      return "bg-violet-500/15 text-violet-300 border-violet-400/30";
+      return "status-progress";
     default:
-      return "bg-border/60 text-foreground border-border";
+      return "status-neutral";
   }
 }
