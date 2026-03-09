@@ -60,7 +60,7 @@ export function AppShell() {
   const navigationCounts = useMemo(() => ({ "/crm": openLeads, "/orcamentos": sentProposals, "/producao": activeProjects, "/tarefas": pendingTasks, "/descartados": archive.length }), [openLeads, sentProposals, activeProjects, pendingTasks, archive.length]);
 
   const sidebarContent = (
-    <div className="flex h-full flex-col">
+    <div className="flex min-h-full flex-col">
       <div className="surface-panel relative min-h-[186px] overflow-visible rounded-[30px] p-5">
         <div className="brand-grid absolute inset-0 rounded-[30px] opacity-70" />
         <div className="absolute inset-0 rounded-[30px] bg-[radial-gradient(circle_at_top_left,hsl(var(--accent)/0.18),transparent_34%),radial-gradient(circle_at_bottom_right,hsl(var(--accent)/0.1),transparent_40%)]" />
@@ -121,10 +121,10 @@ export function AppShell() {
     <div className="min-h-screen bg-background text-foreground">
       <div className="pointer-events-none fixed inset-0 overflow-hidden"><div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,hsl(var(--accent)/0.16),transparent_22%),radial-gradient(circle_at_bottom_left,hsl(var(--accent)/0.08),transparent_32%)]" /><div className="app-grid absolute inset-0 opacity-[0.52]" /></div>
       <AnimatePresence>
-        {mobileMenuOpen ? <><motion.button type="button" aria-label="Fechar menu" className="fixed inset-0 z-40 bg-background/72 backdrop-blur-sm lg:hidden" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setMobileMenuOpen(false)} /><motion.aside initial={{ x: -24, opacity: 0 }} animate={{ x: 0, opacity: 1 }} exit={{ x: -24, opacity: 0 }} transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }} className="fixed inset-y-0 left-0 z-50 w-[88vw] max-w-[324px] border-r border-border/70 bg-sidebar-background/96 p-4 backdrop-blur-xl lg:hidden"><div className="mb-5 flex items-center justify-between"><p className="text-sm font-semibold text-foreground">Menu operacional</p><Button type="button" variant="ghost" size="icon" className="h-10 w-10 rounded-full border border-border/80 bg-card/88 text-foreground hover:bg-secondary" onClick={() => setMobileMenuOpen(false)}><X className="h-4 w-4" /></Button></div>{sidebarContent}</motion.aside></> : null}
+        {mobileMenuOpen ? <><motion.button type="button" aria-label="Fechar menu" className="fixed inset-0 z-40 bg-background/72 backdrop-blur-sm lg:hidden" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setMobileMenuOpen(false)} /><motion.aside initial={{ x: -24, opacity: 0 }} animate={{ x: 0, opacity: 1 }} exit={{ x: -24, opacity: 0 }} transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }} className="fixed inset-y-0 left-0 z-50 w-[88vw] max-w-[324px] overflow-y-auto overscroll-contain border-r border-border/70 bg-sidebar-background/96 p-4 pb-6 pr-3 backdrop-blur-xl lg:hidden"><div className="mb-5 flex items-center justify-between"><p className="text-sm font-semibold text-foreground">Menu operacional</p><Button type="button" variant="ghost" size="icon" className="h-10 w-10 rounded-full border border-border/80 bg-card/88 text-foreground hover:bg-secondary" onClick={() => setMobileMenuOpen(false)}><X className="h-4 w-4" /></Button></div>{sidebarContent}</motion.aside></> : null}
       </AnimatePresence>
 
-      <aside className="fixed inset-y-0 left-0 z-30 hidden w-[300px] border-r border-sidebar-border/80 bg-sidebar-background/92 p-5 backdrop-blur-xl lg:block">{sidebarContent}</aside>
+      <aside className="fixed inset-y-0 left-0 z-30 hidden w-[300px] overflow-y-auto overscroll-contain border-r border-sidebar-border/80 bg-sidebar-background/92 p-5 pb-6 pr-3 backdrop-blur-xl lg:block">{sidebarContent}</aside>
       <div className="relative z-10 lg:pl-[300px]">
         <header className="sticky top-0 z-20 border-b border-border/70 bg-background/84 backdrop-blur-xl">
           <div className="mx-auto flex max-w-[1560px] items-center justify-between gap-4 px-4 py-4 sm:px-6 xl:px-8">
