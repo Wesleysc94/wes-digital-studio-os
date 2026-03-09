@@ -1,6 +1,6 @@
-import { format } from "date-fns";
+import { differenceInDays, format } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import { ArrowRight, BriefcaseBusiness, CalendarClock, CheckCircle2, CircleDollarSign, CirclePlay, Compass, Inbox, Layers3, ListChecks, MessageSquareReply, ReceiptText, Rocket, ShieldAlert, Trash2, UserPlus, Users2, X } from "lucide-react";
+import { ArrowRight, BriefcaseBusiness, CalendarClock, CheckCircle2, CircleDollarSign, CirclePlay, Compass, Inbox, Layers3, ListChecks, MessageSquareReply, ReceiptText, Rocket, ShieldAlert, TimerReset, Trash2, UserPlus, Users2, X } from "lucide-react";
 import { motion, type Variants } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { NavLink, useOutletContext, useSearchParams } from "react-router-dom";
@@ -64,6 +64,16 @@ export function DashboardPage() {
   const maintenanceActive = activeProjects.filter((project) => project.maintenanceActive).length;
   const newProjectsThisMonth = activeProjects.filter((project) => isInCurrentMonth(project.createdAt)).length;
 
+  const projectsWithLeadAssigned = activeProjects.filter((project) => project.leadId);
+  const totalDaysToConvert = projectsWithLeadAssigned.reduce((total, project) => {
+    const leadOrigin = leads.find((lead) => lead.id === project.leadId);
+    if (!leadOrigin) return total;
+    return total + differenceInDays(new Date(project.createdAt), new Date(leadOrigin.createdAt));
+  }, 0);
+
+  const timeToConvertMedia = projectsWithLeadAssigned.length > 0 ? Math.round(totalDaysToConvert / projectsWithLeadAssigned.length) : 0;
+  const t2cLabel = timeToConvertMedia === 0 ? "N/D" : `${timeToConvertMedia} ${timeToConvertMedia === 1 ? "dia" : "dias"}`;
+
   const recentActivity: ActivityItem[] = [
     ...leads.map((lead) => ({ id: `lead-${lead.id}`, title: `Lead atualizado: ${lead.company}`, description: `${lead.name} esta em ${lead.status.toLowerCase()}.`, date: lead.createdAt, href: "/crm", badge: lead.status, badgeClassName: getLeadStatusClasses(lead.status) })),
     ...proposals.map((proposal) => ({ id: `proposal-${proposal.id}`, title: `Proposta ativa para ${proposal.company}`, description: `${getProposalStatusLabel(proposal.status)} com implantacao de ${formatCurrency(proposal.implementationTotal)}.`, date: proposal.createdAt, href: "/orcamentos", badge: getProposalStatusLabel(proposal.status), badgeClassName: getProposalStatusClasses(proposal.status) })),
@@ -84,9 +94,9 @@ export function DashboardPage() {
     { title: "Leads ativos", value: String(activeLeads.length), helper: "Oportunidades ainda em negociacao ou follow-up.", insight: activeLeads.length ? "Pipeline comercial continua em movimento." : "Sem novos leads, a previsibilidade de venda cai.", icon: Users2 },
     { title: "Propostas aguardando decisao", value: String(proposalsAwaitingReturn.length), helper: "Negociacoes que ja receberam proposta e precisam de conducao.", insight: proposalsAwaitingReturn.length ? "Hora de puxar clareza e decisao, nao mensagem vazia." : "Nenhuma proposta parada agora.", icon: ReceiptText },
     { title: "Projetos ativos", value: String(activeProjects.length), helper: "Clientes fechados que estao na sua esteira de entrega.", insight: activeProjects.length ? "O dashboard agora opera o pos-venda com prioridade." : "Sem projetos ativos, o funil ainda nao virou entrega.", icon: BriefcaseBusiness },
-    { title: "Fechamentos no mes", value: String(newProjectsThisMonth), helper: "Projetos criados na producao dentro do mes atual.", insight: newProjectsThisMonth ? "Ha fechamento transformado em operacao real." : "Voce ainda nao iniciou producao nova neste mes.", icon: CheckCircle2 },
     { title: "Receita potencial", value: formatCurrency(potentialRevenue), helper: "Volume em aberto somando leads ainda nao convertidos.", insight: potentialRevenue ? "Existe pipeline suficiente para perseguir crescimento." : "Sem pipeline ativo, fica dificil projetar receita.", icon: CircleDollarSign },
     { title: "Receita confirmada", value: formatCurrency(confirmedRevenue), helper: "Valor de implantacao ja transformado em projetos ativos.", insight: confirmedRevenue ? "Os contratos aceitos ja estao dentro do sistema operacional." : "Ainda nao ha faturamento confirmado em producao.", icon: Layers3 },
+    { title: "Time-to-Convert (Media)", value: t2cLabel, helper: "Velocidade media do Lead ate efetivar e virar de fato Projeto Mapeado.", insight: timeToConvertMedia ? "Sua janela de tracao e convencimento em dias de contato." : "Indicador dependente de conclusao de Leads a partir de hoje.", icon: TimerReset },
   ] as const;
 
   const recommendedAction = dueSoonProjects.length ? { title: `Proteger a entrega de ${dueSoonProjects[0].company}`, description: "Cliente fechado, prazo proximo e valor confirmado. Esse tipo de item sempre passa na frente das novas conversas.", href: "/producao", actionLabel: "Abrir producao", icon: Rocket } : blockedProjects.length ? { title: `Cobrar retorno de ${blockedProjects[0].company}`, description: "A esteira travou no cliente. Tirar esse bloqueio recupera ritmo sem comprometer o prazo final.", href: "/producao", actionLabel: "Rever bloqueio", icon: ShieldAlert } : overdueFollowUps.length ? { title: `Retomar ${overdueFollowUps[0].company}`, description: "Sem urgencia de producao acima disso agora, o melhor passo e reaquecer um lead parado.", href: "/crm", actionLabel: "Abrir CRM", icon: CalendarClock } : { title: "Cadastrar o primeiro lead do dia", description: "Sem pendencia critica no radar, o melhor uso do seu tempo agora e alimentar o pipeline com nova oportunidade.", href: "/crm", actionLabel: "Novo lead", icon: UserPlus };
