@@ -1,12 +1,17 @@
 import { Calendar as CalendarIcon, ExternalLink } from "lucide-react";
+import { useTheme } from "@/components/ThemeProvider";
 import { SectionHeading } from "@/components/os/SectionHeading";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 import { useOsStore } from "@/store/os-store";
 
 export function CalendarPage() {
+    const { theme } = useTheme();
     const integration = useOsStore((state) => state.integration);
     const calendarId = integration.calendarId;
+
+    const isDarkTheme = theme !== "light";
 
     const googleCalendarUrl = `https://calendar.google.com/calendar/embed?src=${encodeURIComponent(
         calendarId || ""
@@ -59,7 +64,12 @@ export function CalendarPage() {
                         frameBorder="0"
                         scrolling="no"
                         title="Google Calendar"
-                        className="opacity-90 grayscale-[0.2] invert-[0.02] transition-opacity duration-300 hover:opacity-100 dark:invert-[0.9] dark:hue-rotate-180"
+                        className={cn(
+                            "transition-opacity duration-300 hover:opacity-100",
+                            isDarkTheme
+                                ? "opacity-90 grayscale-[0.2] invert-[0.88] hue-rotate-180 brightness-95"
+                                : "opacity-90 grayscale-[0.2] invert-[0.02]"
+                        )}
                     />
                 </div>
             )}
