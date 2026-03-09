@@ -288,17 +288,18 @@
     background-image:
       linear-gradient(hsl(var(--accent) / var(--grid-alpha)) 1px, transparent 1px),
       linear-gradient(90deg, hsl(var(--accent) / var(--grid-alpha)) 1px, transparent 1px);
-    animation: gridFlow 3s linear infinite;
     will-change: background-position;
   }
 
   .app-grid {
     background-size: var(--grid-size) var(--grid-size);
+    animation: gridFlow 3s linear infinite;
     mask-image: linear-gradient(to bottom, transparent 0%, black 12%, black 88%, transparent 100%);
   }
 
   .brand-grid {
     background-size: calc(var(--grid-size) - 4px) calc(var(--grid-size) - 4px);
+    animation: brandGridFlow 3s linear infinite;
   }
 
   .tour-focus {
@@ -420,6 +421,16 @@
 
   100% {
     background-position: 24px 24px, 24px 24px;
+  }
+}
+
+@keyframes brandGridFlow {
+  0% {
+    background-position: 0 0, 0 0;
+  }
+
+  100% {
+    background-position: calc(var(--grid-size) - 4px) calc(var(--grid-size) - 4px), calc(var(--grid-size) - 4px) calc(var(--grid-size) - 4px);
   }
 }
 
