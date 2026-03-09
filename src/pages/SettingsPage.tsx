@@ -1,4 +1,4 @@
-import { CirclePlay, Compass, PanelTop, Router, ShieldCheck } from "lucide-react";
+import { CirclePlay, Compass, PanelTop, Router, ShieldCheck, Trash2 } from "lucide-react";
 import { NavLink } from "react-router-dom";
 
 import { themeOptions, useTheme } from "@/components/ThemeProvider";
@@ -13,6 +13,30 @@ export function SettingsPage() {
   const integration = useOsStore((state) => state.integration);
   const { theme } = useTheme();
   const currentTheme = themeOptions.find((option) => option.value === theme) ?? themeOptions[0];
+
+  const handleResetSystem = () => {
+    const confirmed = window.confirm(
+      "Tem certeza que deseja limpar os itens descartados e o historico de projetos concluidos? Leads, propostas, tarefas e projetos ativos serao mantidos.",
+    );
+
+    if (!confirmed) return;
+
+    const raw = localStorage.getItem("wes-digital-studio-os-store");
+    if (raw) {
+      try {
+        const parsed = JSON.parse(raw);
+        if (parsed.state) {
+          parsed.state.archive = [];
+          parsed.state.completedProjects = [];
+          localStorage.setItem("wes-digital-studio-os-store", JSON.stringify(parsed));
+        }
+      } catch {
+        localStorage.removeItem("wes-digital-studio-os-store");
+      }
+    }
+
+    window.location.href = "/dashboard";
+  };
 
   const integrationStatus = [
     {
@@ -155,8 +179,34 @@ export function SettingsPage() {
               </Button>
             </CardContent>
           </Card>
+
+          <Card className="rounded-[2rem] border-red-500/20 bg-red-500/5">
+            <CardHeader>
+              <CardTitle className="text-xl text-red-500">Limpeza de dados</CardTitle>
+              <CardDescription>Remova registros que nao sao mais necessarios.</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="rounded-[1.5rem] border border-red-500/15 bg-card/60 p-5">
+                <div className="flex items-start gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-[16px] bg-red-500/10 text-red-500">
+                    <Trash2 className="h-4 w-4" />
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-sm font-semibold text-foreground">Limpar descartados e historico</p>
+                    <p className="mt-2 text-sm leading-6 text-muted-foreground">
+                      Remove itens descartados e projetos concluidos do historico. Leads, propostas, tarefas e projetos ativos permanecem intactos.
+                    </p>
+                    <Button type="button" variant="outline" className="mt-4 h-10 rounded-full border-red-500/30 px-4 text-red-500 hover:bg-red-500/10 hover:text-red-600" onClick={handleResetSystem}>
+                      <Trash2 className="h-4 w-4" />
+                      Limpar descartados
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
-    </div>
+    </div >
   );
 }
