@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
 
-export type Theme = "dark" | "light" | "ruby" | "gold";
+export type Theme = "dark" | "light" | "ruby" | "aura";
 
 interface ThemeProviderProps {
   children: React.ReactNode;
@@ -37,14 +37,26 @@ export const themeOptions: Array<{
     preview: "from-rose-400 via-fuchsia-600 to-zinc-950",
   },
   {
-    value: "gold",
-    label: "Amber",
-    description: "Paleta quente para apresentacao e leitura mais aconchegante.",
-    preview: "from-amber-300 via-orange-500 to-zinc-950",
+    value: "aura",
+    label: "Aura",
+    description: "Paleta ambar da identidade principal para demonstracao e apresentacao premium.",
+    preview: "from-amber-300 via-amber-500 to-zinc-950",
   },
 ];
 
 const STORAGE_KEY = "wes-digital-studio-os-theme";
+
+function normalizeTheme(theme: string | null | undefined): Theme {
+  if (theme === "dark" || theme === "light" || theme === "ruby" || theme === "aura") {
+    return theme;
+  }
+
+  if (theme === "gold") {
+    return "aura";
+  }
+
+  return "light";
+}
 
 const initialState: ThemeProviderState = {
   theme: "light",
@@ -55,14 +67,15 @@ const ThemeProviderContext = createContext<ThemeProviderState>(initialState);
 
 export function ThemeProvider({ children, defaultTheme = "light", ...props }: ThemeProviderProps) {
   const [theme, setTheme] = useState<Theme>(() => {
-    const storedTheme = localStorage.getItem(STORAGE_KEY) as Theme | null;
-    return storedTheme ?? defaultTheme;
+    const storedTheme = localStorage.getItem(STORAGE_KEY);
+    return storedTheme ? normalizeTheme(storedTheme) : defaultTheme;
   });
 
   useEffect(() => {
     const root = window.document.documentElement;
-    root.setAttribute("data-theme", theme);
-    localStorage.setItem(STORAGE_KEY, theme);
+    const normalizedTheme = normalizeTheme(theme);
+    root.setAttribute("data-theme", normalizedTheme);
+    localStorage.setItem(STORAGE_KEY, normalizedTheme);
   }, [theme]);
 
   const value = useMemo(

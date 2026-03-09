@@ -48,7 +48,7 @@ export const PROPOSAL_EXTRAS: Record<
   }
 > = {
   "tema-adicional": {
-    label: "Tema adicional (dark/light/ruby/gold)",
+    label: "Tema adicional (dark/light/ruby/aura)",
     amount: 200,
     type: "implementation",
   },

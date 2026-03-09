@@ -1,4 +1,4 @@
-export type ThemeMode = "dark" | "light" | "ruby" | "gold";
+export type ThemeMode = "dark" | "light" | "ruby" | "aura";
 export type IntegrationMode = "local" | "mock" | "google";
 
 export const LEAD_STATUS_OPTIONS = [

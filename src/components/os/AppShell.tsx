@@ -5,12 +5,13 @@ import {
   BookOpen,
   CheckSquare,
   ChevronRight,
+  CirclePlay,
   Cog,
+  Compass,
   LayoutDashboard,
   Menu,
   Orbit,
   ReceiptText,
-  Sparkles,
   Users,
   Wifi,
   X,
@@ -19,6 +20,7 @@ import { useMemo, useState } from "react";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
 
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { BrandEmblem } from "@/components/os/BrandEmblem";
 import { RouteSkeleton } from "@/components/os/RouteSkeleton";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -42,7 +44,12 @@ const ROUTE_META: Record<string, RouteMeta> = {
   "/dashboard": {
     kicker: "Central operacional",
     title: "Dashboard operacional",
-    description: "Leia o momento do dia, veja a prioridade principal e entre em execucao sem perder contexto.",
+    description: "Veja prioridades, escolha a proxima acao e opere com contexto desde a primeira dobra.",
+  },
+  "/guia": {
+    kicker: "Onboarding guiado",
+    title: "Guia do sistema",
+    description: "Entenda como cada modulo entra no seu dia e rode a demonstracao guiada do dashboard.",
   },
   "/crm": {
     kicker: "Pipeline comercial",
@@ -72,14 +79,17 @@ const ROUTE_META: Record<string, RouteMeta> = {
   "/configuracoes": {
     kicker: "Infraestrutura",
     title: "Configuracoes do sistema",
-    description: "Confira integracoes, sincronizacao e preferencia visual do ambiente.",
+    description: "Confira integracoes, ambiente e pontos de apoio sem duplicar controles globais do app.",
   },
 };
 
 const NAV_GROUPS = [
   {
     label: "Hoje",
-    items: [{ href: "/dashboard", label: "Dashboard", helper: "Leitura executiva", icon: LayoutDashboard }],
+    items: [
+      { href: "/dashboard", label: "Dashboard", helper: "Leitura executiva", icon: LayoutDashboard },
+      { href: "/guia", label: "Guia", helper: "Tour e demonstracao", icon: CirclePlay },
+    ],
   },
   {
     label: "Comercial",
@@ -94,7 +104,7 @@ const NAV_GROUPS = [
     items: [
       { href: "/manual", label: "Manual", helper: "Regras da agencia", icon: BookOpen },
       { href: "/tarefas", label: "Tarefas", helper: "Fila operacional", icon: CheckSquare },
-      { href: "/configuracoes", label: "Configuracoes", helper: "Integracoes e tema", icon: Cog },
+      { href: "/configuracoes", label: "Configuracoes", helper: "Ambiente e suporte", icon: Cog },
     ],
   },
 ] as const;
@@ -116,8 +126,7 @@ export function AppShell() {
   const sentProposals = proposals.filter((proposal) => proposal.status === "sent").length;
   const pendingTasks = tasks.filter((task) => task.status !== "Concluida").length;
 
-  const integrationLabel =
-    integration.mode === "google" ? "Google online" : integration.mode === "mock" ? "Modo mock" : "Modo local";
+  const integrationLabel = integration.mode === "google" ? "Google online" : integration.mode === "mock" ? "Modo mock" : "Modo local";
 
   const navigationCounts = useMemo(
     () => ({
@@ -131,19 +140,50 @@ export function AppShell() {
 
   const sidebarContent = (
     <div className="flex h-full flex-col">
-      <div className="surface-panel rounded-[24px] p-5">
-        <div className="flex items-center gap-3">
-          <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-accent text-accent-foreground">
-            <Sparkles className="h-4 w-4" />
+      <div className="surface-panel relative overflow-hidden rounded-[28px] p-5">
+        <div className="brand-grid absolute inset-0 opacity-65" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,hsl(var(--accent)/0.18),transparent_38%),radial-gradient(circle_at_bottom_right,hsl(var(--accent)/0.08),transparent_44%)]" />
+        <div className="relative z-10">
+          <div className="flex items-start justify-between gap-4">
+            <div className="min-w-0">
+              <p className="eyebrow-label">WES Digital Studio</p>
+              <p className="mt-2 text-[1.7rem] font-semibold leading-none text-foreground">Operating System</p>
+              <p className="mt-3 max-w-[16rem] text-sm leading-7 text-muted-foreground">
+                Leads, propostas, follow-up e entregas em uma leitura clara do que fazer agora.
+              </p>
+            </div>
+            <BrandEmblem size="sm" className="shrink-0" />
           </div>
-          <div className="min-w-0">
-            <p className="eyebrow-label">WES Digital Studio</p>
-            <p className="truncate text-lg font-semibold text-foreground">OS operacional</p>
+
+          <div className="mt-5 flex flex-wrap gap-2">
+            {[
+              "Dashboard",
+              "CRM",
+              "Orcamentos",
+              "Tarefas",
+              "Playbook",
+            ].map((item) => (
+              <span key={item} className="rounded-full border border-border/80 bg-background/58 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-foreground/88 backdrop-blur-sm">
+                {item}
+              </span>
+            ))}
+          </div>
+
+          <div className="mt-5 grid gap-2 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+            <Button asChild className="h-10 rounded-full px-4">
+              <NavLink to="/dashboard?tour=1">
+                <CirclePlay className="h-4 w-4" />
+                Iniciar tour
+              </NavLink>
+            </Button>
+            <Button asChild variant="outline" className="h-10 rounded-full border-border bg-background/62 px-4 text-foreground hover:bg-secondary hover:text-foreground">
+              <NavLink to="/guia">
+                <Compass className="h-4 w-4" />
+                Ver guia
+              </NavLink>
+            </Button>
           </div>
         </div>
-        <p className="mt-4 text-sm leading-7 text-muted-foreground">
-          CRM, propostas, tarefas e playbook em um fluxo unico de operacao.
-        </p>
       </div>
 
       <div className="mt-6 space-y-5">
@@ -188,11 +228,11 @@ export function AppShell() {
         ))}
       </div>
 
-      <div className="surface-soft mt-6 rounded-[22px] p-4">
+      <div className="surface-soft mt-6 rounded-[24px] p-4">
         <div className="flex items-start justify-between gap-3">
           <div>
             <p className="text-sm font-semibold text-foreground">Ambiente ativo</p>
-            <p className="mt-1 text-xs leading-5 text-muted-foreground">Sincronizacao e volume operacional da instancia.</p>
+            <p className="mt-1 text-xs leading-5 text-muted-foreground">Sincronizacao, contexto e volume da operacao atual.</p>
           </div>
           <Badge className={integration.mode === "google" ? "status-success" : integration.mode === "mock" ? "status-warning" : "status-neutral"}>
             {integrationLabel}
@@ -220,8 +260,8 @@ export function AppShell() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <div className="pointer-events-none fixed inset-0 overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,hsl(var(--accent)/0.08),transparent_22%),radial-gradient(circle_at_bottom_left,hsl(var(--accent)/0.05),transparent_26%)]" />
-        <div className="app-grid absolute inset-0 opacity-30" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,hsl(var(--accent)/0.13),transparent_24%),radial-gradient(circle_at_bottom_left,hsl(var(--accent)/0.08),transparent_32%)]" />
+        <div className="app-grid absolute inset-0 opacity-[0.42]" />
       </div>
 
       <AnimatePresence>
@@ -241,7 +281,7 @@ export function AppShell() {
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: -24, opacity: 0 }}
               transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
-              className="fixed inset-y-0 left-0 z-50 w-[88vw] max-w-[324px] border-r border-border/70 bg-sidebar-background/95 p-4 backdrop-blur-xl lg:hidden"
+              className="fixed inset-y-0 left-0 z-50 w-[88vw] max-w-[324px] border-r border-border/70 bg-sidebar-background/96 p-4 backdrop-blur-xl lg:hidden"
             >
               <div className="mb-5 flex items-center justify-between">
                 <p className="text-sm font-semibold text-foreground">Menu operacional</p>
@@ -261,12 +301,12 @@ export function AppShell() {
         ) : null}
       </AnimatePresence>
 
-      <aside className="fixed inset-y-0 left-0 z-30 hidden w-[284px] border-r border-sidebar-border/80 bg-sidebar-background/92 p-5 backdrop-blur-xl lg:block">
+      <aside className="fixed inset-y-0 left-0 z-30 hidden w-[300px] border-r border-sidebar-border/80 bg-sidebar-background/92 p-5 backdrop-blur-xl lg:block">
         {sidebarContent}
       </aside>
 
-      <div className="relative z-10 lg:pl-[284px]">
-        <header className="sticky top-0 z-20 border-b border-border/70 bg-background/86 backdrop-blur-xl">
+      <div className="relative z-10 lg:pl-[300px]">
+        <header className="sticky top-0 z-20 border-b border-border/70 bg-background/84 backdrop-blur-xl">
           <div className="mx-auto flex max-w-[1560px] items-center justify-between gap-4 px-4 py-4 sm:px-6 xl:px-8">
             <div className="flex min-w-0 items-center gap-3">
               <Button
@@ -303,7 +343,7 @@ export function AppShell() {
         <main className="mx-auto max-w-[1560px] px-4 py-6 sm:px-6 xl:px-8 xl:py-8">
           <AnimatePresence mode="wait">
             <motion.div
-              key={location.pathname}
+              key={location.pathname + location.search}
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}

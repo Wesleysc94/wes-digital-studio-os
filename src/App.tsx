@@ -10,6 +10,7 @@ import { AppShell } from "./components/os/AppShell";
 import { RouteSkeleton } from "./components/os/RouteSkeleton";
 
 const DashboardPage = lazy(() => import("./pages/DashboardPage").then((module) => ({ default: module.DashboardPage })));
+const GuidePage = lazy(() => import("./pages/GuidePage").then((module) => ({ default: module.GuidePage })));
 const CrmPage = lazy(() => import("./pages/CrmPage").then((module) => ({ default: module.CrmPage })));
 const BudgetPage = lazy(() => import("./pages/BudgetPage").then((module) => ({ default: module.BudgetPage })));
 const FunnelPage = lazy(() => import("./pages/FunnelPage").then((module) => ({ default: module.FunnelPage })));
@@ -32,6 +33,7 @@ const App = () => (
               <Route path="/" element={<Navigate to="/dashboard" replace />} />
               <Route element={<AppShell />}>
                 <Route path="/dashboard" element={<DashboardPage />} />
+                <Route path="/guia" element={<GuidePage />} />
                 <Route path="/crm" element={<CrmPage />} />
                 <Route path="/orcamentos" element={<BudgetPage />} />
                 <Route path="/funil" element={<FunnelPage />} />

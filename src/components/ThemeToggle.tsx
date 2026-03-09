@@ -1,4 +1,4 @@
-import { Gem, MoonStar, SunMedium, Waves, type LucideIcon } from "lucide-react";
+import { Crown, Gem, MoonStar, SunMedium, type LucideIcon } from "lucide-react";
 
 import { themeOptions, useTheme } from "./ThemeProvider";
 import { cn } from "@/lib/utils";
@@ -11,7 +11,7 @@ const themeIcons: Record<(typeof themeOptions)[number]["value"], LucideIcon> = {
   dark: MoonStar,
   light: SunMedium,
   ruby: Gem,
-  gold: Waves,
+  aura: Crown,
 };
 
 export const ThemeToggle = ({ variant = "panel" }: ThemeToggleProps) => {
