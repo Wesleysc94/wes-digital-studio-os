@@ -19,6 +19,7 @@ const FunnelPage = lazy(() => import("./pages/FunnelPage").then((module) => ({ d
 const ManualPage = lazy(() => import("./pages/ManualPage").then((module) => ({ default: module.ManualPage })));
 const TasksPage = lazy(() => import("./pages/TasksPage").then((module) => ({ default: module.TasksPage })));
 const SettingsPage = lazy(() => import("./pages/SettingsPage").then((module) => ({ default: module.SettingsPage })));
+const CalendarPage = lazy(() => import("./pages/CalendarPage").then((module) => ({ default: module.CalendarPage })));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
@@ -43,6 +44,7 @@ const App = () => (
                 <Route path="/funil" element={<FunnelPage />} />
                 <Route path="/manual" element={<ManualPage />} />
                 <Route path="/tarefas" element={<TasksPage />} />
+                <Route path="/agenda" element={<CalendarPage />} />
                 <Route path="/configuracoes" element={<SettingsPage />} />
               </Route>
               <Route path="*" element={<NotFound />} />

@@ -1,7 +1,7 @@
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { AnimatePresence, motion } from "framer-motion";
-import { Archive, BookOpen, BriefcaseBusiness, CheckSquare, ChevronRight, CirclePlay, Cog, Compass, LayoutDashboard, Menu, Orbit, ReceiptText, Users, Wifi, X } from "lucide-react";
+import { Archive, BookOpen, BriefcaseBusiness, CalendarClock, CheckSquare, ChevronRight, CirclePlay, Cog, Compass, LayoutDashboard, Menu, Orbit, ReceiptText, Users, Wifi, X } from "lucide-react";
 import { type MouseEvent, useEffect, useMemo, useState } from "react";
 import { flushSync } from "react-dom";
 import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
@@ -30,13 +30,14 @@ const ROUTE_META: Record<string, RouteMeta> = {
   "/funil": { kicker: "Playbook de vendas", title: "Funil de vendas", description: "Use estrategia, copy e direcionamento por etapa para conduzir a negociacao com mais seguranca." },
   "/manual": { kicker: "Base da operacao", title: "Manual da operacao", description: "Padrao de venda, entrega, manutencao e renovacao para reduzir atrito operacional." },
   "/tarefas": { kicker: "Execucao diaria", title: "Tarefas e manutencoes", description: "Priorize follow-ups, entregas e manutencoes em uma fila objetiva de trabalho." },
+  "/agenda": { kicker: "Compromissos", title: "Agenda operacional", description: "Acompanhe reunioes, prazos e compromissos integrados ao Google Calendar." },
   "/configuracoes": { kicker: "Infraestrutura", title: "Configuracoes do sistema", description: "Confira integracoes, ambiente e pontos de apoio sem duplicar controles globais do app." },
 };
 
 const NAV_GROUPS = [
   { label: "Hoje", items: [{ href: "/dashboard", label: "Dashboard", helper: "Leitura executiva", icon: LayoutDashboard }, { href: "/guia", label: "Guia", helper: "Tour e demonstracao", icon: CirclePlay }] },
   { label: "Comercial", items: [{ href: "/crm", label: "CRM", helper: "Leads e follow-up", icon: Users }, { href: "/orcamentos", label: "Orcamentos", helper: "Propostas e planos", icon: ReceiptText }, { href: "/funil", label: "Funil", helper: "Playbook comercial", icon: Orbit }] },
-  { label: "Operacao", items: [{ href: "/producao", label: "Producao", helper: "Clientes ativos", icon: BriefcaseBusiness }, { href: "/tarefas", label: "Tarefas", helper: "Fila operacional", icon: CheckSquare }, { href: "/descartados", label: "Descartados", helper: "Limpeza do radar", icon: Archive }, { href: "/manual", label: "Manual", helper: "Regras da agencia", icon: BookOpen }, { href: "/configuracoes", label: "Configuracoes", helper: "Ambiente e suporte", icon: Cog }] },
+  { label: "Operacao", items: [{ href: "/producao", label: "Producao", helper: "Clientes ativos", icon: BriefcaseBusiness }, { href: "/tarefas", label: "Tarefas", helper: "Fila operacional", icon: CheckSquare }, { href: "/agenda", label: "Agenda", helper: "Google Calendar", icon: CalendarClock }, { href: "/descartados", label: "Descartados", helper: "Limpeza do radar", icon: Archive }, { href: "/manual", label: "Manual", helper: "Regras da agencia", icon: BookOpen }, { href: "/configuracoes", label: "Configuracoes", helper: "Ambiente e suporte", icon: Cog }] },
 ] as const;
 
 export function AppShell() {

@@ -105,6 +105,7 @@ export function DashboardPage() {
     { title: "CRM", description: "Cadastrar lead, revisar status e agendar proximo contato.", href: "/crm", icon: Users2 },
     { title: "Orcamentos", description: "Montar proposta, ajustar valor e empurrar para producao.", href: "/orcamentos", icon: ReceiptText },
     { title: "Producao", description: "Acompanhar clientes fechados, prazo, bloqueio e entrega.", href: "/producao", icon: BriefcaseBusiness },
+    { title: "Agenda", description: "Ver compromissos, reunioes e prazos no Google Calendar.", href: "/agenda", icon: CalendarClock },
     { title: "Descartados", description: "Limpar do radar o que nao deve mais poluir a operacao.", href: "/descartados", icon: Trash2 },
     { title: "Funil", description: "Usar mensagens consultivas por etapa e momento comercial.", href: "/funil", icon: Compass },
   ] as const;

@@ -94,6 +94,8 @@ export interface IntegrationStatus {
   googleCalendarConfigured: boolean;
   canWrite: boolean;
   missing: string[];
+  spreadsheetId?: string;
+  calendarId?: string;
 }
 
 export interface BootstrapPayload {

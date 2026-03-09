@@ -1,4 +1,4 @@
-import { CirclePlay, Compass, PanelTop, Router, ShieldCheck, Trash2 } from "lucide-react";
+import { Calendar, CirclePlay, Compass, ExternalLink, PanelTop, Router, ShieldCheck, Table2, Trash2 } from "lucide-react";
 import { NavLink } from "react-router-dom";
 
 import { themeOptions, useTheme } from "@/components/ThemeProvider";
@@ -149,6 +149,37 @@ export function SettingsPage() {
                   </div>
                 </div>
               </div>
+            </CardContent>
+          </Card>
+
+          <Card className="glass-card rounded-[2rem]">
+            <CardHeader>
+              <CardTitle className="text-xl">Google Workspace</CardTitle>
+              <CardDescription>Acesso direto às ferramentas onde os dados são persistidos.</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              {integration.spreadsheetId && (
+                <Button asChild variant="outline" className="h-11 w-full justify-between rounded-full border-border bg-card/70 px-4 text-foreground hover:bg-secondary hover:text-foreground">
+                  <a href={`https://docs.google.com/spreadsheets/d/${integration.spreadsheetId}`} target="_blank" rel="noopener noreferrer">
+                    <span className="inline-flex items-center gap-2">
+                      <Table2 className="h-4 w-4 text-green-600" />
+                      Abrir Planilha de Dados
+                    </span>
+                    <ExternalLink className="h-3.5 w-3.5 opacity-50" />
+                  </a>
+                </Button>
+              )}
+              {integration.calendarId && (
+                <Button asChild variant="outline" className="h-11 w-full justify-between rounded-full border-border bg-card/70 px-4 text-foreground hover:bg-secondary hover:text-foreground">
+                  <a href={`https://calendar.google.com/calendar/r?cid=${integration.calendarId}`} target="_blank" rel="noopener noreferrer">
+                    <span className="inline-flex items-center gap-2">
+                      <Calendar className="h-4 w-4 text-blue-600" />
+                      Abrir Google Calendar
+                    </span>
+                    <ExternalLink className="h-3.5 w-3.5 opacity-50" />
+                  </a>
+                </Button>
+              )}
             </CardContent>
           </Card>
 

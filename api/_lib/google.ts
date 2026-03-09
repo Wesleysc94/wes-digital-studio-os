@@ -32,6 +32,8 @@ export function getIntegrationStatus(): IntegrationStatus {
     googleCalendarConfigured,
     canWrite: googleSheetsConfigured,
     missing,
+    spreadsheetId: googleSheetsConfigured ? env.spreadsheetId : undefined,
+    calendarId: googleCalendarConfigured ? env.calendarId : undefined,
   };
 }
 
