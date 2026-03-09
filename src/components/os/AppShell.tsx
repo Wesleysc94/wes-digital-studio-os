@@ -2,10 +2,11 @@ import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { AnimatePresence, motion } from "framer-motion";
 import { Archive, BookOpen, BriefcaseBusiness, CheckSquare, ChevronRight, CirclePlay, Cog, Compass, LayoutDashboard, Menu, Orbit, ReceiptText, Users, Wifi, X } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { MobileBackToTop } from "@/components/os/MobileBackToTop";
 import { BrandEmblem } from "@/components/os/BrandEmblem";
 import { RouteSkeleton } from "@/components/os/RouteSkeleton";
 import { Badge } from "@/components/ui/badge";
@@ -65,6 +66,14 @@ export function AppShell() {
     navigate(createDashboardTourHref());
   };
 
+  useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [location.pathname, location.search]);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  }, [location.pathname]);
+
   const sidebarContent = (
     <div className="flex min-h-full flex-col">
       <div className="surface-panel relative min-h-[186px] overflow-visible rounded-[30px] p-5">
@@ -84,7 +93,7 @@ export function AppShell() {
           </div>
           <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
             <Button type="button" className="h-10 rounded-full px-4" onClick={startGuidedTour}><CirclePlay className="h-4 w-4" />Iniciar tour</Button>
-            <Button asChild variant="outline" className="h-10 rounded-full border-border bg-background/62 px-4 text-foreground hover:bg-secondary hover:text-foreground"><NavLink to="/guia"><Compass className="h-4 w-4" />Ver guia</NavLink></Button>
+            <Button asChild variant="outline" className="h-10 rounded-full border-border bg-background/62 px-4 text-foreground hover:bg-secondary hover:text-foreground"><NavLink to="/guia" onClick={() => setMobileMenuOpen(false)}><Compass className="h-4 w-4" />Ver guia</NavLink></Button>
           </div>
         </div>
       </div>
@@ -125,7 +134,7 @@ export function AppShell() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <div className="pointer-events-none fixed inset-0 overflow-hidden"><div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,hsl(var(--accent)/0.16),transparent_22%),radial-gradient(circle_at_bottom_left,hsl(var(--accent)/0.08),transparent_32%)]" /><div className="app-grid absolute inset-0 opacity-[0.52]" /></div>
+      <div className="pointer-events-none fixed inset-0 overflow-hidden"><div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,hsl(var(--accent)/0.16),transparent_22%),radial-gradient(circle_at_bottom_left,hsl(var(--accent)/0.08),transparent_32%)]" /><div className="app-grid absolute inset-0 opacity-[0.62] md:opacity-[0.52]" /></div>
       <AnimatePresence>
         {mobileMenuOpen ? <><motion.button type="button" aria-label="Fechar menu" className="fixed inset-0 z-40 bg-background/72 backdrop-blur-sm lg:hidden" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setMobileMenuOpen(false)} /><motion.aside initial={{ x: -24, opacity: 0 }} animate={{ x: 0, opacity: 1 }} exit={{ x: -24, opacity: 0 }} transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }} className="fixed inset-y-0 left-0 z-50 w-[88vw] max-w-[324px] overflow-y-auto overscroll-contain border-r border-border/70 bg-sidebar-background/96 p-4 pb-6 pr-3 backdrop-blur-xl lg:hidden"><div className="mb-5 flex items-center justify-between"><p className="text-sm font-semibold text-foreground">Menu operacional</p><Button type="button" variant="ghost" size="icon" className="h-10 w-10 rounded-full border border-border/80 bg-card/88 text-foreground hover:bg-secondary" onClick={() => setMobileMenuOpen(false)}><X className="h-4 w-4" /></Button></div>{sidebarContent}</motion.aside></> : null}
       </AnimatePresence>
@@ -152,6 +161,7 @@ export function AppShell() {
           <AnimatePresence mode="wait"><motion.div key={location.pathname + location.search} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.16, ease: [0.22, 1, 0.36, 1] }}>{isBootstrapping ? <RouteSkeleton /> : <Outlet context={{ pageMeta, isBootstrapping, isSyncing: bootstrapQuery.isFetching }} />}</motion.div></AnimatePresence>
         </main>
       </div>
+      <MobileBackToTop />
     </div>
   );
 }
