@@ -2,7 +2,8 @@ import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { AnimatePresence, motion } from "framer-motion";
 import { Archive, BookOpen, BriefcaseBusiness, CheckSquare, ChevronRight, CirclePlay, Cog, Compass, LayoutDashboard, Menu, Orbit, ReceiptText, Users, Wifi, X } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { type MouseEvent, useEffect, useMemo, useState } from "react";
+import { flushSync } from "react-dom";
 import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 
 import { ThemeToggle } from "@/components/ThemeToggle";
@@ -61,6 +62,16 @@ export function AppShell() {
 
   const integrationLabel = integration.mode === "google" ? "Google online" : integration.mode === "mock" ? "Modo mock" : "Modo local";
   const navigationCounts = useMemo(() => ({ "/crm": openLeads, "/orcamentos": sentProposals, "/producao": activeProjects, "/tarefas": pendingTasks, "/descartados": archive.length }), [openLeads, sentProposals, activeProjects, pendingTasks, archive.length]);
+  const handleSidebarNavigation = (event: MouseEvent<HTMLAnchorElement>, href: string) => {
+    if (!mobileMenuOpen) {
+      return;
+    }
+
+    event.preventDefault();
+    flushSync(() => setMobileMenuOpen(false));
+    navigate(href);
+  };
+
   const startGuidedTour = () => {
     setMobileMenuOpen(false);
     navigate(createDashboardTourHref());
@@ -93,7 +104,7 @@ export function AppShell() {
           </div>
           <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
             <Button type="button" className="h-10 rounded-full px-4" onClick={startGuidedTour}><CirclePlay className="h-4 w-4" />Iniciar tour</Button>
-            <Button asChild variant="outline" className="h-10 rounded-full border-border bg-background/62 px-4 text-foreground hover:bg-secondary hover:text-foreground"><NavLink to="/guia" onClick={() => setMobileMenuOpen(false)}><Compass className="h-4 w-4" />Ver guia</NavLink></Button>
+            <Button asChild variant="outline" className="h-10 rounded-full border-border bg-background/62 px-4 text-foreground hover:bg-secondary hover:text-foreground"><NavLink to="/guia" onClick={(event) => handleSidebarNavigation(event, "/guia")}><Compass className="h-4 w-4" />Ver guia</NavLink></Button>
           </div>
         </div>
       </div>
@@ -104,7 +115,7 @@ export function AppShell() {
             <p className="eyebrow-label mb-2 px-1">{group.label}</p>
             <div className="space-y-2">
               {group.items.map((item) => (
-                <NavLink key={item.href} to={item.href} onClick={() => setMobileMenuOpen(false)} className={({ isActive }) => cn("group flex items-center gap-3 rounded-[18px] border px-3.5 py-3 transition-all duration-150 ease-out", isActive ? "border-accent/28 bg-accent/10 text-foreground shadow-[0_14px_28px_-26px_hsl(var(--accent))]" : "border-border/80 bg-card/55 text-foreground hover:border-accent/16 hover:bg-secondary/45")}>
+                <NavLink key={item.href} to={item.href} onClick={(event) => handleSidebarNavigation(event, item.href)} className={({ isActive }) => cn("group flex items-center gap-3 rounded-[18px] border px-3.5 py-3 transition-all duration-150 ease-out", isActive ? "border-accent/28 bg-accent/10 text-foreground shadow-[0_14px_28px_-26px_hsl(var(--accent))]" : "border-border/80 bg-card/55 text-foreground hover:border-accent/16 hover:bg-secondary/45")}>
                   <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[16px] bg-secondary text-accent"><item.icon className="h-4 w-4" /></div>
                   <div className="min-w-0 flex-1"><p className="text-sm font-semibold text-foreground">{item.label}</p><p className="text-xs text-muted-foreground">{item.helper}</p></div>
                   {item.href in navigationCounts ? <span className="rounded-full bg-secondary px-2 py-1 text-[11px] font-semibold text-muted-foreground">{navigationCounts[item.href as keyof typeof navigationCounts]}</span> : <ChevronRight className="h-4 w-4 text-muted-foreground transition-transform duration-150 group-hover:translate-x-0.5" />}

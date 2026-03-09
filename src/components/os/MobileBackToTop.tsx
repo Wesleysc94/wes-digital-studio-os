@@ -31,7 +31,8 @@ export function MobileBackToTop() {
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 20, scale: 0.84 }}
           transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
-          className="fixed bottom-6 left-1/2 z-20 -translate-x-1/2 lg:hidden"
+          className="fixed inset-x-0 z-20 flex justify-center px-4 lg:hidden"
+          style={{ bottom: "max(1rem, calc(env(safe-area-inset-bottom) + 0.5rem))" }}
         >
           <button
             type="button"

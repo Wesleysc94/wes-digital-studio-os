@@ -41,7 +41,7 @@
     --glow-primary: 191 92% 45%;
     --glow-secondary: 191 92% 45%;
     --grid-alpha: 0.16;
-    --grid-size: 26px;
+    --grid-size: 24px;
     --radius: 1rem;
   }
 
@@ -81,7 +81,7 @@
     --glow-primary: 191 92% 56%;
     --glow-secondary: 208 92% 42%;
     --grid-alpha: 0.18;
-    --grid-size: 26px;
+    --grid-size: 24px;
   }
 
   [data-theme="ruby"] {
@@ -120,7 +120,7 @@
     --glow-primary: 344 86% 56%;
     --glow-secondary: 32 92% 47%;
     --grid-alpha: 0.19;
-    --grid-size: 28px;
+    --grid-size: 24px;
   }
 
   [data-theme="aura"] {
@@ -159,7 +159,7 @@
     --glow-primary: 41 94% 55%;
     --glow-secondary: 190 84% 44%;
     --grid-alpha: 0.2;
-    --grid-size: 28px;
+    --grid-size: 24px;
   }
 
   * {
@@ -289,6 +289,7 @@
       linear-gradient(hsl(var(--accent) / var(--grid-alpha)) 1px, transparent 1px),
       linear-gradient(90deg, hsl(var(--accent) / var(--grid-alpha)) 1px, transparent 1px);
     animation: gridFlow 3s linear infinite;
+    will-change: background-position;
   }
 
   .app-grid {
